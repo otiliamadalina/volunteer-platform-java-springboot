@@ -1,2 +1,1 @@
-# volunteer-platform-java-springboot
 
