@@ -1,23 +1,27 @@
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "./layout/Navbar";
-import Home from "./pages/Home";
-import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import {Home} from "./pages/Home";
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import AddUser from "./users/AddUser";
+import EditUser from "./users/EditUser";
+import ViewUser from "./users/ViewUser";
 
 function App() {
     return (
         <div className="App"> {/* folosit pentru stiluri globale */}
             <Router>        {/* monitorizeaza url-ul si decide ce componenta sa se afiseze */}
 
-                <Navbar />        {/* navbar ul este vizibil mereu */}
+                <Navbar/> {/* navbar ul este vizibil mereu */}
 
                 <Routes>          {/*container pentru toate definitiile de rute */}
 
                     {/* aici adaug toate butoanele care duc catre alte pagini ABSOLUT TOATE*/}
-                    <Route exact path="/" element={<Home />} />                   {/* cand url ul este / se afiseaza componenta Home */}
-                    <Route exact path="/adduser" element={<AddUser />} />         {/* cand url ul este /adduser se afiseaza componenta AddUser */}
-
+                    <Route exact path="/" element={<Home/>}/> {/* cand url ul este / se afiseaza componenta Home */}
+                    <Route exact path="/adduser"
+                           element={<AddUser/>}/> {/* cand url ul este /adduser se afiseaza componenta AddUser */}
+                    <Route exact path="/edituser/:id" element={<EditUser/>}/>
+                    <Route exact path="/viewuser/:id" element={<ViewUser/>}/>
                 </Routes>
 
             </Router>
