@@ -19,7 +19,7 @@ export default function Navbar() {
 
                 {/* Toggler pentru mobil */}
                 <button
-                    className="navbar-toggler"
+                    className="navbar-toggler d-lg-none"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
@@ -50,7 +50,7 @@ export default function Navbar() {
                             <Link className="btn nav-btn-register me-2" to="/register">Register</Link>
                         </li>
 
-                        <li className="nav-item">
+                        <li className="nav-item mt-2 mt-lg-0">
                             <Link className="btn nav-btn-login" to="/login">Login</Link>
                         </li>
 
