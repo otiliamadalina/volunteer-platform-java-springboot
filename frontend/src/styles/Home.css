@@ -1,0 +1,36 @@
+.home-spacing {
+    height: 20px;
+}
+
+
+.scrolling-banner {
+    overflow: hidden;
+    background-color: #fff0f0;
+    padding: 12px 0;
+    border-top: 3px solid #ff1a1a;
+    border-bottom: 3px solid #ff1a1a;
+}
+
+.scrolling-track {
+    display: flex;
+    gap: 80px;
+    animation: scroll-left 12s linear infinite;
+}
+
+.scrolling-text {
+    white-space: nowrap;
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #ff1a1a;
+    letter-spacing: 2px;
+}
+
+
+@keyframes scroll-left {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}

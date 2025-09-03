@@ -31,15 +31,15 @@ export default function Navbar() {
                 </button>
 
                 {/* Link-uri din dreapta */}
-                <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                    <ul className="navbar-nav mb-2 mb-lg-0">
+                <div className="collapse navbar-collapse justify-content-end " id="navbarSupportedContent">
+                    <ul className="navbar-nav nav-mobile-center mb-2 mb-lg-0">
 
                         <li className="nav-item">
                             <Link className="nav-link custom-link" to="/about">About</Link>
                         </li>
 
                         <li className="nav-item">
-                            <Link className="nav-link custom-link" to="/contact">Contact</Link>
+                            <Link className="nav-link custom-link" to="/statistic">Statistic</Link>
                         </li>
 
                         <li className="nav-item">
@@ -47,7 +47,11 @@ export default function Navbar() {
                         </li>
 
                         <li className="nav-item">
-                            <Link className="btn nav-btn-register me-2" to="/register">Register</Link>
+                            <Link className="nav-link custom-link" to="/organisations">ORG</Link>
+                        </li>
+
+                        <li className="nav-item">
+                            <Link className="btn nav-btn-register me-2 " to="/register">Register</Link>
                         </li>
 
                         <li className="nav-item mt-2 mt-lg-0">

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Link, useParams} from "react-router-dom";
+import "../styles/Home.css";
 
 export function Home() {
     const [users, setUsers] = useState([]); // cream o lista goala de users
@@ -22,53 +23,32 @@ export function Home() {
     };
 
     return (
-        <div className="container">
-            <div className="py-4">
-                <table className="table border shadow">
-                    <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {users.map((user, index) => ( // users - lista de utilizatori | map - pasrcurge lista si pentru fiecare element face  ceva
-                        // ((user, - elementul curent, index) - pozitia elementului
-                        // se parcurge lista de elemente (useri)
-                        <tr>
-                            <th scope="row" key={index}>
-                                {index + 1}
-                            </th>
-                            <td>{user.name}</td>
-                            <td>{user.username}</td>
-                            <td>{user.email}</td>
-                            <td>
-                                <Link
-                                    className="btn btn-primary mx-2"
-                                    to={`/viewuser/${user.id}`}
-                                >
-                                    View
-                                </Link>
+<>
+    <div className="home-spacing"></div>
 
-                                <Link className="btn btn-outline-primary mx-2"
-                                      to={`/edituser/${user.id}`}
+        {/*<section className="hero">*/}
+        {/*    <h1>Make a Difference Today</h1>*/}
+        {/*    <p>Join our community of volunteers and help build a better world.</p>*/}
+        {/*    <div className="hero-buttons">*/}
+        {/*        <Link to="/register" className="btn btn-outline-light me-3">Get Started</Link>*/}
+        {/*        <Link to="/events" className="btn btn-light">Explore Events</Link>*/}
+        {/*    </div>*/}
+        {/*</section>*/}
 
-                                >Edit</Link>
-
-                                <button className="btn btn-danger mx-2"
-
-                                        onClick={() => deleteUser(user.id)}
-                                >Delete
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-            </div>
+    <div className="scrolling-banner">
+        <div className="scrolling-track">
+            <span className="scrolling-text">Together We Can – Volunteers WANTED</span>
+            <span className="scrolling-text">Together We Can – Volunteers WANTED</span>
+            <span className="scrolling-text">Together We Can – Volunteers WANTED</span>
+            <span className="scrolling-text">Together We Can – Volunteers WANTED</span>
         </div>
+    </div>
+
+
+
+
+
+
+</>
     );
 }
