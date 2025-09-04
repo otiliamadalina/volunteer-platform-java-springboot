@@ -8,10 +8,11 @@ export default function VolunteerOrOrg() {
         <div className="container volunteer-org-choice">
             <h2 className="choice-title">Choose your path</h2>
             <div className="choice-buttons">
-                <Link to="/register-volunteer" className="btn nav-btn-login me-2">Register as Volunteer</Link>
-                <Link to="/register-org" className="btn nav-btn-register me-2">Register as Organization</Link>
+                <Link to="/register-volunteer" className="btn btn-volunteer">Register as Volunteer</Link>
+                <Link to="/register-org" className="btn btn-organization">Register as Organization</Link>
             </div>
         </div>
+
 
     );
 }

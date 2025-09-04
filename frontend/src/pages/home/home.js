@@ -54,7 +54,7 @@ export function Home() {
             <h1>Make a Difference Today</h1>
             <p>Join our community of volunteers and help build a better world.</p>
             <div className="hero-buttons">
-                <Link to="/register" className="btn nav-btn-login me-2 ">Get Started</Link>
+                <Link to="/volunteerOrOrg" className="btn nav-btn-login me-2 ">Get Started</Link>
                 <Link to="/events" className="btn nav-btn-login me-2 ">Explore Events</Link>
             </div>
         </section>
