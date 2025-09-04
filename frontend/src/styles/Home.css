@@ -2,6 +2,13 @@
     height: 20px;
 }
 
+.hero h1 {
+    color: #574d4a;
+}
+
+.hero p {
+    color: #555555;
+}
 
 .scrolling-banner {
     overflow: hidden;
@@ -34,3 +41,19 @@
         transform: translateX(-100%);
     }
 }
+
+.hero-images {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.hero-images img {
+    width: 200px;
+    height: 600px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    object-fit: cover;
+}
+

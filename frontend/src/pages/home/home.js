@@ -8,32 +8,25 @@ export function Home() {
 
     const {id} = useParams();
 
+    const [ngoImages, setNgoImages] = useState([]);
+
     useEffect(() => {
-        loadUsers(); // cand pagina se incarca, ruleaza functia loadUsers
-    }, []); // [] - ruleaza o singura data
+        fetchNgoImages();
+    }, []);
 
-    const loadUsers = async () => {
-        const result = await axios.get("http://localhost:8080/users"); // cere lista de utilizatori
-        setUsers(result.data) // ceea ce primeste de la server, pune in lista
+    const fetchNgoImages = async () => {
+        try {
+            const response = await axios.get("http://localhost:8080/api/ngos/images");
+            setNgoImages(response.data);
+        } catch (error) {
+            console.error("Error fetching NGO images:", error);
+        }
     };
 
-    const deleteUser = async (id) => {
-        await axios.delete(`http://localhost:8080/user/${id}`);
-        loadUsers();
-    };
 
     return (
 <>
     <div className="home-spacing"></div>
-
-        <section className="hero">
-            <h1>Make a Difference Today</h1>
-            <p>Join our community of volunteers and help build a better world.</p>
-            <div className="hero-buttons">
-                <Link to="/register" className="btn btn-outline-light me-3">Get Started</Link>
-                <Link to="/events" className="btn btn-light">Explore Events</Link>
-            </div>
-        </section>
 
     <div className="scrolling-banner">
         <div className="scrolling-track wrapper">
@@ -46,6 +39,32 @@ export function Home() {
             <span className="scrolling-text">Together We Can – VOLUNTEERS WANTED</span>
         </div>
     </div>
+
+    <div className="home-spacing"></div>
+
+    <div className="hero-images">
+        {ngoImages.length > 0 ? (
+            ngoImages.map((imgUrl, index) => (
+                <img key={index} src={imgUrl} alt={`NGO image ${index + 1}`} />
+            ))
+        ) : (
+            <p className="no-events-text">Sorry. No events available at the moment.</p>
+        )}
+    </div>
+
+
+    <section className="hero">
+            <h1>Make a Difference Today</h1>
+            <p>Join our community of volunteers and help build a better world.</p>
+            <div className="hero-buttons">
+                <Link to="/register" className="btn nav-btn-login me-2 ">Get Started</Link>
+                <Link to="/events" className="btn nav-btn-login me-2 ">Explore Events</Link>
+            </div>
+        </section>
+
+    <div className="home-spacing"></div>
+
+
 
 </>
     );
