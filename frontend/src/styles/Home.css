@@ -1,5 +1,6 @@
-.home-spacing {
-    height: 20px;
+.spaced-section {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .hero h1 {

@@ -26,7 +26,6 @@ export function Home() {
 
     return (
 <>
-    <div className="home-spacing"></div>
 
     <div className="scrolling-banner">
         <div className="scrolling-track wrapper">
@@ -40,9 +39,7 @@ export function Home() {
         </div>
     </div>
 
-    <div className="home-spacing"></div>
-
-    <div className="hero-images">
+    <div className="hero-images spaced-section">
         {ngoImages.length > 0 ? (
             ngoImages.map((imgUrl, index) => (
                 <img key={index} src={imgUrl} alt={`NGO image ${index + 1}`} />
@@ -53,7 +50,7 @@ export function Home() {
     </div>
 
 
-    <section className="hero">
+    <section className="hero spaced-section">
             <h1>Make a Difference Today</h1>
             <p>Join our community of volunteers and help build a better world.</p>
             <div className="hero-buttons">
@@ -62,7 +59,7 @@ export function Home() {
             </div>
         </section>
 
-    <div className="home-spacing"></div>
+
 
 
 
