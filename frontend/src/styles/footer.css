@@ -1,0 +1,31 @@
+.footer {
+    background-color: #8b7d7b;
+    font-size: 0.9rem;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    color: #f5e8d3;
+}
+
+.footer-text {
+    color: #f5e8d3;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    width: 100%;
+}
+
+.footer-image-wrapper {
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.footer-image {
+    width: 100vw;
+    height: auto;
+    display: block;
+}
+
+
