@@ -1,11 +1,9 @@
 package com.volunteer.volunteer_platform_java_springboot.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "volunteer")
 public class Volunteer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
