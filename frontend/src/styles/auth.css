@@ -53,7 +53,7 @@
     max-width: 400px;
     margin: 4rem auto;
     padding: 2rem;
-    background-color: #f5e8d3;
+    background: linear-gradient(to bottom right, #f5e8d3, #d4c4bc);
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     text-align: center;
@@ -85,7 +85,7 @@
 }
 
 .btn-login {
-    background: linear-gradient(to right, #5e35b1, #00acc1);
+    background: linear-gradient(to right, #ed0984, #ff8530, #d4ed3d);
     color: white;
     font-weight: bold;
     border: none;
@@ -115,4 +115,111 @@
 
 .link-register:hover {
     text-decoration: underline;
+}
+
+.register-container {
+    max-width: 700px;
+    margin: 4rem auto;
+    padding: 2rem;
+    background: linear-gradient(to bottom right, #f5e8d3, #d4c4bc);
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.register-title {
+    font-size: 2rem;
+    color: #4a463f;
+    margin-bottom: 0.5rem;
+}
+
+.register-subtitle {
+    font-size: 1rem;
+    color: #7b746a;
+    margin-bottom: 2rem;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+
+.btn-register-volunteer {
+    background: linear-gradient(to right, #ff6f61, #ffb74d, #fff176);
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    transition: transform 0.2s ease;
+}
+
+.register-org-container {
+    max-width: 900px;
+    margin: 4rem auto;
+    padding: 2rem;
+    background: linear-gradient(to bottom right, #f5e8d3, #d4c4bc);
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.register-title {
+    font-size: 2rem;
+    color: #4a463f;
+    margin-bottom: 0.5rem;
+}
+
+.register-subtitle {
+    font-size: 1rem;
+    color: #7b746a;
+    margin-bottom: 2rem;
+}
+
+.register-org-form {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.form-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.btn-register-org {
+    background: linear-gradient(to left, #5e35b1, #00acc1, #43a047);
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    width: 300px;
+    transition: transform 0.2s ease;
+}
+
+.btn-register-org:hover {
+    transform: scale(1.03);
+    background: linear-gradient(to left, #4527a0, #0097a7, #388e3c);
+    cursor: pointer;
 }
