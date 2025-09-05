@@ -16,7 +16,6 @@ public class Organisation {
     private String contactNumber;
     private String location;
     private String password;
-    private String confirmPassword;
 
     public Long getId() {
         return id;
@@ -66,11 +65,4 @@ public class Organisation {
         this.password = password;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
 }
