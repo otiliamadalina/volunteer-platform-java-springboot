@@ -26,8 +26,8 @@ public class AuthController {
 
     // CREEAZA organizatie
     @PostMapping("/registerAsOrganisation")
-    Organisation registerOrganization(@RequestBody Organisation org) {
+    Organisation registerOrganisation(@RequestBody Organisation org) {
         return organisationRepository.save(org);
     }
-    
+
 }
