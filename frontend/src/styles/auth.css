@@ -118,6 +118,7 @@
 }
 
 .register-container {
+    position: relative;
     max-width: 700px;
     margin: 4rem auto;
     padding: 2rem;
@@ -125,6 +126,22 @@
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     text-align: center;
+}
+
+.go-back-top-left {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: none;
+    border: none;
+    color: #ed0984;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.go-back-top-left:hover {
+    text-decoration: underline;
 }
 
 .register-title {
@@ -223,3 +240,41 @@
     background: linear-gradient(to left, #4527a0, #0097a7, #388e3c);
     cursor: pointer;
 }
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.go-back-btn {
+    background: none;
+    border: none;
+    color: #5e35b1;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+}
+
+.go-back-btn:hover {
+    text-decoration: underline;
+}
+
+.btn-register-org {
+    background: linear-gradient(to left, #5e35b1, #00acc1, #43a047);
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    transition: transform 0.2s ease;
+}
+
+.center-button {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
