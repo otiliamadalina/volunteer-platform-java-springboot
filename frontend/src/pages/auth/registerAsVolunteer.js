@@ -1,31 +1,52 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../../styles/auth.css";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterAsVolunteer() {
+
     const navigate = useNavigate();
 
-    const [fullName, setFullName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [location, setLocation] = useState("");
+    {/* stare - retine informatii care se pot schimba in timp, in functie de ce face utilizatorul */ }
+    {/* am creat o stare deoarece vrem sa retinem datele voluntarului */ }
 
-    const handleSubmit = async (e) => {
+    const [volunteer, setVolunteer] = useState({
+        fullName: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+    });
+
+    // ia valorile din obiect si le pune in variabile separate
+    const { fullName, email, password, confirmPassword } = volunteer;
+
+    // functie care se apeleaza cand utilizatorul modifica un input
+    const onInputChange = (e) => {
+        setVolunteer({
+            ...volunteer,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    // functie care se apeleaza la submit
+    const onSubmit = async (e) => {
         e.preventDefault();
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match.");
+            return;
+        }
 
         try {
             await axios.post("http://localhost:8080/api/registerAsVolunteer", {
                 fullName,
                 email,
-                password,
-                location,
+                password
             });
-            alert("Registration Successfully!");
+            alert("Volunteer registered successfully!");
             navigate("/volunteerDashboard");
         } catch (error) {
-            console.error("ERROR:", error);
-            alert("Error occured. Try again.");
+            console.error("Registration error:", error);
+            alert("An error occurred. Please try again.");
         }
     };
 
@@ -36,37 +57,41 @@ export default function RegisterAsVolunteer() {
             <h2 className="register-title">Become a Volunteer</h2>
             <p className="register-subtitle">Fill in your details to join our community</p>
 
-            <form className="register-form" onSubmit={handleSubmit}>
+            <form className="register-form" onSubmit={(e) => onSubmit(e)}>
                 <input
                     type="text"
                     className="form-input"
                     placeholder="Full Name"
+                    name="fullName"
                     value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
+                    onChange={(e) => onInputChange(e)}
                     required
                 />
                 <input
                     type="email"
                     className="form-input"
                     placeholder="Email Address"
+                    name="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => onInputChange(e)}
                     required
                 />
                 <input
-                    type="text"
+                    type="password"
                     className="form-input"
                     placeholder="Create Password"
+                    name="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => onInputChange(e)}
                     required
                 />
                 <input
-                    type="text"
+                    type="password"
                     className="form-input"
-                    placeholder="Location"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="Confirm Password"
+                    name="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => onInputChange(e)}
                     required
                 />
                 <button type="submit" className="btn-register-volunteer">Register</button>
