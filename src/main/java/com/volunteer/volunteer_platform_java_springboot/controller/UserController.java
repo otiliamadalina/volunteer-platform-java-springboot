@@ -39,7 +39,7 @@ public class UserController { // this is the class responsible for managing user
                 .orElseThrow(() -> new UserNotFoundException(id));
     }
 
-    // actualizeaza datele unui user uxistent in db
+    // actualizeaza datele unui user existent in db
     @PutMapping("/user/{id}")
     User updateUser(@RequestBody User newUser, @PathVariable Long id) {
         return userRepository.findById(id)                                      // cautam userul existent in DB dupa ID
