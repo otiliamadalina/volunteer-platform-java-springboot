@@ -46,7 +46,7 @@ public class AuthController {
     @PostMapping("/registerAsOrganisation")
     public ResponseEntity<Organisation> registerOrganisation(@RequestBody OrganisationDTO dto) {
         Organisation organisation = new Organisation();
-        organisation.setOrgName(dto.getOrgName());
+        organisation.setFullName(dto.getFullName());
         organisation.setEmail(dto.getEmail());
         organisation.setContactNumber(dto.getContactNumber());
         organisation.setLocation(dto.getLocation());
@@ -69,10 +69,13 @@ public class AuthController {
             System.out.println("Volunteer match: " + match);
 
             if (match) {
-                return ResponseEntity.ok(Map.of(
+                volunteer.setPassword(null); // ascundem parola
+                System.out.println("Volunteer fullName: " + volunteer.getFullName());
+                return ResponseEntity.ok(Map.of( // backend-uul trimite numele voluntarului la frontend
                         "role", "volunteer",
                         "id", volunteer.getId(),
-                        "message", "Login successful"
+                        "fullName", volunteer.getFullName(),
+                        "email", volunteer.getEmail()
                 ));
             }
         }
@@ -83,10 +86,12 @@ public class AuthController {
             System.out.println("Organisation match: " + match);
 
             if (match) {
+                organisation.setPassword(null); // ascundem parola
                 return ResponseEntity.ok(Map.of(
                         "role", "organisation",
                         "id", organisation.getId(),
-                        "message", "Login successful"
+                        "fullName", organisation.getFullName(),
+                        "email", organisation.getEmail()
                 ));
             }
         }
@@ -97,13 +102,5 @@ public class AuthController {
 
 
 
-
-
-
-    // CREEAZA organizatie
-    @PostMapping("/registerAsOrganisation")
-    Organisation registerOrganisation(@RequestBody Organisation org) {
-        return organisationRepository.save(org);
-    }
 
 }

@@ -9,7 +9,7 @@ public class Organisation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String orgName;
+    private String fullName;
     private String email;
     private String contactNumber;
     private String location;
@@ -23,12 +23,12 @@ public class Organisation {
         this.id = id;
     }
 
-    public String getOrgName() {
-        return orgName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setOrgName(String orgName) {
-        this.orgName = orgName;
+    public void setFullName(String orgName) {
+        this.fullName = orgName;
     }
 
     public String getEmail() {

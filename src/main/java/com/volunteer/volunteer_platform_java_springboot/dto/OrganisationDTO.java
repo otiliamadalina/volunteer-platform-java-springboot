@@ -1,18 +1,18 @@
 package com.volunteer.volunteer_platform_java_springboot.dto;
 
 public class OrganisationDTO {
-    private String orgName;
+    private String fullName;
     private String email;
     private String contactNumber;
     private String location;
     private String password;
 
-    public String getOrgName() {
-        return orgName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setOrgName(String orgName) {
-        this.orgName = orgName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {

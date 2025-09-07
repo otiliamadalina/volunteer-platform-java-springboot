@@ -16,19 +16,17 @@ export default function Login() {
 
     const [error, setError] = useState("");
 
-    // ia valorile din obiect si le pune in variabile separate
-    const { email, password } = credentials;
 
-    // functie care se apeleaza cand utilizatorul modifica un input
-    const onInputChange = (e) => {
+    const { email, password } = credentials; // ia valorile din obiect si le pune in variabile separate
+
+    const onInputChange = (e) => { // functie care se apeleaza cand utilizatorul modifica un input
         setCredentials({
             ...credentials,
             [e.target.name]: e.target.value
         });
     };
 
-    // functie care se apeleaza la submit
-    const onSubmit = async (e) => {
+    const onSubmit = async (e) => { // functie care se apeleaza la submit
         e.preventDefault();
         setError("");
 
@@ -40,19 +38,16 @@ export default function Login() {
                 password
             });
 
-            const {role, id} = res.data;
 
-            localStorage.setItem("userId", id);
+            console.log("Server response:", res.data);
+
+
+            const { role, id, fullName } = res.data;
+
+            localStorage.setItem("userName", fullName);
             localStorage.setItem("role", role);
-
-            // redirectionare in functie de rol
-            if (role === "volunteer") {
-                navigate("/volunteerDashboard");
-            } else if (role === "organisation") {
-                navigate("/organisationDashboard");
-            } else {
-                navigate("/unknownRole"); //  rol necunoscut
-            }
+            localStorage.setItem("userId", id);
+            navigate("/");
 
         } catch (err) {
             console.error("Login error:", err);
