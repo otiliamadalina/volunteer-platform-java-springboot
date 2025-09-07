@@ -1,8 +1,26 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate } from "react-router-dom";
 import "../styles/navbar.css";
 
 export default function Navbar() {
+
+    const navigate = useNavigate();
+
+
+    const role = localStorage.getItem("role");
+    const userName = localStorage.getItem("userName");
+
+    const dashboardRoute = role === "volunteer"
+        ? "/volunteerDashboard"
+        : role === "organisation"
+            ? "/organisationDashboard"
+            : "/";
+
+    const handleLogout = () => {
+        localStorage.clear();
+        navigate("/");
+    };
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-custom">
             <div className="container-fluid">
@@ -50,13 +68,29 @@ export default function Navbar() {
                             <Link className="nav-link custom-link" to="/organisations">ORG</Link>
                         </li>
 
-                        <li className="nav-item">
-                            <Link className="btn nav-btn-register me-2" to="/volunteerOrOrg">Register</Link>
-                        </li>
-
-                        <li className="nav-item mt-2 mt-lg-0">
-                            <Link className="btn nav-btn-login" to="/login">Login</Link>
-                        </li>
+                        {userName ? (
+                            <>
+                                <li className="nav-item mt-2 mt-lg-0">
+                                    <Link className="btn nav-btn-register me-2" to={dashboardRoute}>
+                                        {userName}
+                                    </Link>
+                                </li>
+                                <li className="nav-item mt-2 mt-lg-0">
+                                    <button className="btn nav-btn-login" onClick={handleLogout}>
+                                        Logout
+                                    </button>
+                                </li>
+                            </>
+                        ) : (
+                            <>
+                                <li className="nav-item">
+                                    <Link className="btn nav-btn-register me-2" to="/volunteerOrOrg">Register</Link>
+                                </li>
+                                <li className="nav-item mt-2 mt-lg-0">
+                                    <Link className="btn nav-btn-login" to="/login">Login</Link>
+                                </li>
+                            </>
+                        )}
 
 
                     </ul>

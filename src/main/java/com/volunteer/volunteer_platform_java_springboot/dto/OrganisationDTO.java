@@ -1,34 +1,18 @@
-package com.volunteer.volunteer_platform_java_springboot.model;
+package com.volunteer.volunteer_platform_java_springboot.dto;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "organisation")
-public class Organisation {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class OrganisationDTO {
     private String fullName;
     private String email;
     private String contactNumber;
     private String location;
     private String password;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getFullName() {
         return fullName;
     }
 
-    public void setFullName(String orgName) {
-        this.fullName = orgName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -62,5 +46,4 @@ public class Organisation {
     public void setPassword(String password) {
         this.password = password;
     }
-
 }
