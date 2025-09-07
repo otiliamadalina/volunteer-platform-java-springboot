@@ -11,7 +11,7 @@ export default function RegisterAsOrg() {
 
     const [organisation, setOrganisation] = useState({
         orgName: "",
-        contactEmail: "",
+        email: "",
         contactNumber: "",
         location: "",
         password: "",
@@ -19,7 +19,7 @@ export default function RegisterAsOrg() {
     });
 
     // ia valorile din obiect si le pune in variabile separate
-    const { orgName, contactEmail, contactNumber, location, password, confirmPassword } = organisation;
+    const { orgName, email, contactNumber, location, password, confirmPassword } = organisation;
 
     // functie care se apeleaza cand utilizatorul modifica un input
     const onInputChange = (e) => {
@@ -41,7 +41,7 @@ export default function RegisterAsOrg() {
         try {
             await axios.post("http://localhost:8080/api/registerAsOrganisation", {
                 orgName,
-                contactEmail,
+                email,
                 contactNumber,
                 location,
                 password,
@@ -75,8 +75,8 @@ export default function RegisterAsOrg() {
                         type="email"
                         className="form-input"
                         placeholder="Contact Email"
-                        name="contactEmail"
-                        value={contactEmail}
+                        name="email"
+                        value={email}
                         onChange={(e) => onInputChange(e)}
                         required
                     />

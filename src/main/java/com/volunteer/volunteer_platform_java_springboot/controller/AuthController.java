@@ -1,6 +1,7 @@
 package com.volunteer.volunteer_platform_java_springboot.controller;
 
 import com.volunteer.volunteer_platform_java_springboot.dto.LoginDTO;
+import com.volunteer.volunteer_platform_java_springboot.dto.OrganisationDTO;
 import com.volunteer.volunteer_platform_java_springboot.dto.VolunteerDTO;
 import com.volunteer.volunteer_platform_java_springboot.model.Volunteer;
 import com.volunteer.volunteer_platform_java_springboot.model.Organisation;
@@ -25,11 +26,6 @@ public class AuthController {
     private OrganisationRepository organisationRepository;
 
     // CREEAZA voluntar
-//    @PostMapping("/registerAsVolunteer")
-//    Volunteer registerVolunteer(@RequestBody Volunteer volunteer) {
-//        return volunteerRepository.save(volunteer);
-//    }
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -47,6 +43,21 @@ public class AuthController {
         return ResponseEntity.ok(savedVolunteer);
     }
 
+    @PostMapping("/registerAsOrganisation")
+    public ResponseEntity<Organisation> registerOrganisation(@RequestBody OrganisationDTO dto) {
+        Organisation organisation = new Organisation();
+        organisation.setOrgName(dto.getOrgName());
+        organisation.setEmail(dto.getEmail());
+        organisation.setContactNumber(dto.getContactNumber());
+        organisation.setLocation(dto.getLocation());
+
+        String hashedPassword = passwordEncoder.encode(dto.getPassword());
+        organisation.setPassword(hashedPassword);
+        System.out.println("Encoded password: " + hashedPassword);
+
+        Organisation savedOrganisation = organisationRepository.save(organisation);
+        return ResponseEntity.ok(savedOrganisation);
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
