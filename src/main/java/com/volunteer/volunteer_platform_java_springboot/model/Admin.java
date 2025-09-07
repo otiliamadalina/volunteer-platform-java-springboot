@@ -3,19 +3,14 @@ package com.volunteer.volunteer_platform_java_springboot.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "volunteer")
-public class Volunteer {
+@Table(name = "admin")
+public class Admin {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id = 1L;
 
     private String fullName;
     private String email;
     private String password;
-
-    @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.VOLUNTEER;
-
 
     public Long getId() {
         return id;
@@ -31,6 +26,7 @@ public class Volunteer {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+
     }
 
     public String getEmail() {

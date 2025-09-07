@@ -9,6 +9,7 @@ import VolunteerOrOrg from "./pages/auth/volunteerOrOrg";
 import RegisterAsVolunteer from "./pages/auth/registerAsVolunteer";
 import RegisterAsOrg from "./pages/auth/registerAsOrg";
 import Login from "./pages/auth/login";
+import AdminDashboard from "./admin/adminDashboard";
 
 function App() {
     return (
@@ -26,6 +27,9 @@ function App() {
                     <Route path="/volunteerOrOrg" element={<VolunteerOrOrg />} />
                     <Route path="/registerAsVolunteer" element={<RegisterAsVolunteer />} />
                     <Route path="/registerAsOrg" element={<RegisterAsOrg />} />
+
+                    <Route path="/adminDashboard" element={<AdminDashboard />} />
+
 
                 </Routes>
 
