@@ -28,6 +28,9 @@ function App() {
                     <Route path="/registerAsVolunteer" element={<RegisterAsVolunteer />} />
                     <Route path="/registerAsOrg" element={<RegisterAsOrg />} />
 
+                    {/*<Route path="/volunteerDashboard" element={<VolunteerDashboard />} />*/}
+                    {/*<Route path="/organisationDashboard" element={<OrganisationDashboard />} />*/}
+
                     <Route path="/adminDashboard" element={<AdminDashboard />} />
 
 
