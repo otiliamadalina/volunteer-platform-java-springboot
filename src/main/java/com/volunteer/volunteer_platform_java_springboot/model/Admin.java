@@ -13,6 +13,7 @@ public class Admin {
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private UserRole role;
 
     public UserRole getRole() {

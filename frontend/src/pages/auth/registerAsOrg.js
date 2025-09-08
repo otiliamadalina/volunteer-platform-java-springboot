@@ -39,21 +39,26 @@ export default function RegisterAsOrg() {
         }
 
         try {
-            await axios.post("http://localhost:8080/api/registerAsOrganisation", {
+            const res = await axios.post("http://localhost:8080/api/registerAsOrganisation", {
                 fullName,
                 email,
                 contactNumber,
                 location,
-                password,
-                confirmPassword
+                password
             });
-            alert("Organization registered successfully!");
-            navigate("/organisationDashboard");
+
+            const { fullName: name, role } = res.data;
+
+            localStorage.setItem("userName", name);
+            localStorage.setItem("role", role);
+
+            navigate("/");
         } catch (error) {
             console.error("Registration error:", error);
             alert("An error occurred. Please try again.");
         }
     };
+
 
     return (
         <div className="register-org-container">

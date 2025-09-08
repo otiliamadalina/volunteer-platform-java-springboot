@@ -4,6 +4,7 @@ import com.volunteer.volunteer_platform_java_springboot.dto.LoginDTO;
 import com.volunteer.volunteer_platform_java_springboot.dto.OrganisationDTO;
 import com.volunteer.volunteer_platform_java_springboot.dto.VolunteerDTO;
 import com.volunteer.volunteer_platform_java_springboot.model.Admin;
+import com.volunteer.volunteer_platform_java_springboot.model.UserRole;
 import com.volunteer.volunteer_platform_java_springboot.model.Volunteer;
 import com.volunteer.volunteer_platform_java_springboot.model.Organisation;
 import com.volunteer.volunteer_platform_java_springboot.repository.AdminRepository;
@@ -39,6 +40,7 @@ public class AuthController {
         Volunteer volunteer = new Volunteer();
         volunteer.setFullName(dto.getFullName());
         volunteer.setEmail(dto.getEmail());
+        volunteer.setRole(UserRole.VOLUNTEER);
 
         String hashedPassword = passwordEncoder.encode(dto.getPassword());
         volunteer.setPassword(hashedPassword);
@@ -55,6 +57,7 @@ public class AuthController {
         organisation.setEmail(dto.getEmail());
         organisation.setContactNumber(dto.getContactNumber());
         organisation.setLocation(dto.getLocation());
+        organisation.setRole(UserRole.ORGANISATION);
 
         String hashedPassword = passwordEncoder.encode(dto.getPassword());
         organisation.setPassword(hashedPassword);
@@ -75,9 +78,8 @@ public class AuthController {
 
             if (match) {
                 volunteer.setPassword(null); // ascundem parola
-                System.out.println("Volunteer fullName: " + volunteer.getFullName());
-                return ResponseEntity.ok(Map.of( // backend-uul trimite numele voluntarului la frontend
-                        "role", "volunteer",
+                return ResponseEntity.ok(Map.of(
+                        "role", volunteer.getRole().name(), // trimitem rolul
                         "id", volunteer.getId(),
                         "fullName", volunteer.getFullName(),
                         "email", volunteer.getEmail()
@@ -91,9 +93,9 @@ public class AuthController {
             System.out.println("Organisation match: " + match);
 
             if (match) {
-                organisation.setPassword(null); // ascundem parola
+                organisation.setPassword(null);
                 return ResponseEntity.ok(Map.of(
-                        "role", "organisation",
+                        "role", organisation.getRole().name(),
                         "id", organisation.getId(),
                         "fullName", organisation.getFullName(),
                         "email", organisation.getEmail()
@@ -107,10 +109,9 @@ public class AuthController {
             System.out.println("Admin match: " + match);
 
             if (match) {
-                admin.setPassword(null); // ascundem parola
-                System.out.println("Admin fullName: " + admin.getFullName());
+                admin.setPassword(null);
                 return ResponseEntity.ok(Map.of(
-                        "role", "admin",
+                        "role", admin.getRole().name(),
                         "id", admin.getId(),
                         "fullName", admin.getFullName(),
                         "email", admin.getEmail()
@@ -118,10 +119,10 @@ public class AuthController {
             }
         }
 
-
         System.out.println("Login failed for: " + loginDTO.getEmail());
         return ResponseEntity.status(401).body("Invalid email or password");
     }
+
 
     @GetMapping("/generateAdminPassword")
     public ResponseEntity<String> generateAdminPassword() {

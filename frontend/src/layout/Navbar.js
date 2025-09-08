@@ -9,23 +9,20 @@ export default function Navbar() {
     const navigate = useNavigate();
 
 
-    const role = localStorage.getItem("role");
+    const role = localStorage.getItem("role")?.toUpperCase(); // daca userName eexista, utilizatorul este logat deja
     const userName = localStorage.getItem("userName");
 
-    const dashboardRoute = role === "volunteer"
+
+    const dashboardRoute = role === "VOLUNTEER"
         ? "/volunteerDashboard"
-
-
-        : role === "organisation"
+        : role === "ORGANISATION"
             ? "/organisationDashboard"
-
-            : role === "admin"
+            : role === "ADMIN"
                 ? "/adminDashboard"
-
                 : "/";
 
     const handleLogout = () => {
-        localStorage.clear();
+        localStorage.clear(); //sterge toate datele din localStorage
         navigate("/");
     };
 
