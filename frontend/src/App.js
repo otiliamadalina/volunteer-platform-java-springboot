@@ -10,6 +10,11 @@ import RegisterAsVolunteer from "./pages/auth/registerAsVolunteer";
 import RegisterAsOrg from "./pages/auth/registerAsOrg";
 import Login from "./pages/auth/login";
 import AdminDashboard from "./pages/admin/adminDashboard";
+import ManageVolunteers from "./pages/admin/manageVolunteers";
+import ManageOrganisations from "./pages/admin/manageOrganisations";
+import ManageEvents from "./pages/admin/manageEvents";
+import ManageActivity from "./pages/admin/manageActivity";
+import ManageFeedbacks from "./pages/admin/manageFeedbacks";
 
 function App() {
     return (
@@ -32,6 +37,11 @@ function App() {
                     {/*<Route path="/organisationDashboard" element={<OrganisationDashboard />} />*/}
 
                     <Route path="/adminDashboard" element={<AdminDashboard />} />
+                    <Route path="/adminDashboard/manageVolunteers" element={<ManageVolunteers />} />
+                    <Route path="/adminDashboard/manageOrganisations" element={<ManageOrganisations />} />
+                    <Route path="/adminDashboard/manageEvents" element={<ManageEvents />} />
+                    <Route path="/adminDashboard/manageActivity" element={<ManageActivity />} />
+                    <Route path="/adminDashboard/manageFeedbacks" element={<ManageFeedbacks />} />
 
 
                 </Routes>
