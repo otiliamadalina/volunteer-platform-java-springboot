@@ -18,7 +18,7 @@
 }
 
 .menu li {
-    margin: 12px 0;
+    margin: 6px 0;
     font-weight: 600;
     padding: 10px 16px;
     background-color: transparent;
@@ -30,11 +30,19 @@
     text-align: left;
 }
 
-.menu li:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #4a463f;
+.menu li a {
+    color: #f5e8d3;
+    text-decoration: none;
+    display: block;
+    padding: 10px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
 
+.menu li a:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 6px #8b7d7b) brightness(1.5);
+}
 
 
 .stats-container {

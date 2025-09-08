@@ -9,7 +9,7 @@ import VolunteerOrOrg from "./pages/auth/volunteerOrOrg";
 import RegisterAsVolunteer from "./pages/auth/registerAsVolunteer";
 import RegisterAsOrg from "./pages/auth/registerAsOrg";
 import Login from "./pages/auth/login";
-import AdminDashboard from "./admin/adminDashboard";
+import AdminDashboard from "./pages/admin/adminDashboard";
 
 function App() {
     return (

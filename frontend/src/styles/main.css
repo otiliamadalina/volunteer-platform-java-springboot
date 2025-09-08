@@ -1,5 +1,5 @@
 body {
-    font-size: 17px;
+    font-size: 18px;
 }
 
 h1, h2 {
@@ -9,12 +9,5 @@ h1, h2 {
 }
 
 li {
-    color: #f5e8d3 !important;
     font-size: 18px;
 }
-
-li:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #4a463f;
-}
-

@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/admin.css"
-import "../styles/main.css"
+import AdminLeftPanel from "./admin-left-panel";
+import "../../styles/admin.css"
+import "../../styles/main.css"
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
@@ -15,16 +16,7 @@ export default function AdminDashboard() {
 
     return (
         <div className="dashboard-wrapper">
-            <div className="left-panel">
-                <ul className="menu">
-                    <li>Dashboard</li>
-                    <li>Manage Volunteers</li>
-                    <li>Manage Organisations</li>
-                    <li>Manage Events</li>
-                    <li>Activity</li>
-                    <li>Feedbacks</li>
-                </ul>
-            </div>
+            <AdminLeftPanel />
 
 
             <main className="dashboard-main">
