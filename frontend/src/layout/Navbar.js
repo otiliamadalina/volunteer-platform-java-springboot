@@ -75,11 +75,30 @@ export default function Navbar() {
 
                         {userName ? (
                             <>
-                                <li className="nav-item mt-2 mt-lg-0">
-                                    <Link className="btn nav-btn-register me-2" to={dashboardRoute}>
-                                        {userName}
-                                    </Link>
-                                </li>
+                                {role === "VOLUNTEER" && (
+                                    <li className="nav-item mt-2 mt-lg-0">
+                                        <Link className="btn nav-btn-register me-2" to="/volunteerDashboard">
+                                            {userName}
+                                        </Link>
+                                    </li>
+                                )}
+
+                                {role === "ORGANISATION" && (
+                                    <li className="nav-item mt-2 mt-lg-0">
+                                        <Link className="btn nav-btn-register me-2" to="/organisationDashboard">
+                                            {userName}
+                                        </Link>
+                                    </li>
+                                )}
+
+                                {role === "ADMIN" && (
+                                    <li className="nav-item mt-2 mt-lg-0">
+                                        <Link className="btn nav-btn-register me-2" to="/adminDashboard">
+                                            {userName}
+                                        </Link>
+                                    </li>
+                                )}
+
                                 <li className="nav-item mt-2 mt-lg-0">
                                     <button className="btn nav-btn-login" onClick={handleLogout}>
                                         Logout

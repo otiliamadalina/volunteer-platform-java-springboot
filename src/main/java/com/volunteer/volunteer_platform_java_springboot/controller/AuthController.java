@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Map;
 
 @RestController
@@ -121,6 +122,31 @@ public class AuthController {
 
         System.out.println("Login failed for: " + loginDTO.getEmail());
         return ResponseEntity.status(401).body("Invalid email or password");
+    }
+
+    @GetMapping("/api/volunteer/test")
+    public ResponseEntity<String> volunteerAccess() {
+        return ResponseEntity.ok("Access granted to VOLUNTEER");
+    }
+
+    @GetMapping("/api/organisation/test")
+    public ResponseEntity<String> organisationAccess() {
+        return ResponseEntity.ok("Access granted to ORGANISATION");
+    }
+
+    @GetMapping("/api/admin/test")
+    public ResponseEntity<String> adminAccess() {
+        return ResponseEntity.ok("Access granted to ADMIN");
+    }
+
+    @GetMapping("/api/volunteer/test")
+    public ResponseEntity<String> volunteerAccess(Principal principal) {
+        String email = principal.getName();
+        Volunteer v = volunteerRepository.findByEmail(email);
+        if (v != null && v.getRole() == UserRole.VOLUNTEER) {
+            return ResponseEntity.ok("Access granted");
+        }
+        return ResponseEntity.status(403).body("Access denied");
     }
 
 
