@@ -14,7 +14,15 @@ public class Volunteer {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.VOLUNTEER;
+    private UserRole role;
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
 
 
     public Long getId() {

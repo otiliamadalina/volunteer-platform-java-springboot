@@ -12,6 +12,17 @@ public class Admin {
     private String email;
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
     public Long getId() {
         return id;
     }

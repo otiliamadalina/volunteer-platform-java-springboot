@@ -16,8 +16,15 @@ public class Organisation {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.ORGANISATION;
+    private UserRole role;
 
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
 
     public Long getId() {
         return id;
