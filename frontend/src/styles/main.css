@@ -1,0 +1,13 @@
+body {
+    font-size: 18px;
+}
+
+h1, h2 {
+    font-size: 40px;
+    font-weight: 700;
+    color: #4a463f;
+}
+
+li {
+    font-size: 18px;
+}

@@ -12,6 +12,8 @@
     filter: drop-shadow(0 0 8px #b3a29f) brightness(1.1);
 }
 
+
+
 .nav-link {
     color: #f5e8d3 !important;
     font-weight: 500;
@@ -20,13 +22,15 @@
 
 .nav-link:hover {
     transform: scale(1.1);
-    filter: drop-shadow(0 0 6px #8b7d7b) brightness(1.2);
+    filter: drop-shadow(0 0 6px #8b7d7b) brightness(1.5);
 }
 
 .navbar-nav .nav-item {
     display: flex;
     align-items: center;
 }
+
+
 
 
 .nav-btn-register {
@@ -58,7 +62,8 @@
 .nav-btn-login:hover {
     background-color: #a38f8b;
     color: #fff;
-    transform: scale(1.09);
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 6px #8b7d7b) brightness(1.5);
 }
 
 @media (max-width: 991px) {
@@ -88,6 +93,3 @@
         border-radius: 6px;
     }
 }
-
-
-

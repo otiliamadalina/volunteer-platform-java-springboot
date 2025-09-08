@@ -1,6 +1,8 @@
 import React from "react";
-import {Link, useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import "../styles/navbar.css";
+import "../styles/main.css"
+
 
 export default function Navbar() {
 
@@ -12,9 +14,15 @@ export default function Navbar() {
 
     const dashboardRoute = role === "volunteer"
         ? "/volunteerDashboard"
+
+
         : role === "organisation"
             ? "/organisationDashboard"
-            : "/";
+
+            : role === "admin"
+                ? "/adminDashboard"
+
+                : "/";
 
     const handleLogout = () => {
         localStorage.clear();

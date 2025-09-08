@@ -3,10 +3,13 @@ package com.volunteer.volunteer_platform_java_springboot.controller;
 import com.volunteer.volunteer_platform_java_springboot.dto.LoginDTO;
 import com.volunteer.volunteer_platform_java_springboot.dto.OrganisationDTO;
 import com.volunteer.volunteer_platform_java_springboot.dto.VolunteerDTO;
+import com.volunteer.volunteer_platform_java_springboot.model.Admin;
 import com.volunteer.volunteer_platform_java_springboot.model.Volunteer;
 import com.volunteer.volunteer_platform_java_springboot.model.Organisation;
+import com.volunteer.volunteer_platform_java_springboot.repository.AdminRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.VolunteerRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.OrganisationRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,9 +28,11 @@ public class AuthController {
     @Autowired
     private OrganisationRepository organisationRepository;
 
-    // CREEAZA voluntar
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AdminRepository adminRepository;
 
     @PostMapping("/registerAsVolunteer")
     public ResponseEntity<Volunteer> registerVolunteer(@RequestBody VolunteerDTO dto) {
@@ -96,11 +101,33 @@ public class AuthController {
             }
         }
 
+        Admin admin = adminRepository.findByEmail(loginDTO.getEmail());
+        if (admin != null) {
+            boolean match = passwordEncoder.matches(loginDTO.getPassword(), admin.getPassword());
+            System.out.println("Admin match: " + match);
+
+            if (match) {
+                admin.setPassword(null); // ascundem parola
+                System.out.println("Admin fullName: " + admin.getFullName());
+                return ResponseEntity.ok(Map.of(
+                        "role", "admin",
+                        "id", admin.getId(),
+                        "fullName", admin.getFullName(),
+                        "email", admin.getEmail()
+                ));
+            }
+        }
+
+
         System.out.println("Login failed for: " + loginDTO.getEmail());
         return ResponseEntity.status(401).body("Invalid email or password");
     }
 
-
-
+    @GetMapping("/generateAdminPassword")
+    public ResponseEntity<String> generateAdminPassword() {
+        String rawPassword = "admin1234";
+        String hashed = passwordEncoder.encode(rawPassword);
+        return ResponseEntity.ok("Hash-ul parolei: " + hashed);
+    }
 
 }

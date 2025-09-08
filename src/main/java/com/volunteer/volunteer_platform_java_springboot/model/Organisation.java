@@ -15,6 +15,10 @@ public class Organisation {
     private String location;
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.ORGANISATION;
+
+
     public Long getId() {
         return id;
     }
