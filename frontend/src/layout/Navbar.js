@@ -9,23 +9,20 @@ export default function Navbar() {
     const navigate = useNavigate();
 
 
-    const role = localStorage.getItem("role");
+    const role = localStorage.getItem("role")?.toUpperCase(); // daca userName eexista, utilizatorul este logat deja
     const userName = localStorage.getItem("userName");
 
-    const dashboardRoute = role === "volunteer"
+
+    const dashboardRoute = role === "VOLUNTEER"
         ? "/volunteerDashboard"
-
-
-        : role === "organisation"
+        : role === "ORGANISATION"
             ? "/organisationDashboard"
-
-            : role === "admin"
+            : role === "ADMIN"
                 ? "/adminDashboard"
-
                 : "/";
 
     const handleLogout = () => {
-        localStorage.clear();
+        localStorage.clear(); //sterge toate datele din localStorage
         navigate("/");
     };
 
@@ -78,11 +75,30 @@ export default function Navbar() {
 
                         {userName ? (
                             <>
-                                <li className="nav-item mt-2 mt-lg-0">
-                                    <Link className="btn nav-btn-register me-2" to={dashboardRoute}>
-                                        {userName}
-                                    </Link>
-                                </li>
+                                {role === "VOLUNTEER" && (
+                                    <li className="nav-item mt-2 mt-lg-0">
+                                        <Link className="btn nav-btn-register me-2" to="/volunteerDashboard">
+                                            {userName}
+                                        </Link>
+                                    </li>
+                                )}
+
+                                {role === "ORGANISATION" && (
+                                    <li className="nav-item mt-2 mt-lg-0">
+                                        <Link className="btn nav-btn-register me-2" to="/organisationDashboard">
+                                            {userName}
+                                        </Link>
+                                    </li>
+                                )}
+
+                                {role === "ADMIN" && (
+                                    <li className="nav-item mt-2 mt-lg-0">
+                                        <Link className="btn nav-btn-register me-2" to="/adminDashboard">
+                                            {userName}
+                                        </Link>
+                                    </li>
+                                )}
+
                                 <li className="nav-item mt-2 mt-lg-0">
                                     <button className="btn nav-btn-login" onClick={handleLogout}>
                                         Logout

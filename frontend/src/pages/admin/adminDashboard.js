@@ -42,6 +42,14 @@ export default function AdminDashboard() {
                     </div>
                 </div>
 
+                <div className="recent-uploads-container">
+                    <h2>Recent Uploads from Organisations</h2>
+                    <div className="uploads-list">
+                    </div>
+                </div>
+
+
+
                 <div className="section-labels">
                 </div>
             </main>

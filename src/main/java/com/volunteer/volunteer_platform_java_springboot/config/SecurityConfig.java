@@ -32,7 +32,15 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/**").permitAll()
+                        // Public endpoints
+                        .requestMatchers("/api/public/**").permitAll()
+
+                        // Role-based protected endpoints
+                        .requestMatchers("/api/volunteer/**").hasAuthority("VOLUNTEER")
+                        .requestMatchers("/api/organisation/**").hasAuthority("ORGANISATION")
+                        .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+
+                        // other endpoints require authentication
                         .anyRequest().authenticated()
                 );
 

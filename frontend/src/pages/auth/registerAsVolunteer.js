@@ -37,13 +37,18 @@ export default function RegisterAsVolunteer() {
         }
 
         try {
-            await axios.post("http://localhost:8080/api/registerAsVolunteer", {
+            const res = await axios.post("http://localhost:8080/api/registerAsVolunteer", {
                 fullName,
                 email,
                 password
             });
-            alert("Volunteer registered successfully!");
-            navigate("/volunteerDashboard");
+
+            const { fullName: name, role } = res.data;
+
+            localStorage.setItem("userName", name);
+            localStorage.setItem("role", role);
+
+            navigate("/");
         } catch (error) {
             console.error("Registration error:", error);
             alert("An error occurred. Please try again.");
