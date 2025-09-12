@@ -31,3 +31,22 @@ h1, h2 {
 li {
     font-size: 18px;
 }
+
+.btn-primary {
+    background-color: var(--color-primary-600) !important;
+    border-color: var(--color-primary-600) !important;
+    color: #fff !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--color-accent) !important;
+    border-color: var(--color-accent) !important;
+    filter: drop-shadow(0 0 6px var(--color-primary)) brightness(1.05);
+}
+
+.btn-primary:disabled,
+.btn-primary.disabled {
+    background-color: #c9bebc !important;
+    border-color: #c9bebc !important;
+}
