@@ -11,7 +11,7 @@ export default function AdminLeftPanel() {
                 <li><Link to="/adminDashboard">Dashboard</Link></li>
                 <li><Link to="/adminDashboard/manageVolunteers">Manage Volunteers</Link></li>
                 <li><Link to="/adminDashboard/manageOrganisations">Manage Organisations</Link></li>
-                <li><Link to="/adminDashboard/ManageEvents">Manage Events</Link></li>
+                <li><Link to="/adminDashboard/manageEvents">Manage Events</Link></li>
                 <li><Link to="/adminDashboard/manageActivity">Manage Activity</Link></li>
                 <li><Link to="/adminDashboard/manageFeedbacks">Manage Feedbacks</Link></li>
             </ul>
