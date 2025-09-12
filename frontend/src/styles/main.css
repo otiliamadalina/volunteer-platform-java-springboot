@@ -11,10 +11,15 @@
     --radius-sm: 8px;
 }
 
+html, body {
+    height: 100%;
+}
+
 body {
     font-size: 18px;
     color: var(--color-text);
     background-color: var(--color-surface);
+    margin: 0;
 }
 
 h1, h2 {

@@ -11,7 +11,7 @@ export default function Footer() {
             <img src="/assets/multicolour-hands.jpg" alt="Footer Banner" className="footer-image" />
         </div>
 
-        <footer className="footer bg-custom text-light py-4">
+        <footer className="footer bg-custom text-light" style={{ margin: 0, paddingTop: 16, paddingBottom: 16 }}>
             <div className="container-fluid d-flex justify-content-between align-items-center">
                 <span className="footer-text">&copy; {new Date().getFullYear()} Volunteer Sphere</span>
             </div>
