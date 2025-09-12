@@ -14,6 +14,18 @@ export default function OrgLeftPanel() {
                 <li>
                     <NavLink to="/organisationDashboard" className={({ isActive }) => isActive ? "active" : undefined}>Dashboard</NavLink>
                 </li>
+                <li>
+                    <NavLink to="/organisationDashboard/createEvent" className={({ isActive }) => isActive ? "active" : undefined}>Create Event</NavLink>
+                </li>
+                <li>
+                    <NavLink to="/organisationDashboard/manageEvents" className={({ isActive }) => isActive ? "active" : undefined}>Manage Event List</NavLink>
+                </li>
+                <li>
+                    <NavLink to="/organisationDashboard/reports" className={({ isActive }) => isActive ? "active" : undefined}>Reports / Volunteer Stats</NavLink>
+                </li>
+                <li>
+                    <NavLink to="/organisationDashboard/notifyVolunteers" className={({ isActive }) => isActive ? "active" : undefined}>Notify Volunteers</NavLink>
+                </li>
             </ul>
         </div>
     );

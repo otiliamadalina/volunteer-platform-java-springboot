@@ -20,6 +20,10 @@ import ProtectedRoute from "./components/protectedRoute";
 import VolunteerDashboard from "./pages/volunteer/volunteerDashboard";
 import OrganisationDashboard from "./pages/org/organisationDashboard";
 import OrgLayout from "./pages/org/orgLayout";
+import CreateEvent from "./pages/org/createEvent";
+import OrgManageEvents from "./pages/org/manageEvents";
+import Reports from "./pages/org/reports";
+import NotifyVolunteers from "./pages/org/notifyVolunteers";
 
 function App() {
     return (
@@ -75,6 +79,10 @@ function App() {
                         }
                     >
                         <Route index element={<OrganisationDashboard />} />
+                        <Route path="createEvent" element={<CreateEvent />} />
+                        <Route path="manageEvents" element={<OrgManageEvents />} />
+                        <Route path="reports" element={<Reports />} />
+                        <Route path="notifyVolunteers" element={<NotifyVolunteers />} />
                     </Route>
 
 
