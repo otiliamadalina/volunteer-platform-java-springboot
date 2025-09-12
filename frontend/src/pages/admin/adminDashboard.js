@@ -1,18 +1,9 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import AdminLeftPanel from "./admin-left-panel";
 import "../../styles/admin.css"
 import "../../styles/main.css"
 
 export default function AdminDashboard() {
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const role = localStorage.getItem("role");
-        if ((role || "").toUpperCase() !== "ADMIN") {
-            navigate("/");
-        }
-    }, []);
 
     return (
         <div className="dashboard-wrapper">
