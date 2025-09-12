@@ -19,6 +19,7 @@ import ManageFeedbacks from "./pages/admin/manageFeedbacks";
 import ProtectedRoute from "./components/protectedRoute";
 import VolunteerDashboard from "./pages/volunteer/volunteerDashboard";
 import OrganisationDashboard from "./pages/org/organisationDashboard";
+import OrgLayout from "./pages/org/orgLayout";
 
 function App() {
     return (
@@ -69,10 +70,12 @@ function App() {
                         path="/organisationDashboard"
                         element={
                             <ProtectedRoute allowedRole="ORGANISATION">
-                                <OrganisationDashboard />
+                                <OrgLayout />
                             </ProtectedRoute>
                         }
-                    />
+                    >
+                        <Route index element={<OrganisationDashboard />} />
+                    </Route>
 
 
                 </Routes>

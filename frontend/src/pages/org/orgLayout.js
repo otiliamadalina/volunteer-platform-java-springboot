@@ -1,13 +1,13 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import AdminLeftPanel from "./adminLeftPanel";
+import OrgLeftPanel from "./orgLeftPanel";
 import "../../styles/admin.css";
 import "../../styles/main.css";
 
-export default function AdminLayout() {
+export default function OrgLayout() {
     return (
         <div className="dashboard-wrapper">
-            <AdminLeftPanel />
+            <OrgLeftPanel />
             <div className="dashboard-main">
                 <Outlet />
             </div>
