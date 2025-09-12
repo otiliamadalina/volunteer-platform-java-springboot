@@ -69,7 +69,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO, jakarta.servlet.http.HttpServletRequest request) {
         System.out.println("Login attempt for: " + loginDTO.getEmail());
 
         Volunteer volunteer = volunteerRepository.findByEmail(loginDTO.getEmail());
@@ -78,9 +78,20 @@ public class AuthController {
             System.out.println("Volunteer match: " + match);
 
             if (match) {
-                volunteer.setPassword(null); // ascundem parola
+                // setam sesiunea autentificata cu rolul utilizatorului
+                org.springframework.security.core.Authentication authentication =
+                        new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
+                                volunteer.getEmail(), null,
+                                java.util.List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority(volunteer.getRole().name()))
+                        );
+                org.springframework.security.core.context.SecurityContext context = org.springframework.security.core.context.SecurityContextHolder.createEmptyContext();
+                context.setAuthentication(authentication);
+                org.springframework.security.core.context.SecurityContextHolder.setContext(context);
+                request.getSession(true).setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+
+                volunteer.setPassword(null);
                 return ResponseEntity.ok(Map.of(
-                        "role", volunteer.getRole().name(), // trimitem rolul
+                        "role", volunteer.getRole().name(),
                         "id", volunteer.getId(),
                         "fullName", volunteer.getFullName(),
                         "email", volunteer.getEmail()
@@ -94,6 +105,16 @@ public class AuthController {
             System.out.println("Organisation match: " + match);
 
             if (match) {
+                org.springframework.security.core.Authentication authentication =
+                        new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
+                                organisation.getEmail(), null,
+                                java.util.List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority(organisation.getRole().name()))
+                        );
+                org.springframework.security.core.context.SecurityContext context = org.springframework.security.core.context.SecurityContextHolder.createEmptyContext();
+                context.setAuthentication(authentication);
+                org.springframework.security.core.context.SecurityContextHolder.setContext(context);
+                request.getSession(true).setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+
                 organisation.setPassword(null);
                 return ResponseEntity.ok(Map.of(
                         "role", organisation.getRole().name(),
@@ -110,6 +131,16 @@ public class AuthController {
             System.out.println("Admin match: " + match);
 
             if (match) {
+                org.springframework.security.core.Authentication authentication =
+                        new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
+                                admin.getEmail(), null,
+                                java.util.List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority(admin.getRole().name()))
+                        );
+                org.springframework.security.core.context.SecurityContext context = org.springframework.security.core.context.SecurityContextHolder.createEmptyContext();
+                context.setAuthentication(authentication);
+                org.springframework.security.core.context.SecurityContextHolder.setContext(context);
+                request.getSession(true).setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+
                 admin.setPassword(null);
                 return ResponseEntity.ok(Map.of(
                         "role", admin.getRole().name(),
@@ -124,22 +155,17 @@ public class AuthController {
         return ResponseEntity.status(401).body("Invalid email or password");
     }
 
-    @GetMapping("/api/volunteer/test")
-    public ResponseEntity<String> volunteerAccess() {
-        return ResponseEntity.ok("Access granted to VOLUNTEER");
-    }
-
-    @GetMapping("/api/organisation/test")
+    @GetMapping("/organisation/test")
     public ResponseEntity<String> organisationAccess() {
         return ResponseEntity.ok("Access granted to ORGANISATION");
     }
 
-    @GetMapping("/api/admin/test")
+    @GetMapping("/admin/test")
     public ResponseEntity<String> adminAccess() {
         return ResponseEntity.ok("Access granted to ADMIN");
     }
 
-    @GetMapping("/api/volunteer/test")
+    @GetMapping("/volunteer/test")
     public ResponseEntity<String> volunteerAccess(Principal principal) {
         String email = principal.getName();
         Volunteer v = volunteerRepository.findByEmail(email);
