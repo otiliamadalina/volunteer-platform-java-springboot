@@ -10,6 +10,7 @@ import RegisterAsVolunteer from "./pages/auth/registerAsVolunteer";
 import RegisterAsOrg from "./pages/auth/registerAsOrg";
 import Login from "./pages/auth/login";
 import AdminDashboard from "./pages/admin/adminDashboard";
+import AdminLayout from "./pages/admin/adminLayout";
 import ManageVolunteers from "./pages/admin/manageVolunteers";
 import ManageOrganisations from "./pages/admin/manageOrganisations";
 import ManageEvents from "./pages/admin/manageEvents";
@@ -39,21 +40,21 @@ function App() {
                     {/*<Route path="/volunteerDashboard" element={<VolunteerDashboard />} />*/}
                     {/*<Route path="/organisationDashboard" element={<OrganisationDashboard />} />*/}
 
-                    {/*<Route path="/adminDashboard" element={<AdminDashboard/>}/>*/}
-                    <Route path="/adminDashboard/manageVolunteers" element={<ManageVolunteers/>}/>
-                    <Route path="/adminDashboard/manageOrganisations" element={<ManageOrganisations/>}/>
-                    <Route path="/adminDashboard/manageEvents" element={<ManageEvents/>}/>
-                    <Route path="/adminDashboard/manageActivity" element={<ManageActivity/>}/>
-                    <Route path="/adminDashboard/manageFeedbacks" element={<ManageFeedbacks/>}/>
-
                     <Route
                         path="/adminDashboard"
                         element={
                             <ProtectedRoute allowedRole="ADMIN">
-                                <AdminDashboard/>
+                                <AdminLayout/>
                             </ProtectedRoute>
                         }
-                    />
+                    >
+                        <Route index element={<AdminDashboard />} />
+                        <Route path="manageVolunteers" element={<ManageVolunteers/>} />
+                        <Route path="manageOrganisations" element={<ManageOrganisations/>} />
+                        <Route path="manageEvents" element={<ManageEvents/>} />
+                        <Route path="manageActivity" element={<ManageActivity/>} />
+                        <Route path="manageFeedbacks" element={<ManageFeedbacks/>} />
+                    </Route>
 
                     <Route
                         path="/volunteerDashboard"

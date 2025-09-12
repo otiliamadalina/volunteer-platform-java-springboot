@@ -1,18 +1,12 @@
 import React from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import AdminLeftPanel from "./admin-left-panel";
-import "../../styles/admin.css"
-import "../../styles/main.css"
+import "../../styles/admin.css";
+import "../../styles/main.css";
 
 export default function AdminDashboard() {
-
     return (
-        <div className="dashboard-wrapper">
-            <AdminLeftPanel />
-
-
-            <main className="dashboard-main">
+            <>
                 <h1>Admin Dashboard</h1>
 
                 <div className="stats-container">
@@ -80,7 +74,6 @@ export default function AdminDashboard() {
                         </div>
                     </div>
                 </section>
-            </main>
-        </div>
+            </>
     );
 }
