@@ -1,10 +1,50 @@
 import React from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Tooltip,
+    Legend
+} from "chart.js";
+import { Line } from "react-chartjs-2";
 import "../../styles/admin.css";
 import "../../styles/main.css";
 
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
+
 export default function AdminDashboard() {
+    const chartData = {
+        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        datasets: [
+            {
+                label: "Engagement",
+                data: [120, 180, 150, 220, 260, 240, 300],
+                borderColor: "#8b7d7b",
+                backgroundColor: "rgba(179, 162, 159, 0.35)",
+                tension: 0.35,
+                fill: true,
+                pointRadius: 3
+            }
+        ]
+    };
+
+    const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: { intersect: false, mode: "index" }
+        },
+        scales: {
+            x: { grid: { display: false } },
+            y: { grid: { color: "#eee" }, beginAtZero: true }
+        }
+    };
+
     return (
             <>
                 <h1>Admin Dashboard</h1>
@@ -32,7 +72,9 @@ export default function AdminDashboard() {
                 <div className="dashboard-grid">
                     <section className="card">
                         <h3>Engagement Over Time</h3>
-                        <div className="chart-placeholder">Chart placeholder (install chart.js to enable)</div>
+                        <div style={{ height: 320 }}>
+                            <Line data={chartData} options={chartOptions} />
+                        </div>
                     </section>
 
                     <section className="card">
