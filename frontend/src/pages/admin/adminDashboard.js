@@ -81,6 +81,7 @@ export default function AdminDashboard() {
                         <h3>Calendar</h3>
                         <Calendar 
                             className="admin-calendar" 
+                            locale="en-GB"
                             tileClassName={({ date }) => {
                                 const eventDates = new Set([
                                     new Date().toDateString(),

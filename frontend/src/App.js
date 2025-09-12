@@ -18,6 +18,10 @@ import ManageActivity from "./pages/admin/manageActivity";
 import ManageFeedbacks from "./pages/admin/manageFeedbacks";
 import ProtectedRoute from "./components/protectedRoute";
 import VolunteerDashboard from "./pages/volunteer/volunteerDashboard";
+import VolunteerLayout from "./pages/volunteer/volunteerLayout";
+import ParticipationHistory from "./pages/volunteer/participationHistory";
+import EditProfile from "./pages/volunteer/editProfile";
+import CalendarScheduler from "./pages/volunteer/calendarScheduler";
 import OrganisationDashboard from "./pages/org/organisationDashboard";
 import OrgLayout from "./pages/org/orgLayout";
 import CreateEvent from "./pages/org/createEvent";
@@ -65,10 +69,15 @@ function App() {
                         path="/volunteerDashboard"
                         element={
                             <ProtectedRoute allowedRole="VOLUNTEER">
-                                <VolunteerDashboard />
+                                <VolunteerLayout />
                             </ProtectedRoute>
                         }
-                    />
+                    >
+                        <Route index element={<VolunteerDashboard />} />
+                        <Route path="participationHistory" element={<ParticipationHistory />} />
+                        <Route path="editProfile" element={<EditProfile />} />
+                        <Route path="calendarScheduler" element={<CalendarScheduler />} />
+                    </Route>
 
                     <Route
                         path="/organisationDashboard"
