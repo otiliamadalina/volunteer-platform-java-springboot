@@ -34,6 +34,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints
                         .requestMatchers("/api/public/**").permitAll()
+                        .requestMatchers("/api/login").permitAll()
+                        .requestMatchers("/api/registerAsVolunteer").permitAll()
+                        .requestMatchers("/api/registerAsOrganisation").permitAll()
+                        .requestMatchers("/api/generateAdminPassword").permitAll()
 
                         // Role-based protected endpoints
                         .requestMatchers("/api/volunteer/**").hasAuthority("VOLUNTEER")
