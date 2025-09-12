@@ -78,7 +78,7 @@ public class AuthController {
             System.out.println("Volunteer match: " + match);
 
             if (match) {
-                // setam sesiunea autentificata cu rolul utilizatorului
+                // setăm sesiunea autenticată cu rolul utilizatorului
                 org.springframework.security.core.Authentication authentication =
                         new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
                                 volunteer.getEmail(), null,
@@ -89,7 +89,6 @@ public class AuthController {
                 org.springframework.security.core.context.SecurityContextHolder.setContext(context);
                 request.getSession(true).setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
 
-                volunteer.setPassword(null);
                 return ResponseEntity.ok(Map.of(
                         "role", volunteer.getRole().name(),
                         "id", volunteer.getId(),
@@ -115,7 +114,6 @@ public class AuthController {
                 org.springframework.security.core.context.SecurityContextHolder.setContext(context);
                 request.getSession(true).setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
 
-                organisation.setPassword(null);
                 return ResponseEntity.ok(Map.of(
                         "role", organisation.getRole().name(),
                         "id", organisation.getId(),
@@ -141,7 +139,6 @@ public class AuthController {
                 org.springframework.security.core.context.SecurityContextHolder.setContext(context);
                 request.getSession(true).setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
 
-                admin.setPassword(null);
                 return ResponseEntity.ok(Map.of(
                         "role", admin.getRole().name(),
                         "id", admin.getId(),

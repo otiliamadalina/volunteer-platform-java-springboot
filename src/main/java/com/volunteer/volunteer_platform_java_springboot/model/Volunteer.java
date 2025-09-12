@@ -1,6 +1,7 @@
 package com.volunteer.volunteer_platform_java_springboot.model;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "volunteer")
@@ -11,6 +12,8 @@ public class Volunteer {
 
     private String fullName;
     private String email;
+    @JsonIgnore
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
