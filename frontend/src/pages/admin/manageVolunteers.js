@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AdminLeftPanel from "./admin-left-panel";
+import AdminLeftPanel from "./adminLeftPanel";
 import "../../styles/admin.css"
 import "../../styles/main.css"
 

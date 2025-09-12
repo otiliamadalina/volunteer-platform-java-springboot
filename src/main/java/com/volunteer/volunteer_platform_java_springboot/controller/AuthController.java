@@ -78,7 +78,7 @@ public class AuthController {
             System.out.println("Volunteer match: " + match);
 
             if (match) {
-                // setăm sesiunea autenticată cu rolul utilizatorului
+                // setam session autentif cu rolul utilizatorului
                 org.springframework.security.core.Authentication authentication =
                         new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
                                 volunteer.getEmail(), null,
