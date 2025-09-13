@@ -10,7 +10,6 @@ import com.volunteer.volunteer_platform_java_springboot.model.Organisation;
 import com.volunteer.volunteer_platform_java_springboot.repository.AdminRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.VolunteerRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.OrganisationRepository;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +20,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000") // permite accesul din frontend
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")  // permite accesul din frontend
 public class AuthController {
 
     @Autowired
@@ -179,5 +178,23 @@ public class AuthController {
         String hashed = passwordEncoder.encode(rawPassword);
         return ResponseEntity.ok("Hash-ul parolei: " + hashed);
     }
+
+    @GetMapping("/admin/volunteers")
+    public ResponseEntity<?> getAllVolunteers() {
+        try {
+            java.util.List<Volunteer> volunteers = volunteerRepository.findAll();
+            System.out.println("Found " + volunteers.size() + " volunteers in database");
+            for (Volunteer v : volunteers) {
+                System.out.println("Volunteer: " + v.getId() + " - " + v.getFullName() + " - " + v.getEmail());
+            }
+            return ResponseEntity.ok(volunteers);
+        } catch (Exception e) {
+            System.out.println("Error fetching volunteers: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error fetching volunteers: " + e.getMessage());
+        }
+    }
+
+
 
 }
