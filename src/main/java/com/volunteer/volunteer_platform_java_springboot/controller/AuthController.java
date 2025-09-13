@@ -195,6 +195,22 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/admin/organisations")
+    public ResponseEntity<?> getAllOrganisations() {
+        try {
+            java.util.List<Organisation> organisations = organisationRepository.findAll();
+            System.out.println("Found " + organisations.size() + " organisations in database");
+            for (Organisation o : organisations) {
+                System.out.println("Organisation: " + o.getId() + " - " + o.getFullName() + " - " + o.getEmail());
+            }
+            return ResponseEntity.ok(organisations);
+        } catch (Exception e) {
+            System.out.println("Error fetching organisations: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error fetching organisations: " + e.getMessage());
+        }
+    }
+
 
 
 }

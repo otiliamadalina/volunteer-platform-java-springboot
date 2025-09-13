@@ -41,7 +41,7 @@ export default function ManageOrganisations() {
 
     const filteredOrganisations = organisations.filter(organisation => {
         const matchesSearch = 
-            organisation.organisationName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            organisation.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
             organisation.email.toLowerCase().includes(searchTerm.toLowerCase());
         
         return matchesSearch;
@@ -117,7 +117,7 @@ export default function ManageOrganisations() {
                         {filteredOrganisations.map(organisation => (
                             <tr key={organisation.id}>
                                 <td>{organisation.id}</td>
-                                <td>{organisation.organisationName}</td>
+                                <td>{organisation.fullName}</td>
                                 <td>{organisation.email}</td>
                                 <td>
                                     <button 
@@ -160,7 +160,7 @@ export default function ManageOrganisations() {
                                         <strong>ID:</strong> {selectedOrganisation.id}
                                     </div>
                                     <div className="col-md-6">
-                                        <strong>Organisation Name:</strong> {selectedOrganisation.organisationName}
+                                        <strong>Organisation Name:</strong> {selectedOrganisation.fullName}
                                     </div>
                                 </div>
                                 <div className="row mt-2">
