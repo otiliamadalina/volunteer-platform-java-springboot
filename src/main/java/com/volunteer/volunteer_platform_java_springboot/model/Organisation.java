@@ -25,6 +25,7 @@ public class Organisation {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+
     public UserRole getRole() {
         return role;
     }

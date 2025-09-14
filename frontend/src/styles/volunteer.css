@@ -1,0 +1,192 @@
+/* Volunteer-specific styles */
+
+/* Volunteer Dashboard */
+.volunteer-dashboard {
+    padding: 20px;
+}
+
+.volunteer-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.volunteer-stat-card {
+    background: linear-gradient(135deg, #f5e8d3 0%, #b3a29f 100%);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: #2d2a26;
+}
+
+.volunteer-stat-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.volunteer-stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.volunteer-stat-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Volunteer Profile */
+.volunteer-profile {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.volunteer-profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.volunteer-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8b7d7b, #b3a29f);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.volunteer-info h2 {
+    margin: 0 0 5px 0;
+    color: #2d2a26;
+}
+
+.volunteer-info p {
+    margin: 0;
+    color: #6b6660;
+}
+
+/* Volunteer Activities */
+.volunteer-activities {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.activity-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-details h4 {
+    margin: 0 0 5px 0;
+    color: #2d2a26;
+}
+
+.activity-details p {
+    margin: 0;
+    color: #6b6660;
+    font-size: 0.9rem;
+}
+
+.activity-status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-approved {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-completed {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+/* Volunteer Calendar */
+.volunteer-calendar {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendar-title {
+    margin: 0;
+    color: #2d2a26;
+}
+
+.calendar-nav {
+    display: flex;
+    gap: 10px;
+}
+
+.calendar-nav button {
+    background: #8b7d7b;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.calendar-nav button:hover {
+    background: #6b5d5b;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .volunteer-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .volunteer-profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .volunteer-avatar {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    
+    .activity-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}

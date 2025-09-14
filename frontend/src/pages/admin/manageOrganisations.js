@@ -81,7 +81,7 @@ export default function ManageOrganisations() {
 
     if (loading) {
         return (
-            <div className="card" style={{ marginTop: 20 }}>
+            <div className="card manage-card">
                 <h3>Manage Organisations</h3>
                 <p>Loading organisations...</p>
             </div>
@@ -89,21 +89,20 @@ export default function ManageOrganisations() {
     }
 
     return (
-        <div className="card" style={{ marginTop: 20 }}>
+        <div className="card manage-card">
             <h3>Manage Organisations</h3>
             
-            <div style={{ marginBottom: 20 }}>
+            <div className="search-container">
                 <input
                     type="text"
                     placeholder="Search organisations..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="form-control"
-                    style={{ maxWidth: 300 }}
+                    className="form-control search-input"
                 />
             </div>
 
-            <div style={{ overflowX: "auto" }}>
+            <div className="table-container">
                 <table className="table table-striped">
                     <thead>
                         <tr>
@@ -140,14 +139,14 @@ export default function ManageOrganisations() {
             </div>
 
             {filteredOrganisations.length === 0 && (
-                <p style={{ textAlign: "center", marginTop: 20, color: "#6b6660" }}>
+                <p className="empty-state">
                     No organisations found matching your criteria.
                 </p>
             )}
 
             {/* View Modal */}
             {showViewModal && selectedOrganisation && (
-                <div className="modal" style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}>
+                <div className="modal modal-overlay">
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
