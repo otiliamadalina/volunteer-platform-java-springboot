@@ -41,11 +41,14 @@ public class Event {
     @Column(name = "organisation_email", nullable = false)
     private String organisationEmail;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     public Event() {}
 
     public Event(String title, String description, String location, 
                 LocalDateTime startDate, LocalDateTime endDate, 
-                Integer maxVolunteers, String organisationEmail) {
+                Integer maxVolunteers, String organisationEmail, String imageUrl) {
         this.title = title;
         this.description = description;
         this.location = location;
@@ -53,6 +56,7 @@ public class Event {
         this.endDate = endDate;
         this.maxVolunteers = maxVolunteers;
         this.organisationEmail = organisationEmail;
+        this.imageUrl = imageUrl;
     }
 
     public Long getId() {
@@ -141,6 +145,14 @@ public class Event {
 
     public void setOrganisationEmail(String organisationEmail) {
         this.organisationEmail = organisationEmail;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @PrePersist

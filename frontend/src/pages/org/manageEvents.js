@@ -208,6 +208,22 @@ export default function ManageEvents() {
                                 <button type="button" className="btn-close" onClick={handleCloseModal}></button>
                             </div>
                             <div className="modal-body">
+                                {selectedEvent.imageUrl && (
+                                    <div className="row mb-3">
+                                        <div className="col-12">
+                                            <img 
+                                                src={selectedEvent.imageUrl} 
+                                                alt={selectedEvent.title} 
+                                                style={{ 
+                                                    width: "100%", 
+                                                    maxHeight: "300px", 
+                                                    objectFit: "cover", 
+                                                    borderRadius: "8px" 
+                                                }} 
+                                            />
+                                        </div>
+                                    </div>
+                                )}
                                 <div className="row">
                                     <div className="col-md-6">
                                         <strong>ID:</strong> {selectedEvent.id}

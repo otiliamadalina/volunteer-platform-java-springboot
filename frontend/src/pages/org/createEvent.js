@@ -11,6 +11,8 @@ export default function CreateEvent() {
     });
     const [submitting, setSubmitting] = useState(false);
     const [message, setMessage] = useState("");
+    const [imageFile, setImageFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState("");
 
     const onChange = (e) => {
         const { name, value } = e.target;
@@ -26,7 +28,8 @@ export default function CreateEvent() {
             form.location.trim() &&
             form.description.trim() &&
             Number.isFinite(maxVolunteersNum) && maxVolunteersNum > 0 &&
-            new Date(form.startDate) < new Date(form.endDate)
+            new Date(form.startDate) < new Date(form.endDate) &&
+            !!imageFile
         );
     };
 
@@ -39,26 +42,45 @@ export default function CreateEvent() {
         setSubmitting(true);
         setMessage("");
         try {
-            const eventData = {
+            console.log("Creating event with data:", {
                 title: form.title.trim(),
                 description: form.description.trim(),
                 location: form.location.trim(),
                 startDate: form.startDate,
                 endDate: form.endDate,
-                maxVolunteers: Number(form.maxVolunteers)
-            };
+                maxVolunteers: Number(form.maxVolunteers),
+                imageFile: imageFile ? imageFile.name : "null"
+            });
+
+            const formData = new FormData();
+            formData.append("title", form.title.trim());
+            formData.append("description", form.description.trim());
+            formData.append("location", form.location.trim());
+            formData.append("startDate", form.startDate);
+            formData.append("endDate", form.endDate);
+            formData.append("maxVolunteers", String(Number(form.maxVolunteers)));
+            formData.append("image", imageFile);
+
+            console.log("Sending request to: http://localhost:8080/api/org/events");
 
             const res = await fetch("http://localhost:8080/api/org/events", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
                 credentials: "include",
-                body: JSON.stringify(eventData)
+                body: formData
             });
-            if (!res.ok) throw new Error("Failed to create event");
+            
+            console.log("Response status:", res.status);
+            console.log("Response ok:", res.ok);
+            
+            if (!res.ok) {
+                const errorText = await res.text();
+                console.error("Error response:", errorText);
+                throw new Error(`Failed to create event: ${res.status} - ${errorText}`);
+            }
             setMessage("Event created successfully.");
             setForm({ title: "", startDate: "", endDate: "", location: "", maxVolunteers: "", description: "" });
+            setImageFile(null);
+            setImagePreview("");
         } catch (err) {
             setMessage("Error: " + err.message);
         } finally {
@@ -70,6 +92,32 @@ export default function CreateEvent() {
         <div className="card" style={{ marginTop: 20 }}>
             <h3>Create Event</h3>
             <form onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
+                <div>
+                    <label htmlFor="image"><strong>Event Image</strong> *</label>
+                    <input
+                        id="image"
+                        name="image"
+                        type="file"
+                        accept="image/png,image/jpeg,image/webp"
+                        className="form-control"
+                        onChange={(e) => {
+                            const file = e.target.files && e.target.files[0];
+                            setImageFile(file || null);
+                            if (file) {
+                                const url = URL.createObjectURL(file);
+                                setImagePreview(url);
+                            } else {
+                                setImagePreview("");
+                            }
+                        }}
+                        required
+                    />
+                    {imagePreview && (
+                        <div style={{ marginTop: 8 }}>
+                            <img src={imagePreview} alt="Preview" style={{ maxWidth: "100%", borderRadius: 8, maxHeight: "200px" }} />
+                        </div>
+                    )}
+                </div>
                 <div>
                     <label htmlFor="title"><strong>Title</strong> *</label>
                     <input id="title" name="title" type="text" value={form.title} onChange={onChange} className="form-control" placeholder="e.g., Beach Cleanup" required />

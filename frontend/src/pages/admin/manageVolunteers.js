@@ -140,14 +140,14 @@ export default function ManageVolunteers() {
             </div>
 
             {filteredVolunteers.length === 0 && (
-                <p className="empty-state">
-                    No volunteers found matching your criteria.
+                <p style={{ textAlign: "center", marginTop: 20, color: "#6b6660" }}>
+                    No volunteers found matching your criteria. 
                 </p>
             )}
 
             {/* View Modal */}
             {showViewModal && selectedVolunteer && (
-                <div className="modal modal-overlay">
+                <div className="modal" style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}>
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">

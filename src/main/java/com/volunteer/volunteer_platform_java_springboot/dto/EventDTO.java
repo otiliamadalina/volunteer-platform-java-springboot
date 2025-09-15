@@ -10,13 +10,14 @@ public class EventDTO {
     private LocalDateTime endDate;
     private Integer maxVolunteers;
     private String organisationEmail;
+    private String imageUrl;
 
     // Constructors
     public EventDTO() {}
 
     public EventDTO(String title, String description, String location, 
                    LocalDateTime startDate, LocalDateTime endDate, 
-                   Integer maxVolunteers, String organisationEmail) {
+                   Integer maxVolunteers, String organisationEmail, String imageUrl) {
         this.title = title;
         this.description = description;
         this.location = location;
@@ -24,6 +25,7 @@ public class EventDTO {
         this.endDate = endDate;
         this.maxVolunteers = maxVolunteers;
         this.organisationEmail = organisationEmail;
+        this.imageUrl = imageUrl;
     }
 
     // Getters and Setters
@@ -81,5 +83,13 @@ public class EventDTO {
 
     public void setOrganisationEmail(String organisationEmail) {
         this.organisationEmail = organisationEmail;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

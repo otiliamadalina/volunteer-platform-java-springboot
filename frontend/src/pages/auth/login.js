@@ -33,10 +33,11 @@ export default function Login() {
         console.log("Login form submitted");
 
         try {
-            const res = await axios.post("http://localhost:8080/api/login", {
-                email,
-                password
-            });
+            const res = await axios.post(
+                "http://localhost:8080/api/login",
+                { email, password },
+                { withCredentials: true }
+            );
 
 
             console.log("Server response:", res.data);
