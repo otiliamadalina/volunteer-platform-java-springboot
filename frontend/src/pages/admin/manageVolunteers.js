@@ -16,7 +16,7 @@ export default function ManageVolunteers() {
     const fetchVolunteers = async () => {
         try {
             console.log("Fetching volunteers from /api/admin/volunteers");
-            const res = await fetch("http://localhost:8080/api/admin/volunteers", {
+            const res = await fetch("http://localhost:8080/api/admin/manageVolunteers", {
                 method: "GET",
                 credentials: "include"
             });
@@ -55,7 +55,7 @@ export default function ManageVolunteers() {
     const handleDelete = async (volunteerId) => {
         if (window.confirm("Are you sure you want to delete this volunteer?")) {
             try {
-                const res = await fetch(`http://localhost:8080/api/admin/volunteers/${volunteerId}`, {
+                const res = await fetch(`http://localhost:8080/api/admin/manageVolunteers/${volunteerId}`, {
                     method: "DELETE",
                     credentials: "include"
                 });

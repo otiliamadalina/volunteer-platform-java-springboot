@@ -14,13 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.session.FindByIndexNameSessionRepository;
 
 import java.security.Principal;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")  // permite accesul din frontend
+@RequestMapping("/api")
 public class AuthController {
 
     @Autowired
@@ -86,7 +87,11 @@ public class AuthController {
                 org.springframework.security.core.context.SecurityContext context = org.springframework.security.core.context.SecurityContextHolder.createEmptyContext();
                 context.setAuthentication(authentication);
                 org.springframework.security.core.context.SecurityContextHolder.setContext(context);
-                request.getSession(true).setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+                jakarta.servlet.http.HttpSession session = request.getSession(true);
+                session.setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+                // Ensure Spring Session indexes principal name for JDBC table PRINCIPAL_NAME
+                session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, volunteer.getEmail());
+                request.changeSessionId();
 
                 return ResponseEntity.ok(Map.of(
                         "role", volunteer.getRole().name(),
@@ -111,7 +116,10 @@ public class AuthController {
                 org.springframework.security.core.context.SecurityContext context = org.springframework.security.core.context.SecurityContextHolder.createEmptyContext();
                 context.setAuthentication(authentication);
                 org.springframework.security.core.context.SecurityContextHolder.setContext(context);
-                request.getSession(true).setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+                jakarta.servlet.http.HttpSession session = request.getSession(true);
+                session.setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+                session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, organisation.getEmail());
+                request.changeSessionId();
 
                 return ResponseEntity.ok(Map.of(
                         "role", organisation.getRole().name(),
@@ -136,7 +144,10 @@ public class AuthController {
                 org.springframework.security.core.context.SecurityContext context = org.springframework.security.core.context.SecurityContextHolder.createEmptyContext();
                 context.setAuthentication(authentication);
                 org.springframework.security.core.context.SecurityContextHolder.setContext(context);
-                request.getSession(true).setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+                jakarta.servlet.http.HttpSession session = request.getSession(true);
+                session.setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+                session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, admin.getEmail());
+                request.changeSessionId();
 
                 return ResponseEntity.ok(Map.of(
                         "role", admin.getRole().name(),
