@@ -89,9 +89,9 @@ public class AuthController {
                 org.springframework.security.core.context.SecurityContextHolder.setContext(context);
                 jakarta.servlet.http.HttpSession session = request.getSession(true);
                 session.setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
-                // Ensure Spring Session indexes principal name for JDBC table PRINCIPAL_NAME
                 session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, volunteer.getEmail());
                 request.changeSessionId();
+                session.setAttribute("userRole", volunteer.getRole().name());
 
                 return ResponseEntity.ok(Map.of(
                         "role", volunteer.getRole().name(),
@@ -120,6 +120,7 @@ public class AuthController {
                 session.setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
                 session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, organisation.getEmail());
                 request.changeSessionId();
+                session.setAttribute("userRole", organisation.getRole().name());
 
                 return ResponseEntity.ok(Map.of(
                         "role", organisation.getRole().name(),
@@ -148,6 +149,7 @@ public class AuthController {
                 session.setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
                 session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, admin.getEmail());
                 request.changeSessionId();
+                session.setAttribute("userRole", admin.getRole().name());
 
                 return ResponseEntity.ok(Map.of(
                         "role", admin.getRole().name(),
