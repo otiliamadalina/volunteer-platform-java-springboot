@@ -74,8 +74,8 @@ export default function EventsPublic() {
                             <div className="event-content">
                                 <h3 className="event-title">{ev.title}</h3>
                                 <div className="event-description-container">
-                                    <p className="event-description">{truncate(ev.description, 140)}</p>
-                                    {ev.description && ev.description.length > 140 && (
+                                    <p className="event-description">{ev.description}</p>
+                                    {ev.description && (
                                         <button
                                             onClick={() => alert(ev.description)}
                                             className="event-view-more-btn"
