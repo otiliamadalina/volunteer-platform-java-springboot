@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/organisation.css";
+import "../../styles/events.css";
 
 export default function ManageEvents() {
     const [events, setEvents] = useState([]);
@@ -213,16 +214,17 @@ export default function ManageEvents() {
                                 {selectedEvent.imageUrl && (
                                     <div className="row mb-3">
                                         <div className="col-12">
-                                            <img 
-                                                src={selectedEvent.imageUrl} 
-                                                alt={selectedEvent.title} 
-                                                style={{ 
-                                                    width: "100%", 
-                                                    maxHeight: "300px", 
-                                                    objectFit: "cover", 
-                                                    borderRadius: "8px" 
-                                                }} 
+                                            <img
+                                                src={`http://localhost:8080${selectedEvent.imageUrl}`}
+                                                alt={selectedEvent.title}
+                                                style={{
+                                                    width: "100%",
+                                                    maxHeight: "300px",
+                                                    objectFit: "cover",
+                                                    borderRadius: "8px"
+                                                }}
                                             />
+
                                         </div>
                                     </div>
                                 )}
@@ -264,7 +266,7 @@ export default function ManageEvents() {
                                 <div className="row mt-2">
                                     <div className="col-12">
                                         <strong>Description:</strong>
-                                        <p className="mt-1">{selectedEvent.description}</p>
+                                        <p className="mt-1 event-description-pre">{selectedEvent.description}</p>
                                     </div>
                                 </div>
                                 <div className="row mt-2">

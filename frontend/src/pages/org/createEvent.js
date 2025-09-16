@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../../styles/events.css";
 
 export default function CreateEvent() {
     const [form, setForm] = useState({
@@ -42,16 +43,6 @@ export default function CreateEvent() {
         setSubmitting(true);
         setMessage("");
         try {
-            console.log("Creating event with data:", {
-                title: form.title.trim(),
-                description: form.description.trim(),
-                location: form.location.trim(),
-                startDate: form.startDate,
-                endDate: form.endDate,
-                maxVolunteers: Number(form.maxVolunteers),
-                imageFile: imageFile ? imageFile.name : "null"
-            });
-
             const formData = new FormData();
             formData.append("title", form.title.trim());
             formData.append("description", form.description.trim());
@@ -61,8 +52,6 @@ export default function CreateEvent() {
             formData.append("maxVolunteers", String(Number(form.maxVolunteers)));
             formData.append("image", imageFile);
 
-            console.log("Sending request to: http://localhost:8080/api/org/events");
-
             const res = await fetch("http://localhost:8080/api/org/events", {
                 method: "POST",
                 credentials: "include",
@@ -71,13 +60,9 @@ export default function CreateEvent() {
                 },
                 body: formData
             });
-            
-            console.log("Response status:", res.status);
-            console.log("Response ok:", res.ok);
-            
+
             if (!res.ok) {
                 const errorText = await res.text();
-                console.error("Error response:", errorText);
                 throw new Error(`Failed to create event: ${res.status} - ${errorText}`);
             }
             setMessage("Event created successfully.");
@@ -92,9 +77,9 @@ export default function CreateEvent() {
     };
 
     return (
-        <div className="card" style={{ marginTop: 20 }}>
+        <div className="card">
             <h3>Create Event</h3>
-            <form onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
+            <form onSubmit={onSubmit}>
                 <div>
                     <label htmlFor="image"><strong>Event Image</strong> *</label>
                     <input
@@ -106,26 +91,18 @@ export default function CreateEvent() {
                         onChange={(e) => {
                             const file = e.target.files && e.target.files[0];
                             setImageFile(file || null);
-                            if (file) {
-                                const url = URL.createObjectURL(file);
-                                setImagePreview(url);
-                            } else {
-                                setImagePreview("");
-                            }
+                            if (file) setImagePreview(URL.createObjectURL(file));
+                            else setImagePreview("");
                         }}
                         required
                     />
-                    {imagePreview && (
-                        <div style={{ marginTop: 8 }}>
-                            <img src={imagePreview} alt="Preview" style={{ maxWidth: "100%", borderRadius: 8, maxHeight: "200px" }} />
-                        </div>
-                    )}
+                    {imagePreview && <img src={imagePreview} alt="Preview" className="preview" />}
                 </div>
                 <div>
                     <label htmlFor="title"><strong>Title</strong> *</label>
                     <input id="title" name="title" type="text" value={form.title} onChange={onChange} className="form-control" placeholder="e.g., Beach Cleanup" required />
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                <div className="grid-two-columns">
                     <div>
                         <label htmlFor="startDate"><strong>Start Date & Time</strong> *</label>
                         <input id="startDate" name="startDate" type="datetime-local" value={form.startDate} onChange={onChange} className="form-control" required />
@@ -152,11 +129,9 @@ export default function CreateEvent() {
                     <button type="submit" className="btn btn-primary" disabled={submitting || !isValid()}>
                         {submitting ? "Creating..." : "Create Event"}
                     </button>
-                    {message && <span style={{ color: message.startsWith("Error") ? "#b00020" : "#2e7d32" }}>{message}</span>}
+                    {message && <span className="message" style={{ color: message.startsWith("Error") ? "#b00020" : "#2e7d32" }}>{message}</span>}
                 </div>
             </form>
         </div>
     );
 }
-
-

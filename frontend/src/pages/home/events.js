@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import "../../styles/events.css";
 
 export default function EventsPublic() {
     const [events, setEvents] = useState([]);
@@ -51,90 +52,43 @@ export default function EventsPublic() {
         }
     };
 
-    const truncate = (text, n = 120) => {
-        if (!text) return "";
-        return text.length > n ? `${text.slice(0, n).trim()}…` : text;
-    };
+    const truncate = (text, n = 120) => (!text ? "" : text.length > n ? `${text.slice(0, n).trim()}…` : text);
 
-    if (loading) {
-        return (
-            <div style={{ display: "flex", justifyContent: "center", padding: "40px" }}>
-                <p>Loading events…</p>
-            </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <div style={{ display: "flex", justifyContent: "center", padding: "40px", color: "#b00020" }}>
-                <p>{error}</p>
-            </div>
-        );
-    }
+    if (loading) return <div className="events-loading"><p>Loading events…</p></div>;
+    if (error) return <div className="events-error"><p>{error}</p></div>;
 
     return (
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "24px" }}>
-            <h1 style={{ textAlign: "center", marginBottom: 24 }}>Upcoming Events</h1>
+        <div className="events-container">
+            <h1 className="events-title">Upcoming Events</h1>
             {events.length === 0 ? (
-                <p style={{ textAlign: "center" }}>No events yet.</p>
+                <p className="events-empty">No events yet.</p>
             ) : (
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(3, 1fr)",
-                        gap: 16,
-                        alignItems: "stretch"
-                    }}
-                >
+                <div className="events-grid">
                     {events.map((ev, idx) => (
-                        <div key={ev.id}
-                             style={{
-                                 border: "1px solid #eee",
-                                 borderRadius: 8,
-                                 overflow: "hidden",
-                                 boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-                                 display: "flex",
-                                 flexDirection: "column",
-                                 background: "#fff"
-                             }}
-                        >
+                        <div key={ev.id} className="event-card">
                             {ev.imageUrl ? (
-                                <img
-                                    src={`http://localhost:8080${ev.imageUrl}`}
-                                    alt={ev.title}
-                                    style={{ width: "100%", height: 160, objectFit: "cover" }}
-                                />
+                                <img src={`http://localhost:8080${ev.imageUrl}`} alt={ev.title} className="event-image" />
                             ) : (
-                                <div style={{ width: "100%", height: 160, background: "#f4f4f4" }} />
+                                <div className="event-image-placeholder" />
                             )}
-                            <div style={{ padding: 16, flex: 1, display: "flex", flexDirection: "column" }}>
-                                <h3 style={{ margin: "0 0 8px" }}>{ev.title}</h3>
-                                <p style={{ margin: 0, color: "#555", flex: 1 }}>
-                                    {truncate(ev.description, 140)} {ev.description && ev.description.length > 140 && (
-                                    <button
-                                        onClick={() => alert(ev.description)}
-                                        style={{ border: "none", background: "transparent", color: "#6c63ff", cursor: "pointer", padding: 0 }}
-                                    >
-                                        View More
-                                    </button>
-                                )}
-                                </p>
+                            <div className="event-content">
+                                <h3 className="event-title">{ev.title}</h3>
+                                <div className="event-description-container">
+                                    <p className="event-description">{truncate(ev.description, 140)}</p>
+                                    {ev.description && ev.description.length > 140 && (
+                                        <button
+                                            onClick={() => alert(ev.description)}
+                                            className="event-view-more-btn"
+                                        >
+                                            View More
+                                        </button>
+                                    )}
+                                </div>
 
                                 {role === "VOLUNTEER" && (
-                                    <div style={{ display: "flex", alignItems: "center", marginTop: 12, gap: 8 }}>
-                                        <span style={{ fontWeight: 600 }}>{ev.currentVolunteers || 0}/{ev.maxVolunteers}</span>
-                                        <button
-                                            onClick={() => handleJoin(ev.id, idx)}
-                                            style={{
-                                                marginLeft: "auto",
-                                                background: "#6c63ff",
-                                                color: "#fff",
-                                                border: "none",
-                                                padding: "8px 12px",
-                                                borderRadius: 6,
-                                                cursor: "pointer"
-                                            }}
-                                        >
+                                    <div className="event-volunteer-section">
+                                        <span>{ev.currentVolunteers || 0}/{ev.maxVolunteers}</span>
+                                        <button onClick={() => handleJoin(ev.id, idx)} className="event-join-btn">
                                             Join Event
                                         </button>
                                     </div>
@@ -147,10 +101,3 @@ export default function EventsPublic() {
         </div>
     );
 }
-
-
-
-
-
-
-
