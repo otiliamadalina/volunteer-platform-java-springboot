@@ -5,6 +5,8 @@ export default function EventsPublic() {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [openModal, setOpenModal] = useState(false);
+    const [modalText, setModalText] = useState("");
     const role = useMemo(() => (typeof window !== "undefined" ? localStorage.getItem("role") : null), []);
 
     useEffect(() => {
@@ -75,14 +77,16 @@ export default function EventsPublic() {
                                 <h3 className="event-title">{ev.title}</h3>
                                 <div className="event-description-container">
                                     <p className="event-description">{ev.description}</p>
-                                    {ev.description && (
-                                        <button
-                                            onClick={() => alert(ev.description)}
-                                            className="event-view-more-btn"
-                                        >
-                                            View More
-                                        </button>
-                                    )}
+                                    <button
+                                        onClick={() => {
+                                            setModalText(ev.description);
+                                            setOpenModal(true);
+                                        }}
+                                        className="event-view-more-btn"
+                                    >
+                                        View More
+                                    </button>
+
                                 </div>
 
                                 {role === "VOLUNTEER" && (
@@ -96,6 +100,17 @@ export default function EventsPublic() {
                             </div>
                         </div>
                     ))}
+                </div>
+            )}
+
+            {/* Custom Modal */}
+            {openModal && (
+                <div className="custom-modal-overlay">
+                    <div className="custom-modal">
+                        <h2>Event Details</h2>
+                        <p style={{ whiteSpace: "pre-line" }}>{modalText}</p>
+                        <button className="modal-close-btn" onClick={() => setOpenModal(false)}>Close</button>
+                    </div>
                 </div>
             )}
         </div>
