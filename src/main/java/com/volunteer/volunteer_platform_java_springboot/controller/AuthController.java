@@ -92,6 +92,8 @@ public class AuthController {
                 session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, volunteer.getEmail());
                 request.changeSessionId();
                 session.setAttribute("userRole", volunteer.getRole().name());
+                // ensure principal is always indexed
+                session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, volunteer.getEmail());
 
                 return ResponseEntity.ok(Map.of(
                         "role", volunteer.getRole().name(),
@@ -121,6 +123,7 @@ public class AuthController {
                 session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, organisation.getEmail());
                 request.changeSessionId();
                 session.setAttribute("userRole", organisation.getRole().name());
+                session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, organisation.getEmail());
 
                 return ResponseEntity.ok(Map.of(
                         "role", organisation.getRole().name(),
@@ -150,6 +153,7 @@ public class AuthController {
                 session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, admin.getEmail());
                 request.changeSessionId();
                 session.setAttribute("userRole", admin.getRole().name());
+                session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, admin.getEmail());
 
                 return ResponseEntity.ok(Map.of(
                         "role", admin.getRole().name(),

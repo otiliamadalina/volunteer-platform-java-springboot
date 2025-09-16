@@ -43,11 +43,14 @@ export default function Login() {
             console.log("Server response:", res.data);
 
 
-            const { role, id, fullName } = res.data;
+            const { role, id, fullName, email: userEmail } = res.data;
 
             localStorage.setItem("userName", fullName);
             localStorage.setItem("role", role);
             localStorage.setItem("userId", id);
+            if (userEmail) {
+                localStorage.setItem("email", userEmail);
+            }
             navigate("/");
 
         } catch (err) {

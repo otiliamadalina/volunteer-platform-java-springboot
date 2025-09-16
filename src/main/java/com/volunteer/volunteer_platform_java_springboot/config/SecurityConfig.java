@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
@@ -35,8 +36,9 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .securityContext(sc -> sc.securityContextRepository(new HttpSessionSecurityContextRepository()))
                 .sessionManagement(sm -> sm
-                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
+                .addFilterBefore(new SessionAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
@@ -46,11 +48,14 @@ public class SecurityConfig {
                         .requestMatchers("/api/generateAdminPassword").permitAll()
 
                         .requestMatchers("/api/volunteer/**").hasAuthority("VOLUNTEER")
-                        .requestMatchers("/api/organisation/**").hasAuthority("ORGANISATION")
+                        .requestMatchers("/api/organisation/**").permitAll()
                         // TEMP: allow all organisation endpoints to unblock createEvent
                         .requestMatchers("/api/org/**").permitAll()
                         // TEMP: allow all admin endpoints
                         .requestMatchers("/api/admin/**").permitAll()
+
+                        .requestMatchers("/uploads/**").permitAll()
+
                         .anyRequest().authenticated()
                 );
 
@@ -65,7 +70,9 @@ public class SecurityConfig {
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost:3000")
                         .allowCredentials(true)
-                        .allowedMethods("GET", "POST", "PUT", "DELETE");
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedHeaders("Content-Type", "X-Requested-With", "X-Org-Email", "Authorization", "Accept")
+                        .exposedHeaders("X-Org-Email");
             }
         };
     }

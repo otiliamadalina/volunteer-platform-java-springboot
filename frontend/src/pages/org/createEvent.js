@@ -66,6 +66,9 @@ export default function CreateEvent() {
             const res = await fetch("http://localhost:8080/api/org/events", {
                 method: "POST",
                 credentials: "include",
+                headers: {
+                    "X-Org-Email": localStorage.getItem("email") || ""
+                },
                 body: formData
             });
             

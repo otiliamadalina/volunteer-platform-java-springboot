@@ -17,7 +17,10 @@ export default function ManageEvents() {
             console.log("Fetching events from /api/org/events");
             const res = await fetch("http://localhost:8080/api/org/events", {
                 method: "GET",
-                credentials: "include"
+                credentials: "include",
+                headers: {
+                    "X-Org-Email": localStorage.getItem("email") || ""
+                }
             });
 
             console.log("Response status:", res.status);
@@ -74,13 +77,12 @@ export default function ManageEvents() {
 
     const handleStatusChange = async (eventId, newStatus) => {
         try {
-            const res = await fetch(`http://localhost:8080/api/org/events/${eventId}/status`, {
+            const res = await fetch(`http://localhost:8080/api/org/events/${eventId}/status?status=${encodeURIComponent(newStatus)}`, {
                 method: "PUT",
                 headers: {
-                    "Content-Type": "application/json",
+                    "X-Org-Email": localStorage.getItem("email") || ""
                 },
-                credentials: "include",
-                body: JSON.stringify({ status: newStatus })
+                credentials: "include"
             });
 
             if (res.ok) {
