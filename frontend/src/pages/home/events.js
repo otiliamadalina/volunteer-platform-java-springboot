@@ -62,7 +62,28 @@ export default function EventsPublic() {
         }
     };
 
-    const truncate = (text, n = 120) => (!text ? "" : text.length > n ? `${text.slice(0, n).trim()}…` : text);
+    const handleUnjoin = async (eventId, idx) => {
+        try {
+            const res = await fetch(`http://localhost:8080/api/org/events/${eventId}/unjoin`, {
+                method: "POST",
+                credentials: "include"
+            });
+            if (!res.ok) {
+                const t = await res.text();
+                throw new Error(t || `HTTP ${res.status}`);
+            }
+            const data = await res.json();
+            setEvents(prev => {
+                const copy = [...prev];
+                copy[idx] = {...copy[idx], currentVolunteers: data.currentVolunteers};
+                return copy;
+            });
+            setJoinedEvents(prev => prev.filter(id => id !== eventId));
+        } catch (e) {
+            alert(e.message || "Failed to unjoin event");
+        }
+    };
+
 
     if (loading) return <div className="events-loading"><p>Loading events…</p></div>;
     if (error) return <div className="events-error"><p>{error}</p></div>;
@@ -104,12 +125,16 @@ export default function EventsPublic() {
                                     <div className="event-volunteer-section">
                                         <span>{ev.currentVolunteers || 0}/{ev.maxVolunteers}</span>
                                         <button
-                                            onClick={() => handleJoin(ev.id, idx)}
+                                            onClick={() =>
+                                                joinedEvents.includes(ev.id)
+                                                    ? handleUnjoin(ev.id, idx)
+                                                    : handleJoin(ev.id, idx)
+                                            }
                                             className="event-join-btn"
-                                            disabled={joinedEvents.includes(ev.id)}
                                         >
-                                            {joinedEvents.includes(ev.id) ? "Joined" : "Join Event"}
+                                            {joinedEvents.includes(ev.id) ? "Unjoin" : "Join Event"}
                                         </button>
+
 
                                     </div>
                                 )}
