@@ -172,6 +172,18 @@ public class EventController {
         }
     }
 
+    @PostMapping("/events/{id}/unjoin")
+    public ResponseEntity<?> unjoinEvent(@PathVariable Long id, Principal principal) {
+        try {
+            String volunteerEmail = principal.getName();
+            eventService.unjoinEvent(id, volunteerEmail);
+            return ResponseEntity.ok(Map.of("message", "Unjoined successfully"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", "Server error"));
+        }
+    }
 
     // Public endpoints
     @GetMapping("/public/events")
