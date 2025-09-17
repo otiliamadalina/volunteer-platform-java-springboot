@@ -47,7 +47,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/registerAsOrganisation").permitAll()
                         .requestMatchers("/api/generateAdminPassword").permitAll()
 
-                        .requestMatchers("/api/volunteer/**").hasAuthority("VOLUNTEER")
+                        .requestMatchers("/api/volunteer/**").permitAll()
                         .requestMatchers("/api/organisation/**").permitAll()
                         // TEMP: allow all organisation endpoints to unblock createEvent
                         .requestMatchers("/api/org/**").permitAll()

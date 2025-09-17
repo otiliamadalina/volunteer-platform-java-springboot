@@ -33,4 +33,9 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     // Find events with available volunteer spots
     @Query("SELECT e FROM Event e WHERE e.currentVolunteers < e.maxVolunteers AND e.status = :status ORDER BY e.startDate ASC")
     List<Event> findEventsWithAvailableSpots(@Param("status") EventStatus status);
+
+    @Query(value = "SELECT e.* FROM event e JOIN event_volunteer ev ON e.id = ev.event_id WHERE ev.volunteer_email = :email", nativeQuery = true)
+    List<Event> findJoinedEventsByVolunteerEmail(@Param("email") String email);
+
+
 }

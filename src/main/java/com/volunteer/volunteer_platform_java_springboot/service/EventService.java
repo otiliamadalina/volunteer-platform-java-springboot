@@ -32,20 +32,20 @@ import java.util.UUID;
 public class EventService {
 
     private final EventRepository eventRepository;
-
-    @Autowired
-    private EventVolunteerRepository eventVolunteerRepository;
-
-    @Autowired
-    private OrganisationRepository organisationRepository;
-
-    @Autowired
-    private VolunteerRepository volunteerRepository;
+    private final EventVolunteerRepository eventVolunteerRepository;
+    private final OrganisationRepository organisationRepository;
+    private final VolunteerRepository volunteerRepository;
 
     private static final String UPLOAD_DIR = "uploads/events/";
 
-    public EventService(EventRepository eventRepository, OrganisationRepository organisationRepository) {
+    public EventService(EventRepository eventRepository,
+                        EventVolunteerRepository eventVolunteerRepository,
+                        OrganisationRepository organisationRepository,
+                        VolunteerRepository volunteerRepository) {
         this.eventRepository = eventRepository;
+        this.eventVolunteerRepository = eventVolunteerRepository;
+        this.organisationRepository = organisationRepository;
+        this.volunteerRepository = volunteerRepository;
     }
 
     public String resolveOrganisationEmail(Principal principal, HttpServletRequest request) {
@@ -228,6 +228,20 @@ public class EventService {
     }
 
 
+    public List<Event> getEventsJoinedByVolunteer(String email) {
+        System.out.println("DEBUG: Entering getEventsJoinedByVolunteer service method.");
+        try {
+            List<Long> eventIds = eventVolunteerRepository.findEventIdsByVolunteerEmail(email);
+            System.out.println("DEBUG: Query for event IDs executed. Found " + eventIds.size() + " IDs.");
+            return eventRepository.findAllById(eventIds);
+        } catch (Exception e) {
+            System.err.println("ERROR: Exception in getEventsJoinedByVolunteer: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Error fetching joined events in service", e);
+        }
+    }
+
+
     public void joinEvent(Long eventId, String volunteerEmail) {
         // 1. Gasește event-ul
         Event event = eventRepository.findById(eventId)
@@ -258,6 +272,14 @@ public class EventService {
         eventRepository.save(event);
     }
 
+    public void unjoinEvent(Long eventId, String volunteerEmail) {
+        EventVolunteer ev = eventVolunteerRepository.findByEventIdAndVolunteerEmail(eventId, volunteerEmail);
+        if (ev != null) {
+            eventVolunteerRepository.delete(ev);
+        } else {
+            throw new RuntimeException("Volunteer is not joined to this event");
+        }
+    }
 
 
 }

@@ -29,6 +29,7 @@ import CreateEvent from "./pages/org/createEvent";
 import OrgManageEvents from "./pages/org/manageEvents";
 import Reports from "./pages/org/reports";
 import NotifyVolunteers from "./pages/org/notifyVolunteers";
+import JoinedEvents from "./pages/volunteer/joinedEvents";
 
 function App() {
     return (
@@ -92,6 +93,23 @@ function App() {
                         <Route path="reports" element={<Reports />} />
                         <Route path="notifyVolunteers" element={<NotifyVolunteers />} />
                     </Route>
+
+                    <Route
+                        path="/volunteerDashboard"
+                        element={
+                            <ProtectedRoute allowedRole="VOLUNTEER">
+                                <VolunteerLayout />
+                            </ProtectedRoute>
+                        }
+                    >
+                        <Route index element={<VolunteerDashboard />} />
+                        <Route path="participationHistory" element={<ParticipationHistory />} />
+                        <Route path="editProfile" element={<EditProfile />} />
+                        <Route path="calendarScheduler" element={<CalendarScheduler />} />
+                        <Route path="joinedEvents" element={<JoinedEvents />} />
+
+                    </Route>
+
 
 
                     {/* Public events page */}

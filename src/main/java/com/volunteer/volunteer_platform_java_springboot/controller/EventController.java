@@ -83,13 +83,6 @@ public class EventController {
         return null;
     }
 
-    @GetMapping("/events/test")
-    public ResponseEntity<String> testEndpoint(Principal principal) {
-        System.out.println("=== TEST ENDPOINT CALLED ===");
-        System.out.println("Principal: " + (principal != null ? principal.getName() : "null"));
-        return ResponseEntity.ok("EventController is working! Principal: " + (principal != null ? principal.getName() : "null"));
-    }
-
     @PostMapping("/events")
     public ResponseEntity<?> createEvent(
             @RequestParam("title") String title,
@@ -159,6 +152,27 @@ public class EventController {
         }
     }
 
+    @GetMapping("/events/joined")
+    public ResponseEntity<?> getJoinedEvents(Principal principal) {
+        System.out.println("=== GET /api/events/joined endpoint hit ===");
+        try {
+            if (principal == null) {
+                System.out.println("DEBUG: Principal is null, returning unauthorized.");
+                return ResponseEntity.status(401).body("User not authenticated");
+            }
+            String email = principal.getName();
+            System.out.println("DEBUG: Principal name/email is: " + email);
+            List<Event> events = eventService.getEventsJoinedByVolunteer(email);
+            System.out.println("DEBUG: Returned from service. Found " + events.size() + " events.");
+            return ResponseEntity.ok(events);
+        } catch (Exception e) {
+            System.err.println("ERROR: Unhandled exception in getJoinedEvents: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error fetching joined events");
+        }
+    }
+
+
     // Public endpoints
     @GetMapping("/public/events")
     public ResponseEntity<?> listPublishedEvents() {
@@ -184,16 +198,17 @@ public class EventController {
     }
 
 
+
     @GetMapping("/events/{id}")
     public ResponseEntity<?> getEvent(@PathVariable Long id, Principal principal) {
         try {
             String organisationEmail = principal.getName();
             Event event = eventService.getEventForOrganisation(id, organisationEmail);
-            
+
             if (event == null) {
                 return ResponseEntity.notFound().build();
             }
-            
+
             return ResponseEntity.ok(event);
         } catch (Exception e) {
             System.err.println("Error fetching event: " + e.getMessage());
@@ -306,4 +321,6 @@ public class EventController {
             System.err.println("Error deleting image: " + e.getMessage());
         }
     }
+
+
 }
