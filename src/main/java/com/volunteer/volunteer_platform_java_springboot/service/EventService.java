@@ -2,9 +2,14 @@ package com.volunteer.volunteer_platform_java_springboot.service;
 
 import com.volunteer.volunteer_platform_java_springboot.model.Event;
 import com.volunteer.volunteer_platform_java_springboot.model.EventStatus;
+import com.volunteer.volunteer_platform_java_springboot.model.EventVolunteer;
+import com.volunteer.volunteer_platform_java_springboot.model.Volunteer;
 import com.volunteer.volunteer_platform_java_springboot.repository.EventRepository;
+import com.volunteer.volunteer_platform_java_springboot.repository.EventVolunteerRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.OrganisationRepository;
+import com.volunteer.volunteer_platform_java_springboot.repository.VolunteerRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.session.FindByIndexNameSessionRepository;
@@ -27,6 +32,15 @@ import java.util.UUID;
 public class EventService {
 
     private final EventRepository eventRepository;
+
+    @Autowired
+    private EventVolunteerRepository eventVolunteerRepository;
+
+    @Autowired
+    private OrganisationRepository organisationRepository;
+
+    @Autowired
+    private VolunteerRepository volunteerRepository;
 
     private static final String UPLOAD_DIR = "uploads/events/";
 
@@ -213,7 +227,41 @@ public class EventService {
         }
     }
 
+
+    public void joinEvent(Long eventId, String volunteerEmail) {
+        // 1. Gasește event-ul
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new RuntimeException("Event not found"));
+
+        // 2. Gasește voluntarul
+        Volunteer volunteer = volunteerRepository.findByEmail(volunteerEmail);
+        if (volunteer == null) {
+            throw new RuntimeException("Volunteer not found");
+        }
+
+        // 3. Verifica daca voluntarul deja s-a inscris
+        eventVolunteerRepository.findByEventIdAndVolunteerId(event.getId(), volunteer.getId())
+                .ifPresent(ev -> { throw new RuntimeException("Volunteer already joined"); });
+
+        // 4. create EventVolunteer
+        EventVolunteer ev = new EventVolunteer();
+        ev.setEvent(event);
+        ev.setVolunteer(volunteer);
+        ev.setOrganisationEmail(event.getOrganisationEmail());
+        ev.setVolunteerEmail(volunteer.getEmail());
+        ev.setJoinedAt(LocalDateTime.now());
+
+        eventVolunteerRepository.save(ev);
+
+        // 5. Update currentVolunteers
+        event.setCurrentVolunteers(event.getCurrentVolunteers() + 1);
+        eventRepository.save(event);
+    }
+
+
+
 }
+
 
 
 

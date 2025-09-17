@@ -10,6 +10,7 @@ import com.volunteer.volunteer_platform_java_springboot.model.Organisation;
 import com.volunteer.volunteer_platform_java_springboot.repository.AdminRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.VolunteerRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.OrganisationRepository;
+import com.volunteer.volunteer_platform_java_springboot.service.VolunteerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,20 +37,19 @@ public class AuthController {
     @Autowired
     private AdminRepository adminRepository;
 
+    private final VolunteerService volunteerService;
+
+
+    public AuthController(VolunteerService volunteerService) {
+        this.volunteerService = volunteerService;
+    }
+
     @PostMapping("/registerAsVolunteer")
-    public ResponseEntity<Volunteer> registerVolunteer(@RequestBody VolunteerDTO dto) {
-        Volunteer volunteer = new Volunteer();
-        volunteer.setFullName(dto.getFullName());
-        volunteer.setEmail(dto.getEmail());
-        volunteer.setRole(UserRole.VOLUNTEER);
-
-        String hashedPassword = passwordEncoder.encode(dto.getPassword());
-        volunteer.setPassword(hashedPassword);
-        System.out.println("Encoded password: " + hashedPassword);
-
-        Volunteer savedVolunteer = volunteerRepository.save(volunteer);
+    public ResponseEntity<VolunteerDTO> registerVolunteer(@RequestBody VolunteerDTO dto) {
+        VolunteerDTO savedVolunteer = volunteerService.registerVolunteer(dto);
         return ResponseEntity.ok(savedVolunteer);
     }
+
 
     @PostMapping("/registerAsOrganisation")
     public ResponseEntity<Organisation> registerOrganisation(@RequestBody OrganisationDTO dto) {

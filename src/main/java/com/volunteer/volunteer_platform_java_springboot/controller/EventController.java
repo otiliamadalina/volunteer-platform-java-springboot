@@ -173,13 +173,17 @@ public class EventController {
     @PostMapping("/events/{id}/join")
     public ResponseEntity<?> joinEvent(@PathVariable Long id, Principal principal, HttpServletRequest request) {
         try {
-            Map<String,Integer> resp = eventService.joinEvent(id);
-            if (resp == null) return ResponseEntity.notFound().build();
-            return ResponseEntity.ok(resp);
+            String volunteerEmail = principal.getName(); // voluntarul logat
+            eventService.joinEvent(id, volunteerEmail);  // apel la service
+            return ResponseEntity.ok(Map.of("message", "Joined successfully"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error joining event: " + e.getMessage());
+            return ResponseEntity.status(500).body(Map.of("error", "Server error"));
         }
     }
+
+
     @GetMapping("/events/{id}")
     public ResponseEntity<?> getEvent(@PathVariable Long id, Principal principal) {
         try {
