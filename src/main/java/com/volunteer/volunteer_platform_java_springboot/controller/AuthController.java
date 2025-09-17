@@ -95,6 +95,11 @@ public class AuthController {
                 // ensure principal is always indexed
                 session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, volunteer.getEmail());
 
+                System.out.println("Session ID: " + session.getId());
+                System.out.println("Set principal: " + volunteer.getEmail());
+                System.out.println("Set role: " + volunteer.getRole().name());
+
+
                 return ResponseEntity.ok(Map.of(
                         "role", volunteer.getRole().name(),
                         "id", volunteer.getId(),
