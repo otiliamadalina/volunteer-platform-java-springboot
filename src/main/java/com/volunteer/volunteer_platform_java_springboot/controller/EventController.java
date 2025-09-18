@@ -219,14 +219,19 @@ public class EventController {
         }
     }
 
-    @DeleteMapping("/participationHistory/{eventId}")
-    public ResponseEntity<?> deleteFromHistory(@PathVariable Long eventId, Authentication authentication) {
-        String volunteerEmail = authentication.getName();
+    @PutMapping("/events/{id}/archive")
+    public ResponseEntity<?> archiveEvent(@PathVariable Long id, Principal principal) {
         try {
-            eventService.markAsArchived(eventId, volunteerEmail);
+            if (principal == null || "anonymousUser".equalsIgnoreCase(principal.getName())) {
+                return ResponseEntity.status(401).body("User not authenticated.");
+            }
+            eventService.markAsArchived(id, principal.getName());
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Server error occurred.");
         }
     }
+
 }

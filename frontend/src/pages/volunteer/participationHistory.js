@@ -13,17 +13,32 @@ export default function ParticipationHistory() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchEvents = async () => {
+        const fetchAndArchiveEvents = async () => {
             try {
                 const response = await axios.get("http://localhost:8080/api/org/events/joined", { withCredentials: true });
 
                 const now = new Date();
-                const pastEvents = response.data.filter(event => {
+                const allJoinedEvents = response.data;
+
+                const eventsToArchive = allJoinedEvents.filter(event => {
                     const endDate = new Date(event.endDate);
                     return endDate < now && event.participationStatus !== "ARCHIVED";
                 });
 
-                setEvents(pastEvents);
+                if (eventsToArchive.length > 0) {
+                    console.log(`Found ${eventsToArchive.length} events to archive. Sending requests.`);
+                    await Promise.all(eventsToArchive.map(event =>
+                        axios.put(`http://localhost:8080/api/org/events/${event.id}/archive`, {}, { withCredentials: true })
+                    ));
+                    console.log("All archive requests sent successfully.");
+                }
+
+                const pastEventsForDisplay = allJoinedEvents.filter(event => {
+                    const endDate = new Date(event.endDate);
+                    return endDate < now && event.participationStatus !== "ARCHIVED";
+                });
+
+                setEvents(pastEventsForDisplay);
                 setError(null);
             } catch (err) {
                 setError("Error fetching events. Please try again later.");
@@ -36,7 +51,7 @@ export default function ParticipationHistory() {
             }
         };
 
-        fetchEvents();
+        fetchAndArchiveEvents();
     }, [navigate]);
 
     const formatDateTime = (dateStr) => new Date(dateStr).toLocaleString();
@@ -49,28 +64,6 @@ export default function ParticipationHistory() {
     const handleCloseModal = () => {
         setSelectedEvent(null);
         setShowViewModal(false);
-    };
-
-    const handleDelete = async (eventId) => {
-        if (!window.confirm("Are you sure you want to delete this event from your history?")) {
-            return;
-        }
-
-        try {
-            const response = await axios.delete(`http://localhost:8080/api/org/participationHistory/${eventId}`, {
-                withCredentials: true
-            });
-
-            if (response.status === 200) {
-                setEvents(prevEvents => prevEvents.filter(event => event.id !== eventId));
-                setError(null);
-            } else {
-                throw new Error("Failed to delete event from history.");
-            }
-        } catch (e) {
-            console.error("Delete failed:", e);
-            setError(e.message || "Failed to delete event from history.");
-        }
     };
 
     const filteredEvents = events.filter(event =>
@@ -125,12 +118,6 @@ export default function ParticipationHistory() {
                                         onClick={() => handleView(event)}
                                     >
                                         View
-                                    </button>
-                                    <button
-                                        className="btn btn-sm btn-outline-danger"
-                                        onClick={() => handleDelete(event.id)}
-                                    >
-                                        Delete
                                     </button>
                                 </td>
                             </tr>
