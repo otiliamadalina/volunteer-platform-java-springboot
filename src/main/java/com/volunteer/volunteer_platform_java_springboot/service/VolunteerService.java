@@ -21,22 +21,7 @@ public class VolunteerService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public VolunteerDTO registerVolunteer(VolunteerDTO dto) {
-        Volunteer volunteer = new Volunteer();
-        volunteer.setFullName(dto.getFullName());
-        volunteer.setEmail(dto.getEmail());
-        volunteer.setRole(UserRole.VOLUNTEER);
 
-        String hashedPassword = passwordEncoder.encode(dto.getPassword());
-        volunteer.setPassword(hashedPassword);
-
-        Volunteer saved = volunteerRepository.save(volunteer);
-
-        VolunteerDTO response = new VolunteerDTO();
-        response.setFullName(saved.getFullName());
-        response.setEmail(saved.getEmail());
-        return response;
-    }
 
     public List<Volunteer> getAllVolunteers() {
         return volunteerRepository.findAll();

@@ -37,16 +37,19 @@ public class AuthController {
     @Autowired
     private AdminRepository adminRepository;
 
-    private final VolunteerService volunteerService;
-
-
-    public AuthController(VolunteerService volunteerService) {
-        this.volunteerService = volunteerService;
-    }
-
     @PostMapping("/registerAsVolunteer")
-    public ResponseEntity<VolunteerDTO> registerVolunteer(@RequestBody VolunteerDTO dto) {
-        VolunteerDTO savedVolunteer = volunteerService.registerVolunteer(dto);
+    public ResponseEntity<Volunteer> registerVolunteer(@RequestBody VolunteerDTO dto) {
+        Volunteer volunteer = new Volunteer();
+        volunteer.setFullName(dto.getFullName());
+        volunteer.setEmail(dto.getEmail());
+        volunteer.setRole(UserRole.VOLUNTEER);
+
+        String hashedPassword = passwordEncoder.encode(dto.getPassword());
+        volunteer.setPassword(hashedPassword);
+        System.out.println("Encoded password: " + hashedPassword);
+
+        Volunteer savedVolunteer = volunteerRepository.save(volunteer);
+
         return ResponseEntity.ok(savedVolunteer);
     }
 
