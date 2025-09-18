@@ -1,0 +1,141 @@
+.contact-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 24px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.contact-title {
+    text-align: center;
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.contact-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.contact-form .form-group {
+    margin-bottom: 20px;
+}
+
+.contact-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.contact-form textarea {
+    resize: vertical;
+}
+
+.submit-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 6px;
+    background-color: #6c63ff;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #574dcc;
+}
+
+.submit-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.status-message {
+    margin-top: 20px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.status-message.success {
+    background-color: #e6f7e9;
+    color: #4caf50;
+    border: 1px solid #c8e6c9;
+}
+
+.status-message.error {
+    background-color: #ffebeb;
+    color: #f44336;
+    border: 1px solid #ffcccb;
+}
+
+.contact-info {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+.contact-info h3 {
+    color: #6c63ff;
+    margin-bottom: 15px;
+}
+
+.contact-info p {
+    margin: 5px 0;
+}
+
+.contact-info a {
+    color: #6c63ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+.login-message-container {
+    padding: 20px;
+    background-color: #f0f8ff;
+    border-radius: 8px;
+    border: 1px solid #b0c4de;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.login-message-text {
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.login-message-text a {
+    color: #6c63ff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.login-message-text a:hover {
+    text-decoration: underline;
+}
