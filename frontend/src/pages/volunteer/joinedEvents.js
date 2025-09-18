@@ -1,43 +1,62 @@
 import React, { useEffect, useState } from "react";
+import "../../styles/main.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function JoinedEvents() {
     const [events, setEvents] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchJoinedEvents = async () => {
             try {
-                const res = await fetch("http://localhost:8080/api/org/events/joined", {
-                    method: "GET",
-                    credentials: "include"
+                const response = await axios.get("http://localhost:8080/api/org/events/joined", {
+                    withCredentials: true
                 });
-                const data = await res.json();
-                setEvents(Array.isArray(data) ? data : []);
-            } catch (e) {
-                console.error("Failed to fetch joined events", e);
+
+                const now = new Date();
+                const futureEvents = response.data.filter(event => {
+                    const endDate = new Date(event.endDate);
+                    return endDate >= now;
+                });
+
+                setEvents(futureEvents);
+                setError(null);
+            } catch (err) {
+                setError("Error fetching events. Please try again later.");
+                console.error("Failed to fetch joined events", err);
+                if (err.response && err.response.status === 401) {
+                    navigate('/login');
+                }
+            } finally {
+                setLoading(false);
             }
         };
         fetchJoinedEvents();
-    }, []);
-
-    const filteredEvents = events.filter(ev =>
-        ev.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    }, [navigate]);
 
     const formatDateTime = (dateStr) => new Date(dateStr).toLocaleString();
 
     const handleUnjoin = async (eventId) => {
+        if (!eventId) {
+            console.error("Event ID is undefined, cannot unjoin.");
+            return;
+        }
+
         try {
-            const res = await fetch(`http://localhost:8080/api/org/events/${eventId}/unjoin`, {
-                method: "POST",
-                credentials: "include"
+            await axios.post(`http://localhost:8080/api/org/events/${eventId}/unjoin`, {}, {
+                withCredentials: true
             });
-            if (!res.ok) throw new Error(await res.text());
             setEvents(prev => prev.filter(ev => ev.id !== eventId));
+            setError(null);
         } catch (e) {
-            alert(e.message || "Failed to unjoin event");
+            console.error("Failed to unjoin event", e);
+            setError(e.response?.data?.error || "Failed to unjoin event.");
         }
     };
 
@@ -50,6 +69,18 @@ export default function JoinedEvents() {
         setSelectedEvent(null);
         setShowViewModal(false);
     };
+
+    const filteredEvents = events.filter(ev =>
+        ev.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (loading) {
+        return <div className="card" style={{ marginTop: 20 }}>Loading your events...</div>;
+    }
+
+    if (error) {
+        return <div className="card" style={{ marginTop: 20, color: 'red' }}>{error}</div>;
+    }
 
     return (
         <div className="card manage-card">
@@ -77,35 +108,37 @@ export default function JoinedEvents() {
                     </tr>
                     </thead>
                     <tbody>
-                    {filteredEvents.map(event => (
-                        <tr key={event.id}>
-                            <td>{event.title}</td>
-                            <td>{event.location}</td>
-                            <td>{formatDateTime(event.startDate)}</td>
-                            <td>{formatDateTime(event.endDate)}</td>
-                            <td>
-                                <button
-                                    className="btn btn-sm btn-outline-primary me-2"
-                                    onClick={() => handleView(event)}
-                                >
-                                    View
-                                </button>
-                                <button
-                                    className="btn btn-sm btn-outline-danger"
-                                    onClick={() => handleUnjoin(event.id)}
-                                >
-                                    Unjoin
-                                </button>
-                            </td>
+                    {filteredEvents.length > 0 ? (
+                        filteredEvents.map(event => (
+                            <tr key={event.id}>
+                                <td>{event.title}</td>
+                                <td>{event.location}</td>
+                                <td>{formatDateTime(event.startDate)}</td>
+                                <td>{formatDateTime(event.endDate)}</td>
+                                <td>
+                                    <button
+                                        className="btn btn-sm btn-outline-primary me-2"
+                                        onClick={() => handleView(event)}
+                                    >
+                                        View
+                                    </button>
+                                    <button
+                                        className="btn btn-sm btn-outline-danger"
+                                        onClick={() => handleUnjoin(event.id)}
+                                    >
+                                        Unjoin
+                                    </button>
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="5" className="text-center">No current or future joined events.</td>
                         </tr>
-                    ))}
+                    )}
                     </tbody>
                 </table>
             </div>
-
-            {filteredEvents.length === 0 && (
-                <p className="empty-state">You haven't joined any events yet.</p>
-            )}
 
             {showViewModal && selectedEvent && (
                 <div className="modal modal-overlay">

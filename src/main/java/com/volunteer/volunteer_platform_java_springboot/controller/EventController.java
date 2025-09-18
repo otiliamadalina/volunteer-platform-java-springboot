@@ -185,23 +185,18 @@ public class EventController {
 
     // UPDATE event status by body
     @PutMapping("/events/{id}/status")
-    public ResponseEntity<?> updateEventStatus(
-            @PathVariable Long id,
-            @RequestBody Map<String, String> requestBody,
-            Principal principal,
-            HttpServletRequest request) {
+    public ResponseEntity<?> updateEventStatus(@PathVariable Long id, @RequestParam("status") String newStatus, Principal principal, HttpServletRequest request) {
         try {
             String organisationEmail = resolveOrganisationEmail(principal, request);
-            String newStatus = requestBody.get("status");
             if (organisationEmail == null) {
                 return ResponseEntity.status(401).body("User not authenticated");
             }
-            EventDTO eventDTO = eventService.updateEventStatus(id, newStatus, organisationEmail);
-            return ResponseEntity.ok(eventDTO);
+            EventDTO updatedEventDTO = eventService.updateEventStatus(id, newStatus, organisationEmail);
+            return ResponseEntity.ok(updatedEventDTO);
+        } catch (SecurityException e) {
+            return ResponseEntity.status(403).body("Access denied: " + e.getMessage());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Invalid status: " + e.getMessage());
-        } catch (SecurityException e) {
-            return ResponseEntity.status(403).body("Access denied");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating event status: " + e.getMessage());
         }
@@ -223,4 +218,20 @@ public class EventController {
             return ResponseEntity.status(500).body("Error deleting event: " + e.getMessage());
         }
     }
+
+    @PutMapping("/events/{id}/archive")
+    public ResponseEntity<?> archiveEvent(@PathVariable Long id, Principal principal) {
+        try {
+            if (principal == null || "anonymousUser".equalsIgnoreCase(principal.getName())) {
+                return ResponseEntity.status(401).body("User not authenticated.");
+            }
+            eventService.markAsArchived(id, principal.getName());
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Server error occurred.");
+        }
+    }
+
 }

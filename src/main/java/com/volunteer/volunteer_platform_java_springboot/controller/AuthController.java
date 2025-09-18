@@ -11,8 +11,11 @@ import com.volunteer.volunteer_platform_java_springboot.repository.AdminReposito
 import com.volunteer.volunteer_platform_java_springboot.repository.VolunteerRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.OrganisationRepository;
 import com.volunteer.volunteer_platform_java_springboot.service.VolunteerService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.session.FindByIndexNameSessionRepository;
@@ -37,22 +40,46 @@ public class AuthController {
     @Autowired
     private AdminRepository adminRepository;
 
-    private final VolunteerService volunteerService;
-
-
-    public AuthController(VolunteerService volunteerService) {
-        this.volunteerService = volunteerService;
-    }
-
     @PostMapping("/registerAsVolunteer")
-    public ResponseEntity<VolunteerDTO> registerVolunteer(@RequestBody VolunteerDTO dto) {
-        VolunteerDTO savedVolunteer = volunteerService.registerVolunteer(dto);
-        return ResponseEntity.ok(savedVolunteer);
-    }
+    public ResponseEntity<?> registerVolunteer(@RequestBody VolunteerDTO dto, HttpServletRequest request) {
+        // Create and save the new volunteer account
+        Volunteer volunteer = new Volunteer();
+        volunteer.setFullName(dto.getFullName());
+        volunteer.setEmail(dto.getEmail());
+        volunteer.setRole(UserRole.VOLUNTEER);
 
+        String hashedPassword = passwordEncoder.encode(dto.getPassword());
+        volunteer.setPassword(hashedPassword);
+        System.out.println("Encoded password: " + hashedPassword);
+
+        Volunteer savedVolunteer = volunteerRepository.save(volunteer);
+
+        // Aici este logica de creare a sesiunii, exact ca la login.
+        org.springframework.security.core.Authentication authentication =
+                new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
+                        savedVolunteer.getEmail(), null,
+                        java.util.List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority(savedVolunteer.getRole().name()))
+                );
+        org.springframework.security.core.context.SecurityContext context = org.springframework.security.core.context.SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authentication);
+        org.springframework.security.core.context.SecurityContextHolder.setContext(context);
+        jakarta.servlet.http.HttpSession session = request.getSession(true);
+        session.setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+        session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, savedVolunteer.getEmail());
+        request.changeSessionId();
+        session.setAttribute("userRole", savedVolunteer.getRole().name());
+        session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, savedVolunteer.getEmail());
+
+        return ResponseEntity.ok(Map.of(
+                "role", savedVolunteer.getRole().name(),
+                "id", savedVolunteer.getId(),
+                "fullName", savedVolunteer.getFullName(),
+                "email", savedVolunteer.getEmail()
+        ));
+    }
 
     @PostMapping("/registerAsOrganisation")
-    public ResponseEntity<Organisation> registerOrganisation(@RequestBody OrganisationDTO dto) {
+    public ResponseEntity<?> registerOrganisation(@RequestBody OrganisationDTO dto, jakarta.servlet.http.HttpServletRequest request) {
         Organisation organisation = new Organisation();
         organisation.setFullName(dto.getFullName());
         organisation.setEmail(dto.getEmail());
@@ -62,10 +89,30 @@ public class AuthController {
 
         String hashedPassword = passwordEncoder.encode(dto.getPassword());
         organisation.setPassword(hashedPassword);
-        System.out.println("Encoded password: " + hashedPassword);
 
         Organisation savedOrganisation = organisationRepository.save(organisation);
-        return ResponseEntity.ok(savedOrganisation);
+
+        org.springframework.security.core.Authentication authentication =
+                new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
+                        savedOrganisation.getEmail(), null,
+                        java.util.List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority(savedOrganisation.getRole().name()))
+                );
+        org.springframework.security.core.context.SecurityContext context = org.springframework.security.core.context.SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authentication);
+        org.springframework.security.core.context.SecurityContextHolder.setContext(context);
+        jakarta.servlet.http.HttpSession session = request.getSession(true);
+        session.setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+        session.setAttribute(org.springframework.session.FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, savedOrganisation.getEmail());
+        request.changeSessionId();
+        session.setAttribute("userRole", savedOrganisation.getRole().name());
+        session.setAttribute(org.springframework.session.FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, savedOrganisation.getEmail());
+
+        return ResponseEntity.ok(java.util.Map.of(
+                "role", savedOrganisation.getRole().name(),
+                "id", savedOrganisation.getId(),
+                "fullName", savedOrganisation.getFullName(),
+                "email", savedOrganisation.getEmail()
+        ));
     }
 
     @PostMapping("/login")
@@ -233,6 +280,14 @@ public class AuthController {
         }
     }
 
-
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok("Logged out successfully");
+    }
 
 }

@@ -2,7 +2,7 @@ import React from "react";
 import {Link, useNavigate} from "react-router-dom";
 import "../styles/navbar.css";
 import "../styles/main.css"
-
+import axios from "axios";
 
 export default function Navbar() {
 
@@ -21,10 +21,20 @@ export default function Navbar() {
                 ? "/adminDashboard"
                 : "/";
 
-    const handleLogout = () => {
-        localStorage.clear(); //sterge toate datele din localStorage
-        navigate("/");
+    const handleLogout = async () => {
+        try {
+            await axios.post("http://localhost:8080/api/logout", {}, {
+                withCredentials: true
+            });
+            localStorage.clear();
+            navigate("/");
+        } catch (error) {
+            console.error("Logout failed:", error);
+            localStorage.clear();
+            navigate("/");
+        }
     };
+
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-custom">

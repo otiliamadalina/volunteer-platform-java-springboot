@@ -42,11 +42,11 @@ export default function ManageEvents() {
     };
 
     const filteredEvents = events.filter(event => {
-        const matchesSearch = 
+        const matchesSearch =
             event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             event.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
             event.status.toLowerCase().includes(searchTerm.toLowerCase());
-        
+
         return matchesSearch;
     });
 
@@ -87,7 +87,7 @@ export default function ManageEvents() {
             });
 
             if (res.ok) {
-                setEvents(events.map(e => 
+                setEvents(events.map(e =>
                     e.id === eventId ? { ...e, status: newStatus } : e
                 ));
                 alert("Event status updated successfully!");
@@ -131,7 +131,7 @@ export default function ManageEvents() {
     return (
         <div className="card manage-card">
             <h3>Manage Events</h3>
-            
+
             <div className="search-container">
                 <input
                     type="text"
@@ -145,52 +145,52 @@ export default function ManageEvents() {
             <div className="table-container">
                 <table className="table table-striped">
                     <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Title</th>
-                            <th>Location</th>
-                            <th>Start Date</th>
-                            <th>Status</th>
-                            <th>Volunteers</th>
-                            <th>Actions</th>
-                        </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Location</th>
+                        <th>Start Date</th>
+                        <th>Status</th>
+                        <th>Volunteers</th>
+                        <th>Actions</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        {filteredEvents.map(event => (
-                            <tr key={event.id}>
-                                <td>{event.id}</td>
-                                <td>{event.title}</td>
-                                <td>{event.location}</td>
-                                <td>{formatDateTime(event.startDate)}</td>
-                                <td>
+                    {filteredEvents.map(event => (
+                        <tr key={event.id}>
+                            <td>{event.id}</td>
+                            <td>{event.title}</td>
+                            <td>{event.location}</td>
+                            <td>{formatDateTime(event.startDate)}</td>
+                            <td>
                                     <span className={`event-status ${getStatusBadgeClass(event.status)}`}>
                                         {event.status}
                                     </span>
-                                </td>
-                                <td>{event.currentVolunteers}/{event.maxVolunteers}</td>
-                                <td>
-                                    <button 
-                                        className="btn btn-sm btn-outline-primary me-2" 
-                                        onClick={() => handleView(event)}
-                                    >
-                                        View
-                                    </button>
-                                    <button 
-                                        className="btn btn-sm btn-outline-warning me-2" 
-                                        onClick={() => handleStatusChange(event.id, 'PUBLISHED')}
-                                        disabled={event.status === 'PUBLISHED'}
-                                    >
-                                        Publish
-                                    </button>
-                                    <button 
-                                        className="btn btn-sm btn-outline-danger" 
-                                        onClick={() => handleDelete(event.id)}
-                                    >
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
+                            </td>
+                            <td>{event.currentVolunteers}/{event.maxVolunteers}</td>
+                            <td>
+                                <button
+                                    className="btn btn-sm btn-outline-primary me-2"
+                                    onClick={() => handleView(event)}
+                                >
+                                    View
+                                </button>
+                                <button
+                                    className="btn btn-sm btn-outline-warning me-2"
+                                    onClick={() => handleStatusChange(event.id, 'PUBLISHED')}
+                                    disabled={event.status === 'PUBLISHED'}
+                                >
+                                    Publish
+                                </button>
+                                <button
+                                    className="btn btn-sm btn-outline-danger"
+                                    onClick={() => handleDelete(event.id)}
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
                     </tbody>
                 </table>
             </div>
@@ -241,7 +241,7 @@ export default function ManageEvents() {
                                         <strong>Location:</strong> {selectedEvent.location}
                                     </div>
                                     <div className="col-md-6">
-                                        <strong>Status:</strong> 
+                                        <strong>Status:</strong>
                                         <span className={`event-status ${getStatusBadgeClass(selectedEvent.status)} ms-2`}>
                                             {selectedEvent.status}
                                         </span>
@@ -287,5 +287,3 @@ export default function ManageEvents() {
         </div>
     );
 }
-
-

@@ -20,14 +20,16 @@ export default function VolunteerLeftPanel() {
                         My Events
                     </NavLink>
                 </li>
+
+                <li>
+                    <NavLink to="/volunteerDashboard/joinedEventsDetails" className={({ isActive }) => isActive ? "active" : undefined}>Joined events details</NavLink>
+                </li>
+
                 <li>
                     <NavLink to="/volunteerDashboard/participationHistory" className={({ isActive }) => isActive ? "active" : undefined}>Participation History</NavLink>
                 </li>
                 <li>
                     <NavLink to="/volunteerDashboard/editProfile" className={({ isActive }) => isActive ? "active" : undefined}>Edit Profile</NavLink>
-                </li>
-                <li>
-                    <NavLink to="/volunteerDashboard/calendarScheduler" className={({ isActive }) => isActive ? "active" : undefined}>Calendar (Scheduler)</NavLink>
                 </li>
 
 

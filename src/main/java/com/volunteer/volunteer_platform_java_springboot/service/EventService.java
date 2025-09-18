@@ -1,10 +1,7 @@
 package com.volunteer.volunteer_platform_java_springboot.service;
 
 import com.volunteer.volunteer_platform_java_springboot.dto.EventDTO;
-import com.volunteer.volunteer_platform_java_springboot.model.Event;
-import com.volunteer.volunteer_platform_java_springboot.model.EventStatus;
-import com.volunteer.volunteer_platform_java_springboot.model.EventVolunteer;
-import com.volunteer.volunteer_platform_java_springboot.model.Volunteer;
+import com.volunteer.volunteer_platform_java_springboot.model.*;
 import com.volunteer.volunteer_platform_java_springboot.repository.EventRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.EventVolunteerRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.OrganisationRepository;
@@ -54,6 +51,7 @@ public class EventService {
             return null;
         }
         EventDTO dto = new EventDTO();
+        dto.setId(event.getId());
         dto.setTitle(event.getTitle());
         dto.setDescription(event.getDescription());
         dto.setLocation(event.getLocation());
@@ -62,11 +60,19 @@ public class EventService {
         dto.setMaxVolunteers(event.getMaxVolunteers());
         dto.setOrganisationEmail(event.getOrganisationEmail());
         dto.setImageUrl(event.getImageUrl());
+        dto.setStatus(event.getStatus());
+        dto.setCurrentVolunteers(event.getCurrentVolunteers());
+        dto.setCreatedAt(event.getCreatedAt());
+
+        Organisation organisation = organisationRepository.findByEmail(event.getOrganisationEmail());
+        if (organisation != null) {
+            dto.setOrganisationName(organisation.getFullName());
+        }
+
         return dto;
     }
 
     // C - CREATE
-    // Am refăcut metoda să primească parametrii individuali
     public EventDTO createEvent(
             String title,
             String description,
@@ -187,7 +193,6 @@ public class EventService {
         return true;
     }
 
-    // Metode de business logică pentru voluntari
     public List<EventDTO> getEventsJoinedByVolunteer(String email) {
         List<Long> eventIds = eventVolunteerRepository.findEventIdsByVolunteerEmail(email);
         return eventRepository.findAllById(eventIds).stream()
@@ -215,12 +220,20 @@ public class EventService {
         if (alreadyJoined) {
             throw new RuntimeException("Volunteer already joined");
         }
+
+        Organisation organisation = organisationRepository.findByEmail(event.getOrganisationEmail());
+        String organisationName = (organisation != null) ? organisation.getFullName() : "Unknown Organisation";
+
+
         EventVolunteer ev = new EventVolunteer();
         ev.setEvent(event);
         ev.setVolunteer(volunteer);
         ev.setOrganisationEmail(event.getOrganisationEmail());
         ev.setVolunteerEmail(volunteer.getEmail());
         ev.setJoinedAt(LocalDateTime.now());
+        ev.setOrganisationName(organisationName);
+        ev.setStatus(EventVolunteerStatus.ACTIVE);
+
         eventVolunteerRepository.save(ev);
 
         event.setCurrentVolunteers(event.getCurrentVolunteers() + 1);
@@ -253,7 +266,6 @@ public class EventService {
     }
 
 
-    // Metode private pentru manipulare fișiere
     private String saveImage(MultipartFile image) throws IOException {
         Path uploadPath = Paths.get(UPLOAD_DIR).toAbsolutePath();
         if (!Files.exists(uploadPath)) {
@@ -274,4 +286,16 @@ public class EventService {
             Files.deleteIfExists(filePath);
         }
     }
+
+    public void markAsArchived(Long eventId, String volunteerEmail) {
+        EventVolunteer participationRecord = eventVolunteerRepository.findByEventIdAndVolunteerEmail(eventId, volunteerEmail);
+
+        if (participationRecord != null) {
+            participationRecord.setStatus(EventVolunteerStatus.ARCHIVED);
+            eventVolunteerRepository.save(participationRecord);
+        } else {
+            throw new RuntimeException("Participation record not found.");
+        }
+    }
+
 }
