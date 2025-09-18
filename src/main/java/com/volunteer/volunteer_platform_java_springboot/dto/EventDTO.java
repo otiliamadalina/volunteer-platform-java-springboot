@@ -16,6 +16,7 @@ public class EventDTO {
     private EventStatus status;
     private int currentVolunteers;
     private LocalDateTime createdAt;
+    private String organisationName;
 
     // Constructors
     public EventDTO() {}
@@ -128,6 +129,12 @@ public class EventDTO {
         this.createdAt = createdAt;
     }
 
+    public String getOrganisationName() {
+        return organisationName;
+    }
 
+    public void setOrganisationName(String organisationName) {
+        this.organisationName = organisationName;
+    }
 
 }

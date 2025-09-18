@@ -47,8 +47,8 @@ public class Event {
     public Event() {}
 
     public Event(String title, String description, String location,
-                 LocalDateTime startDate, LocalDateTime endDate,
-                 Integer maxVolunteers, String organisationEmail, String imageUrl) {
+                LocalDateTime startDate, LocalDateTime endDate,
+                Integer maxVolunteers, String organisationEmail, String imageUrl) {
         this.title = title;
         this.description = description;
         this.location = location;

@@ -61,8 +61,14 @@ public class EventService {
         dto.setOrganisationEmail(event.getOrganisationEmail());
         dto.setImageUrl(event.getImageUrl());
         dto.setStatus(event.getStatus());
-        dto.setCurrentVolunteers(event.getCurrentVolunteers()); 
+        dto.setCurrentVolunteers(event.getCurrentVolunteers());
         dto.setCreatedAt(event.getCreatedAt());
+
+        Organisation organisation = organisationRepository.findByEmail(event.getOrganisationEmail());
+        if (organisation != null) {
+            dto.setOrganisationName(organisation.getFullName());
+        }
+
         return dto;
     }
 
@@ -215,12 +221,18 @@ public class EventService {
         if (alreadyJoined) {
             throw new RuntimeException("Volunteer already joined");
         }
+
+        Organisation organisation = organisationRepository.findByEmail(event.getOrganisationEmail());
+        String organisationName = (organisation != null) ? organisation.getFullName() : "Unknown Organisation";
+
+
         EventVolunteer ev = new EventVolunteer();
         ev.setEvent(event);
         ev.setVolunteer(volunteer);
         ev.setOrganisationEmail(event.getOrganisationEmail());
         ev.setVolunteerEmail(volunteer.getEmail());
         ev.setJoinedAt(LocalDateTime.now());
+        ev.setOrganisationName(organisationName);
         ev.setStatus(EventVolunteerStatus.ACTIVE);
 
         eventVolunteerRepository.save(ev);

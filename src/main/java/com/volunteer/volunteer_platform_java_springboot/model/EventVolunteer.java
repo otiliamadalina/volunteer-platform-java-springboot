@@ -33,6 +33,9 @@ public class EventVolunteer {
 
     private LocalDateTime joinedAt;
 
+    @Column(name = "organisation_name", nullable = false)
+    private String organisationName;
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -88,5 +91,13 @@ public class EventVolunteer {
 
     public void setJoinedAt(LocalDateTime joinedAt) {
         this.joinedAt = joinedAt;
+    }
+
+    public String getOrganisationName() {
+        return organisationName;
+    }
+
+    public void setOrganisationName(String organisationName) {
+        this.organisationName = organisationName;
     }
 }
