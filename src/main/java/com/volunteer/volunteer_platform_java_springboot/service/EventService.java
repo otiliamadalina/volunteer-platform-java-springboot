@@ -1,10 +1,7 @@
 package com.volunteer.volunteer_platform_java_springboot.service;
 
 import com.volunteer.volunteer_platform_java_springboot.dto.EventDTO;
-import com.volunteer.volunteer_platform_java_springboot.model.Event;
-import com.volunteer.volunteer_platform_java_springboot.model.EventStatus;
-import com.volunteer.volunteer_platform_java_springboot.model.EventVolunteer;
-import com.volunteer.volunteer_platform_java_springboot.model.Volunteer;
+import com.volunteer.volunteer_platform_java_springboot.model.*;
 import com.volunteer.volunteer_platform_java_springboot.repository.EventRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.EventVolunteerRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.OrganisationRepository;
@@ -63,6 +60,9 @@ public class EventService {
         dto.setMaxVolunteers(event.getMaxVolunteers());
         dto.setOrganisationEmail(event.getOrganisationEmail());
         dto.setImageUrl(event.getImageUrl());
+        dto.setStatus(event.getStatus());
+        dto.setCurrentVolunteers(event.getCurrentVolunteers()); 
+        dto.setCreatedAt(event.getCreatedAt());
         return dto;
     }
 
@@ -221,6 +221,8 @@ public class EventService {
         ev.setOrganisationEmail(event.getOrganisationEmail());
         ev.setVolunteerEmail(volunteer.getEmail());
         ev.setJoinedAt(LocalDateTime.now());
+        ev.setStatus(EventVolunteerStatus.ACTIVE);
+
         eventVolunteerRepository.save(ev);
 
         event.setCurrentVolunteers(event.getCurrentVolunteers() + 1);
@@ -274,4 +276,26 @@ public class EventService {
             Files.deleteIfExists(filePath);
         }
     }
+
+    public void deleteFromHistory(Long eventId, String volunteerEmail) {
+        EventVolunteer participationRecord = eventVolunteerRepository.findByEventIdAndVolunteerEmail(eventId, volunteerEmail);
+
+        if (participationRecord != null) {
+            eventVolunteerRepository.delete(participationRecord);
+        } else {
+            throw new RuntimeException("Participation record not found.");
+        }
+    }
+
+    public void markAsArchived(Long eventId, String volunteerEmail) {
+        EventVolunteer participationRecord = eventVolunteerRepository.findByEventIdAndVolunteerEmail(eventId, volunteerEmail);
+
+        if (participationRecord != null) {
+            participationRecord.setStatus(EventVolunteerStatus.ARCHIVED);
+            eventVolunteerRepository.save(participationRecord);
+        } else {
+            throw new RuntimeException("Participation record not found.");
+        }
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.volunteer.volunteer_platform_java_springboot.dto;
 
+import com.volunteer.volunteer_platform_java_springboot.model.EventStatus;
+
 import java.time.LocalDateTime;
 
 public class EventDTO {
@@ -11,6 +13,9 @@ public class EventDTO {
     private Integer maxVolunteers;
     private String organisationEmail;
     private String imageUrl;
+    private EventStatus status;
+    private int currentVolunteers;
+    private LocalDateTime createdAt;
 
     // Constructors
     public EventDTO() {}
@@ -26,6 +31,7 @@ public class EventDTO {
         this.maxVolunteers = maxVolunteers;
         this.organisationEmail = organisationEmail;
         this.imageUrl = imageUrl;
+
     }
 
     // Getters and Setters
@@ -101,5 +107,27 @@ public class EventDTO {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public EventStatus getStatus() {
+        return status;
+    }
+    public void setStatus(EventStatus status) {
+        this.status = status;
+    }
+    public Integer getCurrentVolunteers() {
+        return currentVolunteers;
+    }
+    public void setCurrentVolunteers(Integer currentVolunteers) {
+        this.currentVolunteers = currentVolunteers;
+    }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+
 
 }

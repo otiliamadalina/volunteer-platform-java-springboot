@@ -15,13 +15,12 @@ export default function ParticipationHistory() {
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                // Rămâne neschimbat, deoarece endpoint-ul "joined" este în EventController
                 const response = await axios.get("http://localhost:8080/api/org/events/joined", { withCredentials: true });
 
                 const now = new Date();
                 const pastEvents = response.data.filter(event => {
                     const endDate = new Date(event.endDate);
-                    return endDate < now;
+                    return endDate < now && event.participationStatus !== "ARCHIVED";
                 });
 
                 setEvents(pastEvents);
