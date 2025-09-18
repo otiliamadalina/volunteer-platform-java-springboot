@@ -21,7 +21,7 @@ import VolunteerDashboard from "./pages/volunteer/volunteerDashboard";
 import VolunteerLayout from "./pages/volunteer/volunteerLayout";
 import ParticipationHistory from "./pages/volunteer/participationHistory";
 import EditProfile from "./pages/volunteer/editProfile";
-import CalendarScheduler from "./pages/volunteer/calendarScheduler";
+import JoinedEventsDetails from "./pages/volunteer/joinedEventsDetails";
 import OrganisationDashboard from "./pages/org/organisationDashboard";
 import EventsPublic from "./pages/home/events";
 import OrgLayout from "./pages/org/orgLayout";
@@ -67,17 +67,6 @@ function App() {
                         <Route path="manageFeedbacks" element={<ManageFeedbacks/>} />
                     </Route>
 
-                    <Route
-                        path="/organisationDashboard"
-                        element={<OrgLayout />}
-                    >
-                        <Route index element={<OrganisationDashboard />} />
-                        <Route path="createEvent" element={<CreateEvent />} />
-                        <Route path="manageEvents" element={<OrgManageEvents />} />
-                        <Route path="reports" element={<Reports />} />
-                        <Route path="notifyVolunteers" element={<NotifyVolunteers />} />
-                    </Route>
-
 
                     <Route
                         path="/organisationDashboard"
@@ -105,7 +94,7 @@ function App() {
                         <Route index element={<VolunteerDashboard />} />
                         <Route path="participationHistory" element={<ParticipationHistory />} />
                         <Route path="editProfile" element={<EditProfile />} />
-                        <Route path="calendarScheduler" element={<CalendarScheduler />} />
+                        <Route path="joinedEventsDetails" element={<JoinedEventsDetails />} />
                         <Route path="joinedEvents" element={<JoinedEvents />} />
 
                     </Route>

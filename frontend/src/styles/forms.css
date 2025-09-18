@@ -1,0 +1,156 @@
+.edit-profile-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    width: 100%;
+    max-width: 1000px;
+    margin: 2rem auto;
+}
+
+.edit-profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.edit-profile-form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-profile-form-group label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.edit-profile-form-group input,
+.edit-profile-form-group textarea,
+.edit-profile-form-group select {
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.edit-profile-form-group input:focus,
+.edit-profile-form-group textarea:focus,
+.edit-profile-form-group select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.edit-profile-btn {
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.edit-profile-btn:active {
+    transform: scale(0.98);
+}
+
+.edit-profile-btn-primary {
+    background-color: #007bff;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 123, 255, 0.2);
+}
+
+.edit-profile-btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.edit-profile-btn-outline-secondary {
+    background-color: transparent;
+    border: 1px solid #6c757d;
+    color: #6c757d;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.edit-profile-btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: white;
+}
+
+.edit-profile-message-box {
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+    font-weight: 500;
+}
+
+.edit-profile-message-box.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.edit-profile-message-box.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.section-container {
+    padding: 1.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.section-container h4 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #444;
+    font-size: 1.25rem;
+}
+
+.edit-profile-row-container {
+     display: flex;
+     gap: 2rem; /* Spațiul dintre cele două secțiuni */
+     flex-wrap: wrap; /* Permite secțiunilor să treacă pe rândul următor pe ecrane mici */
+     justify-content: space-between; /* Distribuie spațiul uniform */
+ }
+
+.edit-profile-row-container .section-container {
+    flex: 1; /* Permite fiecărei secțiuni să ocupe spațiu egal */
+    min-width: 300px; /* Asigură că nu devin prea înguste pe ecrane mici */
+}
+
+/* Restul stilurilor rămân neschimbate */
+
+/* Stil nou pentru a crea o secțiune vizuală */
+.section-container {
+    padding: 1.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.section-container h4 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #444;
+    font-size: 1.25rem;
+}
+
+/* Stilizarea containerului pentru butoane și mesaje */
+.edit-profile-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
