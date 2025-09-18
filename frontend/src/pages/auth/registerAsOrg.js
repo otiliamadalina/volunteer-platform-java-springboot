@@ -6,9 +6,6 @@ export default function RegisterAsOrg() {
 
     const navigate = useNavigate();
 
-    {/* stare - retine informatii care se pot schimba in timp, in functie de ce face utilizatorul */ }
-    {/* am creat o stare deoarece vrem sa retinem datele organizatiei */ }
-
     const [organisation, setOrganisation] = useState({
         fullName: "",
         email: "",
@@ -18,10 +15,8 @@ export default function RegisterAsOrg() {
         confirmPassword: ""
     });
 
-    // ia valorile din obiect si le pune in variabile separate
     const { fullName, email, contactNumber, location, password, confirmPassword } = organisation;
 
-    // functie care se apeleaza cand utilizatorul modifica un input
     const onInputChange = (e) => {
         setOrganisation({
             ...organisation,
@@ -29,7 +24,6 @@ export default function RegisterAsOrg() {
         });
     };
 
-    // functie care se apeleaza la submit
     const onSubmit = async (e) => {
         e.preventDefault();
 
@@ -39,23 +33,35 @@ export default function RegisterAsOrg() {
         }
 
         try {
-            const res = await axios.post("http://localhost:8080/api/registerAsOrganisation", {
-                fullName,
-                email,
-                contactNumber,
-                location,
-                password
-            });
+            const response = await axios.post(
+                "http://localhost:8080/api/registerAsOrganisation",
+                {
+                    fullName,
+                    email,
+                    contactNumber,
+                    location,
+                    password
+                },
+                { withCredentials: true }
+            );
 
-            const { fullName: name, role } = res.data;
+            if (response.data && response.data.fullName && response.data.role) {
+                localStorage.setItem("userName", response.data.fullName);
+                localStorage.setItem("role", response.data.role);
+                alert("Registration successful!");
+                navigate("/");
+            } else {
+                alert("Registration successful, but login data was not received. Please log in.");
+                navigate("/login");
+            }
 
-            localStorage.setItem("userName", name);
-            localStorage.setItem("role", role);
-
-            navigate("/");
         } catch (error) {
             console.error("Registration error:", error);
-            alert("An error occurred. Please try again.");
+            if (error.response && error.response.data) {
+                alert("An error occurred during registration: " + error.response.data);
+            } else {
+                alert("An error occurred. Please try again.");
+            }
         }
     };
 
