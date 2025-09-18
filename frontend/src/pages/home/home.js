@@ -1,19 +1,28 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Link, useParams} from "react-router-dom";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import "../../styles/home.css";
-import "../../styles/events.css"; // Import the events CSS for the card styling
+import "../../styles/events.css";
 
 export function Home() {
     const [latestEvents, setLatestEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
+    const defaultImages = [
+        "/assets/motivational-1.png",
+        "/assets/motivational-3.jpg",
+        "/assets/motivational-2.jpg",
+        "/assets/motivational-4.png",
+    ];
+
     const fetchLatestEvents = async () => {
         setLoading(true);
         try {
-            const res = await axios.get("http://localhost:8080/api/org/public/events"); // This endpoint should return all events or be updated to return a limited number
-            // Filter the first 3 events from the response
+            const res = await axios.get("http://localhost:8080/api/org/public/events");
             const firstThreeEvents = Array.isArray(res.data) ? res.data.slice(0, 3) : [];
             setLatestEvents(firstThreeEvents);
             setError(null);
@@ -29,12 +38,17 @@ export function Home() {
         fetchLatestEvents();
     }, []);
 
-    // Placeholder data and useEffect are not needed anymore as we are fetching events
-    const [ngoImages, setNgoImages] = useState([]);
-    useEffect(() => {
-        // Your logic for fetching NGO images here
-    }, []);
-
+    //TO DO: PUTEM FACE CAROUSELUL DINAMIC controlat de admin
+    const carouselSettings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        cssEase: "linear"
+    };
 
     if (loading) return <div className="loading-container"><p>Loading events...</p></div>;
     if (error) return <div className="error-container"><p>{error}</p></div>;
@@ -53,16 +67,18 @@ export function Home() {
                 </div>
             </div>
 
-
-            <section className="hero spaced-section">
-                <h1>Make a Difference Today</h1>
-                <p>Join our community of volunteers and help build a better world.</p>
-                <div className="hero-buttons">
-                    <Link to="/volunteerOrOrg" className="btn nav-btn-login me-2 ">Get Started</Link>
-                    <Link to="/events" className="btn nav-btn-login me-2 ">Explore Events</Link>
-                </div>
+            <section className="carousel-section">
+                <Slider {...carouselSettings}>
+                    {defaultImages.map((src, index) => (
+                        <div key={index} className="carousel-slide">
+                            <img
+                                src={src}
+                                alt={`Default Image ${index + 1}`}
+                            />
+                        </div>
+                    ))}
+                </Slider>
             </section>
-
 
             <section className="latest-events-section spaced-section">
                 <h2>Latest Events</h2>
@@ -92,6 +108,14 @@ export function Home() {
             </section>
 
 
+            <section className="hero spaced-section">
+                <h1>Make a Difference Today</h1>
+                <p>Join our community of volunteers and help build a better world.</p>
+                <div className="hero-buttons">
+                    <Link to="/volunteerOrOrg" className="btn nav-btn-login me-2 ">Get Started</Link>
+                    <Link to="/events" className="btn nav-btn-login me-2 ">Explore Events</Link>
+                </div>
+            </section>
         </>
     );
 }
