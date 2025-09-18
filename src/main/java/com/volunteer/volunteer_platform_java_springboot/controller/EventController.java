@@ -154,7 +154,6 @@ public class EventController {
 
     @GetMapping("/events/joined")
     public ResponseEntity<?> getJoinedEvents(Principal principal) {
-        System.out.println("=== GET /api/events/joined endpoint hit ===");
         try {
             if (principal == null) {
                 System.out.println("DEBUG: Principal is null, returning unauthorized.");
@@ -176,8 +175,9 @@ public class EventController {
     public ResponseEntity<?> unjoinEvent(@PathVariable Long id, Principal principal) {
         try {
             String volunteerEmail = principal.getName();
-            eventService.unjoinEvent(id, volunteerEmail);
-            return ResponseEntity.ok(Map.of("message", "Unjoined successfully"));
+            // Call the service method and get the updated counts
+            Map<String, Integer> updatedCounts = eventService.unjoinEvent(id, volunteerEmail);
+            return ResponseEntity.ok(updatedCounts);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         } catch (Exception e) {
@@ -197,17 +197,18 @@ public class EventController {
     }
 
     @PostMapping("/events/{id}/join")
-    public ResponseEntity<?> joinEvent(@PathVariable Long id, Principal principal, HttpServletRequest request) {
+    public ResponseEntity<?> joinEvent(@PathVariable Long id, Principal principal) {
         try {
-            String volunteerEmail = principal.getName(); // voluntarul logat
-            eventService.joinEvent(id, volunteerEmail);  // apel la service
-            return ResponseEntity.ok(Map.of("message", "Joined successfully"));
+            String volunteerEmail = principal.getName();
+            Map<String, Integer> result = eventService.joinEvent(id, volunteerEmail);
+            return ResponseEntity.ok(result);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Map.of("error", "Server error"));
         }
     }
+
 
 
 

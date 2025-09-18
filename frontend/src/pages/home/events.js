@@ -10,33 +10,56 @@ export default function EventsPublic() {
     const [joinedEvents, setJoinedEvents] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(null);
 
-    const role = useMemo(() => (typeof window !== "undefined" ? localStorage.getItem("role") : null), []);
+    const role = useMemo(() => {
+        if (typeof window !== "undefined") {
+            return localStorage.getItem("role");
+        }
+        return null;
+    }, []);
 
-    useEffect(() => {
-        const fetchEvents = async () => {
-            setLoading(true);
-            setError("");
+    const fetchPublicEvents = async () => {
+        setLoading(true);
+        try {
+            const res = await fetch("http://localhost:8080/api/org/public/events", {
+                method: "GET",
+                credentials: "include"
+            });
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status}`);
+            }
+            const data = await res.json();
+            setEvents(Array.isArray(data) ? data : []);
+        } catch (e) {
+            setError(e.message || "Failed to load events");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchJoinedEvents = async () => {
+        if (role === "VOLUNTEER") {
             try {
-                const res = await fetch("http://localhost:8080/api/org/public/events", {
+                const res = await fetch("http://localhost:8080/api/org/events/joined", {
                     method: "GET",
                     credentials: "include"
                 });
-                if (!res.ok) {
-                    const t = await res.text();
-                    throw new Error(t || `HTTP ${res.status}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    const ids = data.map(event => event.id);
+                    setJoinedEvents(ids);
                 }
-                const data = await res.json();
-                setEvents(Array.isArray(data) ? data : []);
             } catch (e) {
-                setError(e.message || "Failed to load events");
-            } finally {
-                setLoading(false);
+                console.error("Failed to fetch joined events", e);
             }
-        };
-        fetchEvents();
-    }, []);
+        }
+    };
 
-    const handleJoin = async (eventId, idx) => {
+    useEffect(() => {
+        fetchPublicEvents();
+        fetchJoinedEvents();
+    }, [role]);
+
+    const handleJoin = async (eventId) => {
         if (joinedEvents.includes(eventId)) return;
 
         try {
@@ -48,21 +71,15 @@ export default function EventsPublic() {
                 const t = await res.text();
                 throw new Error(t || `HTTP ${res.status}`);
             }
-            const data = await res.json();
-            setEvents(prev => {
-                const copy = [...prev];
-                copy[idx] = {...copy[idx], currentVolunteers: data.currentVolunteers};
-                return copy;
-            });
 
-            setJoinedEvents(prev => [...prev, eventId]);
-
+            await fetchPublicEvents();
+            await fetchJoinedEvents();
         } catch (e) {
             alert(e.message || "Failed to join event");
         }
     };
 
-    const handleUnjoin = async (eventId, idx) => {
+    const handleUnjoin = async (eventId) => {
         try {
             const res = await fetch(`http://localhost:8080/api/org/events/${eventId}/unjoin`, {
                 method: "POST",
@@ -72,18 +89,13 @@ export default function EventsPublic() {
                 const t = await res.text();
                 throw new Error(t || `HTTP ${res.status}`);
             }
-            const data = await res.json();
-            setEvents(prev => {
-                const copy = [...prev];
-                copy[idx] = {...copy[idx], currentVolunteers: data.currentVolunteers};
-                return copy;
-            });
-            setJoinedEvents(prev => prev.filter(id => id !== eventId));
+
+            await fetchPublicEvents();
+            await fetchJoinedEvents();
         } catch (e) {
             alert(e.message || "Failed to unjoin event");
         }
     };
-
 
     if (loading) return <div className="events-loading"><p>Loading events…</p></div>;
     if (error) return <div className="events-error"><p>{error}</p></div>;
@@ -95,7 +107,7 @@ export default function EventsPublic() {
                 <p className="events-empty">No events yet.</p>
             ) : (
                 <div className="events-grid">
-                    {events.map((ev, idx) => (
+                    {events.map((ev) => (
                         <div key={ev.id} className="event-card">
                             {ev.imageUrl ? (
                                 <img src={`http://localhost:8080${ev.imageUrl}`} alt={ev.title}
@@ -127,15 +139,13 @@ export default function EventsPublic() {
                                         <button
                                             onClick={() =>
                                                 joinedEvents.includes(ev.id)
-                                                    ? handleUnjoin(ev.id, idx)
-                                                    : handleJoin(ev.id, idx)
+                                                    ? handleUnjoin(ev.id)
+                                                    : handleJoin(ev.id)
                                             }
                                             className="event-join-btn"
                                         >
                                             {joinedEvents.includes(ev.id) ? "Unjoin" : "Join Event"}
                                         </button>
-
-
                                     </div>
                                 )}
                             </div>
@@ -144,20 +154,17 @@ export default function EventsPublic() {
                 </div>
             )}
 
-            {/* Custom Modal */}
             {openModal && (
                 <div className="custom-modal-overlay">
                     <div className="custom-modal">
                         <h2>Event Details</h2>
                         <p style={{whiteSpace: "pre-line"}}>{modalText}</p>
-
                         {role === "VOLUNTEER" && selectedEvent && (
                             <div className="event-dates">
                                 <p><strong>Start Date:</strong> {new Date(selectedEvent.startDate).toLocaleString()}</p>
                                 <p><strong>End Date:</strong> {new Date(selectedEvent.endDate).toLocaleString()}</p>
                             </div>
                         )}
-
                         <button className="modal-close-btn" onClick={() => setOpenModal(false)}>Close</button>
                     </div>
                 </div>
@@ -165,6 +172,3 @@ export default function EventsPublic() {
         </div>
     );
 }
-
-
-

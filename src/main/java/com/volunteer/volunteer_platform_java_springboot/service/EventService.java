@@ -153,20 +153,6 @@ public class EventService {
         return eventRepository.findByStatusOrderByStartDateAsc(EventStatus.PUBLISHED);
     }
 
-    public Map<String, Integer> joinEvent(Long id) {
-        Event event = eventRepository.findById(id).orElse(null);
-        if (event == null) return null;
-        if (event.getStatus() != EventStatus.PUBLISHED) {
-            throw new IllegalStateException("Event is not published");
-        }
-        if (event.getCurrentVolunteers() >= event.getMaxVolunteers()) {
-            throw new IllegalStateException("Event is full");
-        }
-        event.setCurrentVolunteers(event.getCurrentVolunteers() + 1);
-        eventRepository.save(event);
-        return Map.of("currentVolunteers", event.getCurrentVolunteers(), "maxVolunteers", event.getMaxVolunteers());
-    }
-
     public Event getEventForOrganisation(Long id, String organisationEmail) {
         Event event = eventRepository.findById(id).orElse(null);
         if (event == null) return null;
@@ -242,22 +228,37 @@ public class EventService {
     }
 
 
-    public void joinEvent(Long eventId, String volunteerEmail) {
+    public Map<String, Integer> joinEvent(Long eventId, String volunteerEmail) {
         // 1. Gasește event-ul
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
-        // 2. Gasește voluntarul
+        // 2. Verifica statusul
+        if (event.getStatus() != EventStatus.PUBLISHED) {
+            throw new IllegalStateException("Event is not published");
+        }
+
+        // 3. Verifica ddaca e plin
+        if (event.getCurrentVolunteers() >= event.getMaxVolunteers()) {
+            throw new IllegalStateException("Event is full");
+        }
+
+        // 4. Gasestevoluntarul
         Volunteer volunteer = volunteerRepository.findByEmail(volunteerEmail);
         if (volunteer == null) {
             throw new RuntimeException("Volunteer not found");
         }
 
-        // 3. Verifica daca voluntarul deja s-a inscris
-        eventVolunteerRepository.findByEventIdAndVolunteerId(event.getId(), volunteer.getId())
-                .ifPresent(ev -> { throw new RuntimeException("Volunteer already joined"); });
+        // 5. Verifica daca e deja înscris
+        boolean alreadyJoined = eventVolunteerRepository
+                .findByEventIdAndVolunteerId(event.getId(), volunteer.getId())
+                .isPresent();
 
-        // 4. create EventVolunteer
+        if (alreadyJoined) {
+            throw new RuntimeException("Volunteer already joined");
+        }
+
+        // 6. Creeaza EventVolunteer
         EventVolunteer ev = new EventVolunteer();
         ev.setEvent(event);
         ev.setVolunteer(volunteer);
@@ -267,18 +268,43 @@ public class EventService {
 
         eventVolunteerRepository.save(ev);
 
-        // 5. Update currentVolunteers
+        // 7. Actualizeazanumarul de voluntari
         event.setCurrentVolunteers(event.getCurrentVolunteers() + 1);
         eventRepository.save(event);
+
+        // 8. Returneazacifrele actualizate
+        return Map.of(
+                "currentVolunteers", event.getCurrentVolunteers(),
+                "maxVolunteers", event.getMaxVolunteers()
+        );
     }
 
-    public void unjoinEvent(Long eventId, String volunteerEmail) {
+    public Map<String, Integer> unjoinEvent(Long eventId, String volunteerEmail) {
+        // 1. Find the event
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new RuntimeException("Event not found"));
+
+        // 2. Find the join record
         EventVolunteer ev = eventVolunteerRepository.findByEventIdAndVolunteerEmail(eventId, volunteerEmail);
+
         if (ev != null) {
+            // 3. Delete the join record
             eventVolunteerRepository.delete(ev);
+
+            // 4. Decrement the volunteer count on the event
+            if (event.getCurrentVolunteers() > 0) {
+                event.setCurrentVolunteers(event.getCurrentVolunteers() - 1);
+                eventRepository.save(event);
+            }
         } else {
             throw new RuntimeException("Volunteer is not joined to this event");
         }
+
+        // 5. Return the updated counts for the frontend
+        return Map.of(
+                "currentVolunteers", event.getCurrentVolunteers(),
+                "maxVolunteers", event.getMaxVolunteers()
+        );
     }
 
 
