@@ -14,6 +14,12 @@ export default function VolunteerLeftPanel() {
                 <li>
                     <NavLink to="/volunteerDashboard" className={({ isActive }) => isActive ? "active" : undefined}>Dashboard</NavLink>
                 </li>
+
+                <li>
+                    <NavLink to="/volunteerDashboard/joinedEvents" className={({ isActive }) => isActive ? "active" : undefined}>
+                        My Events
+                    </NavLink>
+                </li>
                 <li>
                     <NavLink to="/volunteerDashboard/participationHistory" className={({ isActive }) => isActive ? "active" : undefined}>Participation History</NavLink>
                 </li>
@@ -23,6 +29,8 @@ export default function VolunteerLeftPanel() {
                 <li>
                     <NavLink to="/volunteerDashboard/calendarScheduler" className={({ isActive }) => isActive ? "active" : undefined}>Calendar (Scheduler)</NavLink>
                 </li>
+
+
             </ul>
         </div>
     );

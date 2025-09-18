@@ -62,7 +62,7 @@ export default function Navbar() {
                         </li>
 
                         <li className="nav-item">
-                            <Link className="nav-link custom-link" to="/statistic">Statistic</Link>
+                            <Link className="nav-link custom-link" to="/contact">Contact</Link>
                         </li>
 
                         <li className="nav-item">

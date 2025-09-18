@@ -2,6 +2,7 @@ package com.volunteer.volunteer_platform_java_springboot.model;
 
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "volunteer")
@@ -18,6 +19,9 @@ public class Volunteer {
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
     public UserRole getRole() {
         return role;
@@ -60,5 +64,17 @@ public class Volunteer {
         this.password = password;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 
 }

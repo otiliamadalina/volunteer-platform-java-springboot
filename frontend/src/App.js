@@ -23,11 +23,13 @@ import ParticipationHistory from "./pages/volunteer/participationHistory";
 import EditProfile from "./pages/volunteer/editProfile";
 import CalendarScheduler from "./pages/volunteer/calendarScheduler";
 import OrganisationDashboard from "./pages/org/organisationDashboard";
+import EventsPublic from "./pages/home/events";
 import OrgLayout from "./pages/org/orgLayout";
 import CreateEvent from "./pages/org/createEvent";
 import OrgManageEvents from "./pages/org/manageEvents";
 import Reports from "./pages/org/reports";
 import NotifyVolunteers from "./pages/org/notifyVolunteers";
+import JoinedEvents from "./pages/volunteer/joinedEvents";
 
 function App() {
     return (
@@ -66,18 +68,16 @@ function App() {
                     </Route>
 
                     <Route
-                        path="/volunteerDashboard"
-                        element={
-                            <ProtectedRoute allowedRole="VOLUNTEER">
-                                <VolunteerLayout />
-                            </ProtectedRoute>
-                        }
+                        path="/organisationDashboard"
+                        element={<OrgLayout />}
                     >
-                        <Route index element={<VolunteerDashboard />} />
-                        <Route path="participationHistory" element={<ParticipationHistory />} />
-                        <Route path="editProfile" element={<EditProfile />} />
-                        <Route path="calendarScheduler" element={<CalendarScheduler />} />
+                        <Route index element={<OrganisationDashboard />} />
+                        <Route path="createEvent" element={<CreateEvent />} />
+                        <Route path="manageEvents" element={<OrgManageEvents />} />
+                        <Route path="reports" element={<Reports />} />
+                        <Route path="notifyVolunteers" element={<NotifyVolunteers />} />
                     </Route>
+
 
                     <Route
                         path="/organisationDashboard"
@@ -94,7 +94,26 @@ function App() {
                         <Route path="notifyVolunteers" element={<NotifyVolunteers />} />
                     </Route>
 
+                    <Route
+                        path="/volunteerDashboard"
+                        element={
+                            <ProtectedRoute allowedRole="VOLUNTEER">
+                                <VolunteerLayout />
+                            </ProtectedRoute>
+                        }
+                    >
+                        <Route index element={<VolunteerDashboard />} />
+                        <Route path="participationHistory" element={<ParticipationHistory />} />
+                        <Route path="editProfile" element={<EditProfile />} />
+                        <Route path="calendarScheduler" element={<CalendarScheduler />} />
+                        <Route path="joinedEvents" element={<JoinedEvents />} />
 
+                    </Route>
+
+
+
+                    {/* Public events page */}
+                    <Route path="/events" element={<EventsPublic />} />
                 </Routes>
 
                 <Footer/>

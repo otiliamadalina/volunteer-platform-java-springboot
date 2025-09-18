@@ -210,4 +210,115 @@
     }
 }
 
+/* Manage Volunteers and Organisations Styles */
+.manage-card {
+    margin-top: 20px;
+}
+
+.search-container {
+    margin-bottom: 20px;
+}
+
+.search-input {
+    max-width: 300px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.empty-state {
+    text-align: center;
+    margin-top: 20px;
+    color: #6b6660;
+}
+
+.modal-overlay {
+    display: block;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-dialog {
+    position: relative;
+    width: auto;
+    margin: 0.5rem;
+    pointer-events: none;
+}
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 0.3rem;
+    outline: 0;
+}
+
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+    border-bottom: 1px solid #dee2e6;
+    border-top-left-radius: calc(0.3rem - 1px);
+    border-top-right-radius: calc(0.3rem - 1px);
+}
+
+.modal-title {
+    margin-bottom: 0;
+    line-height: 1.5;
+}
+
+.modal-body {
+    position: relative;
+    flex: 1 1 auto;
+    padding: 1rem;
+}
+
+.modal-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0.75rem;
+    border-top: 1px solid #dee2e6;
+    border-bottom-right-radius: calc(0.3rem - 1px);
+    border-bottom-left-radius: calc(0.3rem - 1px);
+}
+
+.btn-close {
+    padding: 0.25rem 0.25rem;
+    margin: -0.25rem -0.25rem -0.25rem auto;
+}
+
+.btn-close::before {
+    content: "×";
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: 0.5;
+}
+
+.btn-close:hover::before {
+    opacity: 0.75;
+}
+
+@media (min-width: 576px) {
+    .modal-dialog {
+        max-width: 500px;
+        margin: 1.75rem auto;
+    }
+}
+
+@media (min-width: 992px) {
+    .modal-dialog.modal-lg {
+        max-width: 800px;
+    }
+}
+
 

@@ -10,18 +10,19 @@ import com.volunteer.volunteer_platform_java_springboot.model.Organisation;
 import com.volunteer.volunteer_platform_java_springboot.repository.AdminRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.VolunteerRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.OrganisationRepository;
-import jakarta.annotation.PostConstruct;
+import com.volunteer.volunteer_platform_java_springboot.service.VolunteerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.session.FindByIndexNameSessionRepository;
 
 import java.security.Principal;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")  // permite accesul din frontend
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000") // permite accesul din frontend
 public class AuthController {
 
     @Autowired
@@ -36,20 +37,19 @@ public class AuthController {
     @Autowired
     private AdminRepository adminRepository;
 
+    private final VolunteerService volunteerService;
+
+
+    public AuthController(VolunteerService volunteerService) {
+        this.volunteerService = volunteerService;
+    }
+
     @PostMapping("/registerAsVolunteer")
-    public ResponseEntity<Volunteer> registerVolunteer(@RequestBody VolunteerDTO dto) {
-        Volunteer volunteer = new Volunteer();
-        volunteer.setFullName(dto.getFullName());
-        volunteer.setEmail(dto.getEmail());
-        volunteer.setRole(UserRole.VOLUNTEER);
-
-        String hashedPassword = passwordEncoder.encode(dto.getPassword());
-        volunteer.setPassword(hashedPassword);
-        System.out.println("Encoded password: " + hashedPassword);
-
-        Volunteer savedVolunteer = volunteerRepository.save(volunteer);
+    public ResponseEntity<VolunteerDTO> registerVolunteer(@RequestBody VolunteerDTO dto) {
+        VolunteerDTO savedVolunteer = volunteerService.registerVolunteer(dto);
         return ResponseEntity.ok(savedVolunteer);
     }
+
 
     @PostMapping("/registerAsOrganisation")
     public ResponseEntity<Organisation> registerOrganisation(@RequestBody OrganisationDTO dto) {
@@ -87,7 +87,18 @@ public class AuthController {
                 org.springframework.security.core.context.SecurityContext context = org.springframework.security.core.context.SecurityContextHolder.createEmptyContext();
                 context.setAuthentication(authentication);
                 org.springframework.security.core.context.SecurityContextHolder.setContext(context);
-                request.getSession(true).setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+                jakarta.servlet.http.HttpSession session = request.getSession(true);
+                session.setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+                session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, volunteer.getEmail());
+                request.changeSessionId();
+                session.setAttribute("userRole", volunteer.getRole().name());
+                // ensure principal is always indexed
+                session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, volunteer.getEmail());
+
+                System.out.println("Session ID: " + session.getId());
+                System.out.println("Set principal: " + volunteer.getEmail());
+                System.out.println("Set role: " + volunteer.getRole().name());
+
 
                 return ResponseEntity.ok(Map.of(
                         "role", volunteer.getRole().name(),
@@ -112,7 +123,12 @@ public class AuthController {
                 org.springframework.security.core.context.SecurityContext context = org.springframework.security.core.context.SecurityContextHolder.createEmptyContext();
                 context.setAuthentication(authentication);
                 org.springframework.security.core.context.SecurityContextHolder.setContext(context);
-                request.getSession(true).setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+                jakarta.servlet.http.HttpSession session = request.getSession(true);
+                session.setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+                session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, organisation.getEmail());
+                request.changeSessionId();
+                session.setAttribute("userRole", organisation.getRole().name());
+                session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, organisation.getEmail());
 
                 return ResponseEntity.ok(Map.of(
                         "role", organisation.getRole().name(),
@@ -137,7 +153,12 @@ public class AuthController {
                 org.springframework.security.core.context.SecurityContext context = org.springframework.security.core.context.SecurityContextHolder.createEmptyContext();
                 context.setAuthentication(authentication);
                 org.springframework.security.core.context.SecurityContextHolder.setContext(context);
-                request.getSession(true).setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+                jakarta.servlet.http.HttpSession session = request.getSession(true);
+                session.setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+                session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, admin.getEmail());
+                request.changeSessionId();
+                session.setAttribute("userRole", admin.getRole().name());
+                session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, admin.getEmail());
 
                 return ResponseEntity.ok(Map.of(
                         "role", admin.getRole().name(),
@@ -179,5 +200,39 @@ public class AuthController {
         String hashed = passwordEncoder.encode(rawPassword);
         return ResponseEntity.ok("Hash-ul parolei: " + hashed);
     }
+
+    @GetMapping("/admin/volunteers")
+    public ResponseEntity<?> getAllVolunteers() {
+        try {
+            java.util.List<Volunteer> volunteers = volunteerRepository.findAll();
+            System.out.println("Found " + volunteers.size() + " volunteers in database");
+            for (Volunteer v : volunteers) {
+                System.out.println("Volunteer: " + v.getId() + " - " + v.getFullName() + " - " + v.getEmail());
+            }
+            return ResponseEntity.ok(volunteers);
+        } catch (Exception e) {
+            System.out.println("Error fetching volunteers: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error fetching volunteers: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/admin/organisations")
+    public ResponseEntity<?> getAllOrganisations() {
+        try {
+            java.util.List<Organisation> organisations = organisationRepository.findAll();
+            System.out.println("Found " + organisations.size() + " organisations in database");
+            for (Organisation o : organisations) {
+                System.out.println("Organisation: " + o.getId() + " - " + o.getFullName() + " - " + o.getEmail());
+            }
+            return ResponseEntity.ok(organisations);
+        } catch (Exception e) {
+            System.out.println("Error fetching organisations: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error fetching organisations: " + e.getMessage());
+        }
+    }
+
+
 
 }

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
+import "../../styles/events.css";
 
 export default function CreateEvent() {
     const [form, setForm] = useState({
         title: "",
-        date: "",
-        time: "",
+        startDate: "",
+        endDate: "",
         location: "",
-        capacity: "",
+        maxVolunteers: "",
         description: ""
     });
     const [submitting, setSubmitting] = useState(false);
@@ -20,14 +21,15 @@ export default function CreateEvent() {
     };
 
     const isValid = () => {
-        const capacityNum = Number(form.capacity);
+        const maxVolunteersNum = Number(form.maxVolunteers);
         return (
             form.title.trim() &&
-            form.date &&
-            form.time &&
+            form.startDate &&
+            form.endDate &&
             form.location.trim() &&
             form.description.trim() &&
-            Number.isFinite(capacityNum) && capacityNum > 0 &&
+            Number.isFinite(maxVolunteersNum) && maxVolunteersNum > 0 &&
+            new Date(form.startDate) < new Date(form.endDate) &&
             !!imageFile
         );
     };
@@ -43,20 +45,28 @@ export default function CreateEvent() {
         try {
             const formData = new FormData();
             formData.append("title", form.title.trim());
-            formData.append("date", form.date);
-            formData.append("time", form.time);
-            formData.append("location", form.location.trim());
-            formData.append("capacity", String(Number(form.capacity)));
             formData.append("description", form.description.trim());
+            formData.append("location", form.location.trim());
+            formData.append("startDate", form.startDate);
+            formData.append("endDate", form.endDate);
+            formData.append("maxVolunteers", String(Number(form.maxVolunteers)));
             formData.append("image", imageFile);
 
-            const res = await fetch("/api/org/events", {
+            const res = await fetch("http://localhost:8080/api/org/events", {
                 method: "POST",
+                credentials: "include",
+                headers: {
+                    "X-Org-Email": localStorage.getItem("email") || ""
+                },
                 body: formData
             });
-            if (!res.ok) throw new Error("Failed to create event");
+
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(`Failed to create event: ${res.status} - ${errorText}`);
+            }
             setMessage("Event created successfully.");
-            setForm({ title: "", date: "", time: "", location: "", capacity: "", description: "" });
+            setForm({ title: "", startDate: "", endDate: "", location: "", maxVolunteers: "", description: "" });
             setImageFile(null);
             setImagePreview("");
         } catch (err) {
@@ -67,11 +77,11 @@ export default function CreateEvent() {
     };
 
     return (
-        <div className="card" style={{ marginTop: 20 }}>
+        <div className="card">
             <h3>Create Event</h3>
-            <form onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
+            <form onSubmit={onSubmit}>
                 <div>
-                    <label htmlFor="image"><strong>Cover Image</strong> *</label>
+                    <label htmlFor="image"><strong>Event Image</strong> *</label>
                     <input
                         id="image"
                         name="image"
@@ -81,33 +91,25 @@ export default function CreateEvent() {
                         onChange={(e) => {
                             const file = e.target.files && e.target.files[0];
                             setImageFile(file || null);
-                            if (file) {
-                                const url = URL.createObjectURL(file);
-                                setImagePreview(url);
-                            } else {
-                                setImagePreview("");
-                            }
+                            if (file) setImagePreview(URL.createObjectURL(file));
+                            else setImagePreview("");
                         }}
                         required
                     />
-                    {imagePreview && (
-                        <div style={{ marginTop: 8 }}>
-                            <img src={imagePreview} alt="Preview" style={{ maxWidth: "100%", borderRadius: 8 }} />
-                        </div>
-                    )}
+                    {imagePreview && <img src={imagePreview} alt="Preview" className="preview" />}
                 </div>
                 <div>
                     <label htmlFor="title"><strong>Title</strong> *</label>
                     <input id="title" name="title" type="text" value={form.title} onChange={onChange} className="form-control" placeholder="e.g., Beach Cleanup" required />
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                <div className="grid-two-columns">
                     <div>
-                        <label htmlFor="date"><strong>Date</strong> *</label>
-                        <input id="date" name="date" type="date" value={form.date} onChange={onChange} className="form-control" required />
+                        <label htmlFor="startDate"><strong>Start Date & Time</strong> *</label>
+                        <input id="startDate" name="startDate" type="datetime-local" value={form.startDate} onChange={onChange} className="form-control" required />
                     </div>
                     <div>
-                        <label htmlFor="time"><strong>Time</strong> *</label>
-                        <input id="time" name="time" type="time" value={form.time} onChange={onChange} className="form-control" required />
+                        <label htmlFor="endDate"><strong>End Date & Time</strong> *</label>
+                        <input id="endDate" name="endDate" type="datetime-local" value={form.endDate} onChange={onChange} className="form-control" required />
                     </div>
                 </div>
                 <div>
@@ -115,8 +117,8 @@ export default function CreateEvent() {
                     <input id="location" name="location" type="text" value={form.location} onChange={onChange} className="form-control" placeholder="City, Address or Online" required />
                 </div>
                 <div>
-                    <label htmlFor="capacity"><strong>Capacity (volunteers needed)</strong> *</label>
-                    <input id="capacity" name="capacity" type="number" min="1" step="1" value={form.capacity} onChange={onChange} className="form-control" placeholder="e.g., 25" required />
+                    <label htmlFor="maxVolunteers"><strong>Maximum Volunteers Needed</strong> *</label>
+                    <input id="maxVolunteers" name="maxVolunteers" type="number" min="1" step="1" value={form.maxVolunteers} onChange={onChange} className="form-control" placeholder="e.g., 25" required />
                 </div>
                 <div>
                     <label htmlFor="description"><strong>Description</strong> *</label>
@@ -127,11 +129,9 @@ export default function CreateEvent() {
                     <button type="submit" className="btn btn-primary" disabled={submitting || !isValid()}>
                         {submitting ? "Creating..." : "Create Event"}
                     </button>
-                    {message && <span style={{ color: message.startsWith("Error") ? "#b00020" : "#2e7d32" }}>{message}</span>}
+                    {message && <span className="message" style={{ color: message.startsWith("Error") ? "#b00020" : "#2e7d32" }}>{message}</span>}
                 </div>
             </form>
         </div>
     );
 }
-
-

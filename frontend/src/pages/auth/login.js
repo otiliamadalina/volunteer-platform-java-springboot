@@ -33,20 +33,24 @@ export default function Login() {
         console.log("Login form submitted");
 
         try {
-            const res = await axios.post("http://localhost:8080/api/login", {
-                email,
-                password
-            });
+            const res = await axios.post(
+                "http://localhost:8080/api/login",
+                { email, password },
+                { withCredentials: true }
+            );
 
 
             console.log("Server response:", res.data);
 
 
-            const { role, id, fullName } = res.data;
+            const { role, id, fullName, email: userEmail } = res.data;
 
             localStorage.setItem("userName", fullName);
             localStorage.setItem("role", role);
             localStorage.setItem("userId", id);
+            if (userEmail) {
+                localStorage.setItem("email", userEmail);
+            }
             navigate("/");
 
         } catch (err) {

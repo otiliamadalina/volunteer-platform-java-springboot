@@ -11,7 +11,14 @@ export function Home() {
     const [ngoImages, setNgoImages] = useState([]);
 
     useEffect(() => {
-        fetchNgoImages();
+        {Array.isArray(ngoImages) && ngoImages.length > 0 ? (
+            ngoImages.map((imgUrl, index) => (
+                <img key={index} src={imgUrl} alt={`NGO image ${index + 1}`} />
+            ))
+        ) : (
+            <p className="no-events-text">Sorry. No events available at the moment.</p>
+        )}
+
     }, []);
 
     const fetchNgoImages = async () => {
