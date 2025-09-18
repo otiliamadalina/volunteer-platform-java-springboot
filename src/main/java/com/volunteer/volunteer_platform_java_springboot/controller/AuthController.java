@@ -54,7 +54,6 @@ public class AuthController {
 
         Volunteer savedVolunteer = volunteerRepository.save(volunteer);
 
-        // Aici este logica de creare a sesiunii, exact ca la login.
         org.springframework.security.core.Authentication authentication =
                 new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
                         savedVolunteer.getEmail(), null,

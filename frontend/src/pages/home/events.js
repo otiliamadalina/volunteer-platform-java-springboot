@@ -178,7 +178,7 @@ export default function EventsPublic() {
                     <div className="custom-modal">
                         <h2>Event Details</h2>
                         <p style={{whiteSpace: "pre-line"}}>{modalText}</p>
-                        {role === "VOLUNTEER" && selectedEvent && (
+                        {selectedEvent && (
                             <div className="event-dates">
                                 <p><strong>Start Date:</strong> {new Date(selectedEvent.startDate).toLocaleString()}</p>
                                 <p><strong>End Date:</strong> {new Date(selectedEvent.endDate).toLocaleString()}</p>

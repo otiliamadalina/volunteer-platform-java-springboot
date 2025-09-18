@@ -11,9 +11,10 @@
 
 .events-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 400px);
     gap: 16px;
     align-items: stretch;
+    justify-content: center;
 }
 
 .event-card {
@@ -28,7 +29,7 @@
 
 .event-image {
     width: 100%;
-    height: 160px;
+    height: 300px;
     object-fit: cover;
 }
 
