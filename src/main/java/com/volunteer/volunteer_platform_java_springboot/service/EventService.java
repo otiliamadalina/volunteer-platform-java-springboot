@@ -193,7 +193,6 @@ public class EventService {
         return true;
     }
 
-    // Metode de business logică pentru voluntari
     public List<EventDTO> getEventsJoinedByVolunteer(String email) {
         List<Long> eventIds = eventVolunteerRepository.findEventIdsByVolunteerEmail(email);
         return eventRepository.findAllById(eventIds).stream()
@@ -267,7 +266,6 @@ public class EventService {
     }
 
 
-    // Metode private pentru manipulare fișiere
     private String saveImage(MultipartFile image) throws IOException {
         Path uploadPath = Paths.get(UPLOAD_DIR).toAbsolutePath();
         if (!Files.exists(uploadPath)) {
@@ -286,16 +284,6 @@ public class EventService {
             String filename = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
             Path filePath = Paths.get(UPLOAD_DIR).resolve(filename).toAbsolutePath();
             Files.deleteIfExists(filePath);
-        }
-    }
-
-    public void deleteFromHistory(Long eventId, String volunteerEmail) {
-        EventVolunteer participationRecord = eventVolunteerRepository.findByEventIdAndVolunteerEmail(eventId, volunteerEmail);
-
-        if (participationRecord != null) {
-            eventVolunteerRepository.delete(participationRecord);
-        } else {
-            throw new RuntimeException("Participation record not found.");
         }
     }
 

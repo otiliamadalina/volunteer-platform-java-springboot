@@ -137,7 +137,6 @@ export default function EventsPublic() {
                             <div className="event-content">
                                 <h3 className="event-title">{ev.title}</h3>
                                 <p className="event-location"><strong>Location:</strong> {ev.location}</p>
-                                <p><strong>Organised by:</strong> {selectedEvent.organisationName}</p>
                                 <div className="event-description-container">
                                     <p className="event-description">{ev.description}</p>
                                     <button
@@ -183,6 +182,7 @@ export default function EventsPublic() {
                             <div className="event-dates">
                                 <p><strong>Start Date:</strong> {new Date(selectedEvent.startDate).toLocaleString()}</p>
                                 <p><strong>End Date:</strong> {new Date(selectedEvent.endDate).toLocaleString()}</p>
+                                <p><strong>Organised by:</strong> {selectedEvent.organisationName}</p>
                             </div>
                         )}
                         <button className="modal-close-btn" onClick={() => setOpenModal(false)}>Close</button>
