@@ -54,6 +54,7 @@ public class EventService {
             return null;
         }
         EventDTO dto = new EventDTO();
+        dto.setId(event.getId());
         dto.setTitle(event.getTitle());
         dto.setDescription(event.getDescription());
         dto.setLocation(event.getLocation());
@@ -66,7 +67,6 @@ public class EventService {
     }
 
     // C - CREATE
-    // Am refăcut metoda să primească parametrii individuali
     public EventDTO createEvent(
             String title,
             String description,

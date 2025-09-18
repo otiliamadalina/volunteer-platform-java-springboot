@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "../../styles/events.css";
+import axios from 'axios';
 
 export default function EventsPublic() {
     const [events, setEvents] = useState([]);
@@ -9,6 +10,9 @@ export default function EventsPublic() {
     const [modalText, setModalText] = useState("");
     const [joinedEvents, setJoinedEvents] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(null);
+    const [showStatusModal, setShowStatusModal] = useState(false);
+    const [statusMessage, setStatusMessage] = useState("");
+    const [isSuccess, setIsSuccess] = useState(false);
 
     const role = useMemo(() => {
         if (typeof window !== "undefined") {
@@ -20,15 +24,11 @@ export default function EventsPublic() {
     const fetchPublicEvents = async () => {
         setLoading(true);
         try {
-            const res = await fetch("http://localhost:8080/api/org/public/events", {
-                method: "GET",
-                credentials: "include"
+            const res = await axios.get("http://localhost:8080/api/org/public/events", {
+                withCredentials: true
             });
-            if (!res.ok) {
-                throw new Error(`HTTP ${res.status}`);
-            }
-            const data = await res.json();
-            setEvents(Array.isArray(data) ? data : []);
+            setEvents(Array.isArray(res.data) ? res.data : []);
+            setError(null);
         } catch (e) {
             setError(e.message || "Failed to load events");
         } finally {
@@ -39,13 +39,11 @@ export default function EventsPublic() {
     const fetchJoinedEvents = async () => {
         if (role === "VOLUNTEER") {
             try {
-                const res = await fetch("http://localhost:8080/api/org/events/joined", {
-                    method: "GET",
-                    credentials: "include"
+                const res = await axios.get("http://localhost:8080/api/org/events/joined", {
+                    withCredentials: true
                 });
-                if (res.ok) {
-                    const data = await res.json();
-                    const ids = data.map(event => event.id);
+                if (res.status === 200) {
+                    const ids = res.data.map(event => event.id);
                     setJoinedEvents(ids);
                 }
             } catch (e) {
@@ -60,40 +58,61 @@ export default function EventsPublic() {
     }, [role]);
 
     const handleJoin = async (eventId) => {
-        if (joinedEvents.includes(eventId)) return;
-
+        if (joinedEvents.includes(eventId)) {
+            return;
+        }
         try {
-            const res = await fetch(`http://localhost:8080/api/org/events/${eventId}/join`, {
-                method: "POST",
-                credentials: "include"
+            const res = await axios.post(`http://localhost:8080/api/org/events/${eventId}/join`, {}, {
+                withCredentials: true
             });
-            if (!res.ok) {
-                const t = await res.text();
-                throw new Error(t || `HTTP ${res.status}`);
-            }
 
-            await fetchPublicEvents();
-            await fetchJoinedEvents();
+            if (res.status === 200) {
+                setJoinedEvents(prev => [...prev, eventId]);
+
+                setEvents(prevEvents =>
+                    prevEvents.map(event =>
+                        event.id === eventId
+                            ? { ...event, currentVolunteers: res.data.currentVolunteers }
+                            : event
+                    )
+                );
+                setStatusMessage("Successfully joined the event!");
+                setIsSuccess(true);
+            }
         } catch (e) {
-            alert(e.message || "Failed to join event");
+            setStatusMessage(e.response?.data?.error || "Failed to join event.");
+            setIsSuccess(false);
+        } finally {
+            setShowStatusModal(true);
         }
     };
 
     const handleUnjoin = async (eventId) => {
         try {
-            const res = await fetch(`http://localhost:8080/api/org/events/${eventId}/unjoin`, {
-                method: "POST",
-                credentials: "include"
+            const res = await axios.post(`http://localhost:8080/api/org/events/${eventId}/unjoin`, {}, {
+                withCredentials: true
             });
-            if (!res.ok) {
-                const t = await res.text();
-                throw new Error(t || `HTTP ${res.status}`);
+
+            if (res.status === 200) {
+                setJoinedEvents(prev => prev.filter(id => id !== eventId));
+
+                setEvents(prevEvents =>
+                    prevEvents.map(event =>
+                        event.id === eventId
+                            ? { ...event, currentVolunteers: Math.max(0, event.currentVolunteers - 1) }
+                            : event
+                    )
+                );
+
+                setStatusMessage("Successfully unjoined the event.");
+                setIsSuccess(true);
             }
 
-            await fetchPublicEvents();
-            await fetchJoinedEvents();
         } catch (e) {
-            alert(e.message || "Failed to unjoin event");
+            setStatusMessage(e.response?.data?.error || "Failed to unjoin event.");
+            setIsSuccess(false);
+        } finally {
+            setShowStatusModal(true);
         }
     };
 
@@ -116,7 +135,7 @@ export default function EventsPublic() {
                                 <div className="event-image-placeholder"/>
                             )}
                             <div className="event-content">
-                                <h3 className="event-title">{ev.title}</h3>>
+                                <h3 className="event-title">{ev.title}</h3>
                                 <p className="event-location"><strong>Location:</strong> {ev.location}</p>
                                 <div className="event-description-container">
                                     <p className="event-description">{ev.description}</p>
@@ -142,6 +161,7 @@ export default function EventsPublic() {
                                                     : handleJoin(ev.id)
                                             }
                                             className="event-join-btn"
+                                            disabled={ev.currentVolunteers >= ev.maxVolunteers && !joinedEvents.includes(ev.id)}
                                         >
                                             {joinedEvents.includes(ev.id) ? "Unjoin" : "Join Event"}
                                         </button>
@@ -166,6 +186,20 @@ export default function EventsPublic() {
                             </div>
                         )}
                         <button className="modal-close-btn" onClick={() => setOpenModal(false)}>Close</button>
+                    </div>
+                </div>
+            )}
+
+            {showStatusModal && (
+                <div className="custom-modal-overlay">
+                    <div className="custom-modal">
+                        <h2 className={isSuccess ? "text-green-600" : "text-red-600"}>
+                            {isSuccess ? "Success" : "Error"}
+                        </h2>
+                        <p>{statusMessage}</p>
+                        <button onClick={() => setShowStatusModal(false)} className="modal-close-btn">
+                            OK
+                        </button>
                     </div>
                 </div>
             )}

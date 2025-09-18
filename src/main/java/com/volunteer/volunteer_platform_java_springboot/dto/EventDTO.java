@@ -15,9 +15,9 @@ public class EventDTO {
     // Constructors
     public EventDTO() {}
 
-    public EventDTO(String title, String description, String location, 
-                   LocalDateTime startDate, LocalDateTime endDate, 
-                   Integer maxVolunteers, String organisationEmail, String imageUrl) {
+    public EventDTO(String title, String description, String location,
+                    LocalDateTime startDate, LocalDateTime endDate,
+                    Integer maxVolunteers, String organisationEmail, String imageUrl) {
         this.title = title;
         this.description = description;
         this.location = location;
@@ -92,4 +92,14 @@ public class EventDTO {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 }
