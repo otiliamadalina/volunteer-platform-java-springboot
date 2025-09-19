@@ -1,18 +1,41 @@
 package com.volunteer.volunteer_platform_java_springboot.dto;
 
 import com.volunteer.volunteer_platform_java_springboot.model.EventStatus;
+import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.URL;
 
 import java.time.LocalDateTime;
 
 public class EventDTO {
+    @NotBlank(message = "Title is required.")
+    @Size(min = 5, max = 255, message = "Title must be between 5 and 255 characters.")
     private String title;
+
+    @NotBlank(message = "Description is required.")
     private String description;
+
+    @NotBlank(message = "Location is required.")
     private String location;
+
+    @NotNull(message = "Start date is required.")
+    @FutureOrPresent(message = "Start date must be in the future or present.")
     private LocalDateTime startDate;
+
+    @NotNull(message = "End date is required.")
     private LocalDateTime endDate;
+
+    @NotNull(message = "Maximum volunteers is required.")
+    @Min(value = 1, message = "There must be at least 1 volunteer.")
     private Integer maxVolunteers;
+
+    @NotBlank(message = "Organisation email is required.")
+    @Email(message = "Invalid email format.")
     private String organisationEmail;
+
+    @URL(message = "Invalid URL format for image.")
     private String imageUrl;
+
+    // These fields are managed by the backend
     private EventStatus status;
     private int currentVolunteers;
     private LocalDateTime createdAt;
