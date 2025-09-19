@@ -119,14 +119,16 @@ export default function EventsPublic() {
     if (loading) return <div className="events-loading"><p>Loading events…</p></div>;
     if (error) return <div className="events-error"><p>{error}</p></div>;
 
+    const filteredEvents = events.filter(ev => new Date(ev.endDate) >= new Date());
+
     return (
         <div className="events-container">
             <h1 className="events-title">Upcoming Events</h1>
-            {events.length === 0 ? (
+            {filteredEvents.length === 0 ? (
                 <p className="events-empty">No events yet.</p>
             ) : (
                 <div className="events-grid">
-                    {events.map((ev) => (
+                    {filteredEvents.map((ev) => (
                         <div key={ev.id} className="event-card">
                             {ev.imageUrl ? (
                                 <img src={`http://localhost:8080${ev.imageUrl}`} alt={ev.title}
