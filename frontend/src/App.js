@@ -32,6 +32,7 @@ import NotifyVolunteers from "./pages/org/notifyVolunteers";
 import JoinedEvents from "./pages/volunteer/joinedEvents";
 import {About} from "./pages/home/about";
 import {Contact} from "./pages/home/contact";
+import Organisations from "./pages/home/organisations";
 
 function App() {
     return (
@@ -52,6 +53,8 @@ function App() {
 
                     <Route path="/about" element={<About/>} />
                     <Route path="/contact" element={<Contact/>} />
+                    <Route path="/organisations" element={<Organisations/>} />
+
 
                     {/*<Route path="/volunteerDashboard" element={<VolunteerDashboard />} />*/}
                     {/*<Route path="/organisationDashboard" element={<OrganisationDashboard />} />*/}

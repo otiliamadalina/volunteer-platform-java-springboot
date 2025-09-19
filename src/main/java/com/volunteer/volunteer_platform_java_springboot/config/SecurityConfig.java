@@ -53,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/org/**").permitAll()
                         // TEMP: allow all admin endpoints
                         .requestMatchers("/api/admin/**").permitAll()
+                        .requestMatchers("/api/orgs").permitAll()
 
                         .requestMatchers("/uploads/**").permitAll()
 
