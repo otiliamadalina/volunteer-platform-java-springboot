@@ -82,7 +82,7 @@ export default function ManageVolunteers() {
 
     if (loading) {
         return (
-            <div className="card manage-card">
+            <div className="card notify-manage-card">
                 <h3>Manage Volunteers</h3>
                 <p>Loading volunteers...</p>
             </div>
@@ -90,7 +90,7 @@ export default function ManageVolunteers() {
     }
 
     return (
-        <div className="card manage-card">
+        <div className="card notify-manage-card">
             <h3>Manage Volunteers</h3>
             
             <div className="search-container">

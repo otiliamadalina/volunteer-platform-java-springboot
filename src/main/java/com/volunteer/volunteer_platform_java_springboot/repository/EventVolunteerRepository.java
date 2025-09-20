@@ -16,4 +16,7 @@ public interface EventVolunteerRepository extends JpaRepository<EventVolunteer, 
 
     EventVolunteer findByEventIdAndVolunteerEmail(Long eventId, String email);
 
+
+    List<EventVolunteer> findByOrganisationEmail(String organisationEmail);
+
 }

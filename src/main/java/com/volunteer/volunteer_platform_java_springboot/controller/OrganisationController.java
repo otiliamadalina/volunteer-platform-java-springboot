@@ -1,7 +1,9 @@
 package com.volunteer.volunteer_platform_java_springboot.controller;
 
+import com.volunteer.volunteer_platform_java_springboot.dto.EventDTO;
 import com.volunteer.volunteer_platform_java_springboot.dto.OrganisationDTO;
 import com.volunteer.volunteer_platform_java_springboot.service.OrganisationService;
+import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,5 +37,12 @@ public class OrganisationController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(organisations);
+    }
+
+    @GetMapping("/events/with-volunteers")
+    public ResponseEntity<List<EventDTO>> getEventsWithVolunteers(Authentication authentication) {
+        String organisationEmail = authentication.getName();
+        List<EventDTO> events = organisationService.getEventsWithVolunteers(organisationEmail);
+        return ResponseEntity.ok(events);
     }
 }

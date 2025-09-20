@@ -81,7 +81,7 @@ export default function ManageOrganisations() {
 
     if (loading) {
         return (
-            <div className="card manage-card">
+            <div className="card notify-manage-card">
                 <h3>Manage Organisations</h3>
                 <p>Loading organisations...</p>
             </div>
@@ -89,7 +89,7 @@ export default function ManageOrganisations() {
     }
 
     return (
-        <div className="card manage-card">
+        <div className="card notify-manage-card">
             <h3>Manage Organisations</h3>
             
             <div className="search-container">

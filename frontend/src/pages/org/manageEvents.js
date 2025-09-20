@@ -131,7 +131,7 @@ export default function ManageEvents() {
 
     if (loading) {
         return (
-            <div className="card manage-card">
+            <div className="card notify-manage-card">
                 <h3>Manage Events</h3>
                 <p>Loading events...</p>
             </div>
@@ -139,7 +139,7 @@ export default function ManageEvents() {
     }
 
     return (
-        <div className="card manage-card">
+        <div className="card notify-manage-card">
             <h3>Manage Events</h3>
 
             <div className="search-container">

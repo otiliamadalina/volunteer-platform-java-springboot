@@ -80,7 +80,7 @@ export default function ParticipationHistory() {
     }
 
     return (
-        <div className="card manage-card">
+        <div className="card notify-manage-card">
             <h3>Participation History</h3>
 
             <div className="search-container">

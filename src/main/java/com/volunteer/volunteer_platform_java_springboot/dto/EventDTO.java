@@ -3,10 +3,12 @@ package com.volunteer.volunteer_platform_java_springboot.dto;
 import com.volunteer.volunteer_platform_java_springboot.model.EventStatus;
 import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.URL;
-
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class EventDTO {
+    private Long id;
+
     @NotBlank(message = "Title is required.")
     @Size(min = 5, max = 255, message = "Title must be between 5 and 255 characters.")
     private String title;
@@ -41,6 +43,8 @@ public class EventDTO {
     private LocalDateTime createdAt;
     private String organisationName;
 
+    private List<VolunteerDTO> volunteers;
+
     // Constructors
     public EventDTO() {}
 
@@ -55,10 +59,16 @@ public class EventDTO {
         this.maxVolunteers = maxVolunteers;
         this.organisationEmail = organisationEmail;
         this.imageUrl = imageUrl;
-
     }
 
     // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -123,15 +133,6 @@ public class EventDTO {
         this.imageUrl = imageUrl;
     }
 
-    private Long id;
-
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public EventStatus getStatus() {
         return status;
     }
@@ -160,4 +161,12 @@ public class EventDTO {
         this.organisationName = organisationName;
     }
 
+    // Getter and setter for the volunteers list
+    public List<VolunteerDTO> getVolunteers() {
+        return volunteers;
+    }
+
+    public void setVolunteers(List<VolunteerDTO> volunteers) {
+        this.volunteers = volunteers;
+    }
 }
