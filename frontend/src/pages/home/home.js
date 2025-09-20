@@ -63,7 +63,7 @@ export function Home() {
         <>
             <div className="scrolling-banner">
                 <div className="scrolling-track wrapper">
-                    {Array(7).fill("Together We Can – VOLUNTEERS WANTED").map((text, index) => (
+                    {Array(20).fill("Together We Can – VOLUNTEERS WANTED").map((text, index) => (
                         <span key={index} className="scrolling-text">{text}</span>
                     ))}
                 </div>
