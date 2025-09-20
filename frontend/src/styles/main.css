@@ -22,7 +22,13 @@ body {
     margin: 0;
 }
 
-h1, h2 {
+h2 {
+    font-size: 25px;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+h1 {
     font-size: 40px;
     font-weight: 700;
     color: var(--color-text);
