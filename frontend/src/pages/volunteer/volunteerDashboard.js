@@ -1,10 +1,10 @@
 import React from "react";
 import "../../styles/admin.css";
 import "../../styles/main.css";
-import "../../styles/volunteer.css"; // Include the main CSS file for volunteer styles
-import VolunteerCalendar from "./volunteerCalendar"; // Component for the calendar
-import UpcomingEvents from "./upcomingEvents"; // Component for the list of upcoming events
-import RecentMessages from "./recentMessages"; // Component for recent messages
+import "../../styles/volunteer.css";
+import VolunteerCalendar from "./volunteerCalendar";
+import UpcomingEvents from "./upcomingEvents";
+import RecentMessages from "./recentMessages";
 
 export default function VolunteerDashboard() {
     return (
