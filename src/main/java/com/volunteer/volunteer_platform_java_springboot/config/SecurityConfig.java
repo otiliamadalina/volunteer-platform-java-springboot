@@ -49,11 +49,16 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/volunteer/**").permitAll()
                         .requestMatchers("/api/organisation/**").permitAll()
+
                         // TEMP: allow all organisation endpoints to unblock createEvent
                         .requestMatchers("/api/org/**").permitAll()
+
                         // TEMP: allow all admin endpoints
                         .requestMatchers("/api/admin/**").permitAll()
                         .requestMatchers("/api/orgs").permitAll()
+
+                        .requestMatchers("/api/notifications").permitAll()
+
 
                         .requestMatchers("/uploads/**").permitAll()
 

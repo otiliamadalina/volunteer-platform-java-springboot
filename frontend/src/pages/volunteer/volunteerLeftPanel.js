@@ -22,7 +22,7 @@ export default function VolunteerLeftPanel() {
                 </li>
 
                 <li>
-                    <NavLink to="/volunteerDashboard/joinedEventsDetails" className={({ isActive }) => isActive ? "active" : undefined}>Joined events details</NavLink>
+                    <NavLink to="/volunteerDashboard/joinedEventsDetails" className={({ isActive }) => isActive ? "active" : undefined}>Joined Events Details</NavLink>
                 </li>
 
                 <li>

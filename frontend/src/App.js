@@ -33,6 +33,7 @@ import JoinedEvents from "./pages/volunteer/joinedEvents";
 import {About} from "./pages/home/about";
 import {Contact} from "./pages/home/contact";
 import Organisations from "./pages/home/organisations";
+import SentMessages from "./pages/org/sentMessages";
 
 function App() {
     return (
@@ -89,6 +90,8 @@ function App() {
                         <Route path="manageEvents" element={<OrgManageEvents />} />
                         <Route path="reports" element={<Reports />} />
                         <Route path="notifyVolunteers" element={<NotifyVolunteers />} />
+                        <Route path="sentMessages" element={<SentMessages />} />
+
                     </Route>
 
                     <Route
