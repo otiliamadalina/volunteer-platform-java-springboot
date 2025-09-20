@@ -105,7 +105,6 @@ export default function OrganisationDashboard() {
         const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
         const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
 
-        // Calculate total events
         const totalEvents = events.length;
         const eventsThisMonth = events.filter(event => 
             new Date(event.createdAt) >= thisMonth
@@ -116,7 +115,6 @@ export default function OrganisationDashboard() {
         }).length;
         const eventsChange = eventsThisMonth - eventsLastMonth;
 
-        // Calculate volunteers joined
         const allVolunteers = new Set();
         const volunteersThisMonth = new Set();
         const volunteersLastMonth = new Set();
@@ -125,7 +123,6 @@ export default function OrganisationDashboard() {
             if (event.volunteers) {
                 event.volunteers.forEach(volunteer => {
                     allVolunteers.add(volunteer.email);
-                    // Note: We don't have join date, so we'll use event creation as proxy
                     const eventDate = new Date(event.createdAt);
                     if (eventDate >= thisMonth) {
                         volunteersThisMonth.add(volunteer.email);
@@ -139,7 +136,6 @@ export default function OrganisationDashboard() {
         const volunteersJoined = allVolunteers.size;
         const volunteersChange = volunteersThisMonth.size - volunteersLastMonth.size;
 
-        // Calculate messages sent
         const messagesSent = notifications.length;
         const messagesThisMonth = notifications.filter(notif => 
             new Date(notif.sentAt) >= thisMonth
@@ -150,12 +146,10 @@ export default function OrganisationDashboard() {
         }).length;
         const messagesChange = messagesThisMonth - messagesLastMonth;
 
-        // Calculate participation rate
         const totalEventSlots = events.reduce((sum, event) => sum + (event.maxVolunteers || 0), 0);
         const filledSlots = events.reduce((sum, event) => sum + (event.currentVolunteers || 0), 0);
         const participationRate = totalEventSlots > 0 ? Math.round((filledSlots / totalEventSlots) * 100) : 0;
 
-        // Get upcoming events
         const upcomingEvents = events
             .filter(event => new Date(event.startDate) > now)
             .sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
@@ -167,7 +161,6 @@ export default function OrganisationDashboard() {
                 volunteers: event.currentVolunteers || 0
             }));
 
-        // Generate recent activity
         const recentActivity = [
             ...events.slice(-2).map(event => ({
                 icon: "🟢",
@@ -181,7 +174,6 @@ export default function OrganisationDashboard() {
             }))
         ].sort((a, b) => new Date(b.time) - new Date(a.time)).slice(0, 3);
 
-        // Get top volunteers
         const volunteerEventCount = {};
         eventsWithVolunteers.forEach(event => {
             if (event.volunteers) {
@@ -201,7 +193,6 @@ export default function OrganisationDashboard() {
                 return `${volunteer?.fullName || email} (${count} events)`;
             });
 
-        // Generate chart data (simplified - using monthly event creation)
         const monthlyData = Array(7).fill(0);
         const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
         const currentMonth = now.getMonth();

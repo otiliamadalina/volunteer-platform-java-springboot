@@ -19,4 +19,6 @@ public interface EventVolunteerRepository extends JpaRepository<EventVolunteer, 
 
     List<EventVolunteer> findByOrganisationEmail(String organisationEmail);
 
+    List<EventVolunteer> findTop20ByOrderByJoinedAtDesc();
+
 }

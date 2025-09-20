@@ -11,8 +11,9 @@ export default function VolunteerCalendar() {
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                // Fetch events joined by the volunteer
-                const res = await axios.get("http://localhost:8080/api/volunteer/events/joined", {
+             
+                
+                const res = await axios.get("http://localhost:8080/api/org/events/joined", {
                     withCredentials: true
                 });
                 setEvents(res.data);
@@ -25,7 +26,6 @@ export default function VolunteerCalendar() {
         fetchEvents();
     }, []);
 
-    // Function to mark event days on the calendar
     const tileContent = ({ date, view }) => {
         if (view === "month") {
             const hasEvent = events.some(event => {
