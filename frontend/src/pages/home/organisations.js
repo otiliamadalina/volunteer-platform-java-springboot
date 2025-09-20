@@ -87,8 +87,8 @@ export default function Organisations() {
                         </thead>
                         <tbody>
                         {filteredOrganizations.length > 0 ? (
-                            filteredOrganizations.map(org => (
-                                <tr key={org.id}>
+                            filteredOrganizations.map((org, idx) => (
+                                <tr key={(org && (org.id || org.email || org.fullName)) ? `${org.id || org.email || org.fullName}` : `org-${idx}` }>
                                     <td>{org.fullName}</td>
                                     <td>{org.location}</td>
                                     <td>{org.email}</td>
