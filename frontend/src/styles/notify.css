@@ -37,7 +37,6 @@
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     box-sizing: border-box;
-
     width: 100%;
     max-width: none;
 }
@@ -68,7 +67,6 @@
     flex-direction: column;
     justify-content: space-between;
 }
-
 
 .volunteer-item:last-child {
     margin-bottom: 0;
@@ -163,6 +161,7 @@
     text-align: center;
     padding: 24px;
 }
+
 .search-wrapper {
     width: 100%;
     display: flex;
@@ -177,4 +176,122 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     box-sizing: border-box;
+}
+
+.search-actions-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 8px 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.notify-btn-secondary {
+    background-color: #8b7d7b;
+    color: #fafafa;
+    border: 1px solid #fafafa;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.notify-btn-secondary:hover {
+    background-color: #e0e0e0;
+}
+
+/* Container styling */
+.sent-messages-container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    max-width: 720px;
+    margin: 40px auto;
+}
+
+/* Title */
+.sent-messages-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #2d2d2d;
+    text-align: center;
+}
+
+/* Empty state */
+.sent-messages-empty {
+    color: #777;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.sent-message-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Individual message card */
+.sent-message-card {
+    border: 1px solid #e2e2e2;
+    border-radius: 10px;
+    padding: 16px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+}
+
+/* Highlight read/unread cards */
+.sent-message-card {
+    background-color: #f9f9f9;
+}
+
+.sent-message-card:hover {
+    background-color: #f0f0f0;
+}
+
+.sent-message-card .sent-message-meta strong {
+    font-weight: 600;
+}
+
+.status-read {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.status-unread {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+
+/* Message content */
+.sent-message-event {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.sent-message-recipient {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.sent-message-text {
+    font-size: 1rem;
+    color: #333;
+    margin: 12px 0;
+}
+
+.sent-message-meta {
+    font-size: 0.75rem;
+    margin-top: 4px;
 }

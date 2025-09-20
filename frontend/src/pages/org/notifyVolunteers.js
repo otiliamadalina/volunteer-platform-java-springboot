@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../../styles/notify.css";
+import {useNavigate} from "react-router-dom";
 
 export default function NotifyVolunteers() {
     const [events, setEvents] = useState([]);
@@ -10,6 +11,7 @@ export default function NotifyVolunteers() {
     const [status, setStatus] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [filter, setFilter] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -91,7 +93,7 @@ export default function NotifyVolunteers() {
             <h3>Notify Volunteers</h3>
             <p>Send personalized messages to volunteers signed up for your events.</p>
 
-            <div className="search-wrapper">
+            <div className="search-actions-row">
                 <input
                     type="text"
                     className="search-input"
@@ -99,7 +101,15 @@ export default function NotifyVolunteers() {
                     value={filter}
                     onChange={(e) => setFilter(e.target.value.toLowerCase())}
                 />
+                <button
+                    className="notify-btn notify-btn-secondary"
+                    onClick={() => navigate("/organisationDashboard/sentMessages")}
+                >
+                    View Sent Messages
+                </button>
             </div>
+
+
 
             {filteredEvents.length === 0 ? (
                 <p className="empty-state">No matching events or volunteers found.</p>

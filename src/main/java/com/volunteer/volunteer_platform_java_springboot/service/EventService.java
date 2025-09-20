@@ -6,10 +6,6 @@ import com.volunteer.volunteer_platform_java_springboot.repository.EventReposito
 import com.volunteer.volunteer_platform_java_springboot.repository.EventVolunteerRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.OrganisationRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.VolunteerRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
@@ -17,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -50,6 +45,7 @@ public class EventService {
         if (event == null) {
             return null;
         }
+        refreshStatusIfExpired(event);
         EventDTO dto = new EventDTO();
         dto.setId(event.getId());
         dto.setTitle(event.getTitle());
@@ -70,6 +66,18 @@ public class EventService {
         }
 
         return dto;
+    }
+
+    
+    private void refreshStatusIfExpired(Event event) {
+        try {
+            if (event.getStatus() == EventStatus.PUBLISHED && event.getEndDate() != null) {
+                if (event.getEndDate().isBefore(LocalDateTime.now())) {
+                    event.setStatus(EventStatus.COMPLETED);
+                    eventRepository.save(event);
+                }
+            }
+        } catch (Exception ignored) {}
     }
 
     // C - CREATE

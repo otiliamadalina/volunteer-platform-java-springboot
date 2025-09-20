@@ -1,5 +1,3 @@
-/* Volunteer-specific styles */
-
 /* Volunteer Dashboard */
 .volunteer-dashboard {
     padding: 20px;
@@ -129,64 +127,360 @@
     color: #0c5460;
 }
 
-/* Volunteer Calendar */
-.volunteer-calendar {
-    background: white;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/* General Dashboard Layout */
+.volunteer-dashboard-container {
+    padding: 24px;
+    background-color: #f7f7f7;
 }
 
-.calendar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.dashboard-title {
     margin-bottom: 20px;
+    color: #333;
 }
 
-.calendar-title {
-    margin: 0;
-    color: #2d2a26;
+.dashboard-header-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
 }
 
-.calendar-nav {
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+
+@media (min-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 2fr 1fr 1fr;
+    }
+
+    .calendar-card {
+        grid-column: 1 / 2;
+    }
+
+    .events-card {
+        grid-column: 2 / 3;
+    }
+
+    .messages-card {
+        grid-column: 3 / 4;
+    }
+}
+
+.dashboard-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Calendar Specific Styles */
+.volunteer-calendar-wrapper {
+    width: 100%;
+}
+
+.react-calendar-custom {
+    border: none !important;
+    width: 100% !important;
+    font-family: inherit !important;
+}
+
+.event-marker {
+    background-color: #007bff;
+    border-radius: 50%;
+    width: 6px;
+    height: 6px;
+    margin: 0 auto;
+}
+
+/* Upcoming Events Specific Styles */
+.upcoming-events-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.upcoming-events-list .event-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.upcoming-events-list .event-item:last-child {
+    border-bottom: none;
+}
+
+/* Recent Messages - Card Style */
+.recent-messages-list {
     display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.recent-messages-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
     gap: 10px;
 }
 
-.calendar-nav button {
-    background: #8b7d7b;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s;
+.recent-message-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    border-left: 4px solid transparent;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-left-color 0.2s ease;
 }
 
-.calendar-nav button:hover {
-    background: #6b5d5b;
+.recent-message-card.unread {
+    font-weight: 500;
+    border-left-color: #ff9800;
+    background-color: #fff8e1;
 }
+
+.recent-message-card.read {
+    font-weight: 400;
+    color: #666;
+}
+
+.recent-message-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+.message-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.message-text {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #2d2a26;
+}
+
+.message-date {
+    font-size: 0.8rem;
+    color: #999;
+    align-self: flex-end;
+}
+
+.recent-empty {
+    font-style: italic;
+    color: #888;
+    text-align: center;
+    padding: 16px 0;
+}
+
+/* View All Link */
+.view-all-link {
+    margin-top: 12px;
+    display: inline-block;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.view-all-link:hover {
+    color: #0056b3;
+}
+
+
+.message-preview-item.unread {
+    font-weight: bold;
+    color: #333;
+}
+
+.message-preview-item.read {
+    font-style: italic;
+    color: #888;
+}
+
+.view-all-link {
+    display: inline-block;
+    margin-top: 15px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+/* Volunteer Messages */
+.volunteer-messages {
+    padding: 24px;
+}
+
+/* Messages List Enhancements */
+.message-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.message-card {
+    background-color: #fff8e1;
+    border-left: 4px solid #ff9800;
+    border-radius: 10px;
+    padding: 18px 22px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+    margin-bottom: 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.message-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* Distinguish unread messages */
+.message-card.unread {
+    background-color: #fffbe6;
+    border-left-color: #ffb74d;
+}
+
+/* Title and text */
+.message-card h4 {
+    margin-bottom: 6px;
+    color: #2d2a26;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.message-card p {
+    margin: 4px 0;
+    color: #4b4b4b;
+    font-size: 0.95rem;
+}
+
+/* Meta info */
+.message-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.message-date {
+    font-size: 0.8rem;
+    color: #777;
+}
+
+/* Buttons */
+.read-button {
+    padding: 6px 16px;
+    font-size: 0.85rem;
+    background-color: #e6f4ea;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.read-button:hover {
+    background-color: #d0ebd8;
+    transform: translateY(-1px);
+}
+
+.read-button.read-button-disabled {
+    background-color: #d9d9d9;
+    color: #777;
+    border-color: #c0c0c0;
+    cursor: default;
+}
+
+.read-status {
+    font-size: 0.85rem;
+    color: #2e7d32;
+    font-weight: 500;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.read-label {
+    padding: 6px 12px;
+    background-color: #e0e0e0;
+    color: #4a4a4a;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .volunteer-stats {
         grid-template-columns: 1fr;
     }
-    
+
     .volunteer-profile-header {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .volunteer-avatar {
         margin-right: 0;
         margin-bottom: 15px;
     }
-    
+
     .activity-item {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
     }
+
+    .upcoming-card-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .upcoming-event-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        background: #fafafa;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 10px 14px;
+        width: 100%;
+        max-width: 600px;
+    }
+
+    .upcoming-number {
+        font-size: 1rem;
+        color: #555;
+        flex-shrink: 0;
+    }
+
+    .upcoming-event-title {
+        margin: 0;
+        padding: 0;
+        font-size: 1rem;
+        font-weight: 400;
+        color: #2d2a26;
+        text-align: left;
+    }
+
+
+
+
 }

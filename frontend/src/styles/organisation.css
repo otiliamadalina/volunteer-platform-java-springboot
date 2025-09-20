@@ -365,3 +365,65 @@
     font-size: 0.875rem;
     color: #6b7280;
 }
+
+
+
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, #f5e8d3 0%, #b3a29f 100%);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    color: #2d2a26;
+    text-align: center;
+}
+
+.stat-card h3 { font-size: 1.1rem; margin-bottom: 6px; }
+.stat-card p { font-size: 1.8rem; font-weight: bold; margin-bottom: 4px; }
+.stat-change { font-size: 0.85rem; opacity: 0.8; }
+
+.card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+/* Upcoming events */
+.event-list { list-style: none; padding: 0; margin: 0; }
+.event-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+.event-item:last-child { border-bottom: none; }
+.manage-button {
+    background: #8b7d7b;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.manage-button:hover { background: #6b5d5b; }
+
+/* Recent Activity */
+.activity-list { list-style: none; padding: 0; margin: 0; }
+.activity-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
+.activity-item:last-child { border-bottom: none; }
+.activity-item .meta { font-size: 0.75rem; color: #777; }
+
+/* Top Volunteers */
+.top-volunteers { list-style: none; padding: 0; margin: 0; }
+.top-volunteers li { padding: 6px 0; border-bottom: 1px solid #eee; }
+.top-volunteers li:last-child { border-bottom: none; }
