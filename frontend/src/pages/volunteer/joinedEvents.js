@@ -83,7 +83,7 @@ export default function JoinedEvents() {
     }
 
     return (
-        <div className="card manage-card">
+        <div className="card notify-manage-card">
             <h3>My Joined Events</h3>
 
             <div className="search-container">

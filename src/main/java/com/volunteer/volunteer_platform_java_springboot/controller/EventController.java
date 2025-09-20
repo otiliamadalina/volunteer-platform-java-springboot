@@ -4,6 +4,7 @@ import com.volunteer.volunteer_platform_java_springboot.dto.EventDTO;
 import com.volunteer.volunteer_platform_java_springboot.model.EventStatus;
 import com.volunteer.volunteer_platform_java_springboot.service.EventService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -63,13 +64,13 @@ public class EventController {
     // CREATE event: Am revenit la `@RequestParam` pentru a gestiona `MultipartFile`
     @PostMapping("/events")
     public ResponseEntity<?> createEvent(
-            @RequestParam("title") String title,
-            @RequestParam("description") String description,
-            @RequestParam("location") String location,
-            @RequestParam("startDate") String startDate,
-            @RequestParam("endDate") String endDate,
-            @RequestParam("maxVolunteers") String maxVolunteers,
-            @RequestParam("image") MultipartFile image,
+            @Valid @RequestParam("title") String title,
+            @Valid @RequestParam("description") String description,
+            @Valid @RequestParam("location") String location,
+            @Valid @RequestParam("startDate") String startDate,
+            @Valid @RequestParam("endDate") String endDate,
+            @Valid @RequestParam("maxVolunteers") String maxVolunteers,
+            @Valid @RequestParam("image") MultipartFile image,
             Principal principal,
             HttpServletRequest request) {
         try {
@@ -128,7 +129,7 @@ public class EventController {
 
     // UNJOIN event
     @PostMapping("/events/{id}/unjoin")
-    public ResponseEntity<?> unjoinEvent(@PathVariable Long id, Principal principal) {
+    public ResponseEntity<?> unjoinEvent(@Valid @PathVariable Long id, Principal principal) {
         try {
             String volunteerEmail = principal.getName();
             Map<String, Integer> updatedCounts = eventService.unjoinEvent(id, volunteerEmail);
@@ -153,7 +154,7 @@ public class EventController {
 
     // JOIN event
     @PostMapping("/events/{id}/join")
-    public ResponseEntity<?> joinEvent(@PathVariable Long id, Principal principal) {
+    public ResponseEntity<?> joinEvent( @Valid @PathVariable Long id, Principal principal) {
         try {
             String volunteerEmail = principal.getName();
             Map<String, Integer> result = eventService.joinEvent(id, volunteerEmail);
@@ -167,7 +168,7 @@ public class EventController {
 
     // READ a single event
     @GetMapping("/events/{id}")
-    public ResponseEntity<?> getEvent(@PathVariable Long id, Principal principal, HttpServletRequest request) {
+    public ResponseEntity<?> getEvent(@Valid @PathVariable Long id, Principal principal, HttpServletRequest request) {
         try {
             String organisationEmail = resolveOrganisationEmail(principal, request);
             if (organisationEmail == null) {
@@ -185,7 +186,7 @@ public class EventController {
 
     // UPDATE event status by body
     @PutMapping("/events/{id}/status")
-    public ResponseEntity<?> updateEventStatus(@PathVariable Long id, @RequestParam("status") String newStatus, Principal principal, HttpServletRequest request) {
+    public ResponseEntity<?> updateEventStatus( @Valid @PathVariable Long id, @Valid @RequestParam("status") String newStatus, Principal principal, HttpServletRequest request) {
         try {
             String organisationEmail = resolveOrganisationEmail(principal, request);
             if (organisationEmail == null) {
@@ -204,7 +205,7 @@ public class EventController {
 
     // DELETE event
     @DeleteMapping("/events/{id}")
-    public ResponseEntity<?> deleteEvent(@PathVariable Long id, Principal principal, HttpServletRequest request) {
+    public ResponseEntity<?> deleteEvent(@Valid @PathVariable Long id, Principal principal, HttpServletRequest request) {
         try {
             String organisationEmail = resolveOrganisationEmail(principal, request);
             if (organisationEmail == null) {
@@ -220,7 +221,7 @@ public class EventController {
     }
 
     @PutMapping("/events/{id}/archive")
-    public ResponseEntity<?> archiveEvent(@PathVariable Long id, Principal principal) {
+    public ResponseEntity<?> archiveEvent(@Valid@PathVariable Long id, Principal principal) {
         try {
             if (principal == null || "anonymousUser".equalsIgnoreCase(principal.getName())) {
                 return ResponseEntity.status(401).body("User not authenticated.");

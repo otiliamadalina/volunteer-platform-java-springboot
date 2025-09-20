@@ -109,6 +109,16 @@ export default function ManageEvents() {
         return new Date(dateTimeString).toLocaleString();
     };
 
+    const getEventStatus = (event) => {
+        const now = new Date();
+        const eventEndDate = new Date(event.endDate);
+
+        if (eventEndDate < now) {
+            return 'COMPLETED';
+        }
+        return event.status;
+    };
+
     const getStatusBadgeClass = (status) => {
         switch (status) {
             case 'DRAFT': return 'status-draft';
@@ -121,7 +131,7 @@ export default function ManageEvents() {
 
     if (loading) {
         return (
-            <div className="card manage-card">
+            <div className="card notify-manage-card">
                 <h3>Manage Events</h3>
                 <p>Loading events...</p>
             </div>
@@ -129,7 +139,7 @@ export default function ManageEvents() {
     }
 
     return (
-        <div className="card manage-card">
+        <div className="card notify-manage-card">
             <h3>Manage Events</h3>
 
             <div className="search-container">
@@ -163,8 +173,8 @@ export default function ManageEvents() {
                             <td>{event.location}</td>
                             <td>{formatDateTime(event.startDate)}</td>
                             <td>
-                                    <span className={`event-status ${getStatusBadgeClass(event.status)}`}>
-                                        {event.status}
+                                    <span className={`event-status ${getStatusBadgeClass(getEventStatus(event))}`}>
+                                        {getEventStatus(event)}
                                     </span>
                             </td>
                             <td>{event.currentVolunteers}/{event.maxVolunteers}</td>
@@ -242,8 +252,8 @@ export default function ManageEvents() {
                                     </div>
                                     <div className="col-md-6">
                                         <strong>Status:</strong>
-                                        <span className={`event-status ${getStatusBadgeClass(selectedEvent.status)} ms-2`}>
-                                            {selectedEvent.status}
+                                        <span className={`event-status ${getStatusBadgeClass(getEventStatus(selectedEvent))} ms-2`}>
+                                            {getEventStatus(selectedEvent)}
                                         </span>
                                     </div>
                                 </div>

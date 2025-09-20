@@ -13,6 +13,7 @@ import com.volunteer.volunteer_platform_java_springboot.repository.OrganisationR
 import com.volunteer.volunteer_platform_java_springboot.service.VolunteerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,7 +42,7 @@ public class AuthController {
     private AdminRepository adminRepository;
 
     @PostMapping("/registerAsVolunteer")
-    public ResponseEntity<?> registerVolunteer(@RequestBody VolunteerDTO dto, HttpServletRequest request) {
+    public ResponseEntity<?> registerVolunteer(@Valid @RequestBody VolunteerDTO dto, HttpServletRequest request) {
         // Create and save the new volunteer account
         Volunteer volunteer = new Volunteer();
         volunteer.setFullName(dto.getFullName());
@@ -54,7 +55,6 @@ public class AuthController {
 
         Volunteer savedVolunteer = volunteerRepository.save(volunteer);
 
-        // Aici este logica de creare a sesiunii, exact ca la login.
         org.springframework.security.core.Authentication authentication =
                 new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
                         savedVolunteer.getEmail(), null,
@@ -79,7 +79,7 @@ public class AuthController {
     }
 
     @PostMapping("/registerAsOrganisation")
-    public ResponseEntity<?> registerOrganisation(@RequestBody OrganisationDTO dto, jakarta.servlet.http.HttpServletRequest request) {
+    public ResponseEntity<?> registerOrganisation(@Valid @RequestBody OrganisationDTO dto, jakarta.servlet.http.HttpServletRequest request) {
         Organisation organisation = new Organisation();
         organisation.setFullName(dto.getFullName());
         organisation.setEmail(dto.getEmail());
@@ -116,7 +116,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO, jakarta.servlet.http.HttpServletRequest request) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginDTO loginDTO, jakarta.servlet.http.HttpServletRequest request) {
         System.out.println("Login attempt for: " + loginDTO.getEmail());
 
         Volunteer volunteer = volunteerRepository.findByEmail(loginDTO.getEmail());
@@ -219,27 +219,6 @@ public class AuthController {
         System.out.println("Login failed for: " + loginDTO.getEmail());
         return ResponseEntity.status(401).body("Invalid email or password");
     }
-
-    @GetMapping("/organisation/test")
-    public ResponseEntity<String> organisationAccess() {
-        return ResponseEntity.ok("Access granted to ORGANISATION");
-    }
-
-    @GetMapping("/admin/test")
-    public ResponseEntity<String> adminAccess() {
-        return ResponseEntity.ok("Access granted to ADMIN");
-    }
-
-    @GetMapping("/volunteer/test")
-    public ResponseEntity<String> volunteerAccess(Principal principal) {
-        String email = principal.getName();
-        Volunteer v = volunteerRepository.findByEmail(email);
-        if (v != null && v.getRole() == UserRole.VOLUNTEER) {
-            return ResponseEntity.ok("Access granted");
-        }
-        return ResponseEntity.status(403).body("Access denied");
-    }
-
 
     @GetMapping("/generateAdminPassword")
     public ResponseEntity<String> generateAdminPassword() {

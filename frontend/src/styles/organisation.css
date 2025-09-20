@@ -253,7 +253,6 @@
     color: #0c5460;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .organisation-stats {
         grid-template-columns: 1fr;
@@ -276,4 +275,93 @@
         align-items: flex-start;
         gap: 10px;
     }
+}
+
+
+
+
+.organizations-container {
+    margin-top: 20px;
+    padding: 1.5rem;
+    min-height: 100vh;
+}
+
+.card-container {
+    max-width: 64rem;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.page-heading {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #1f2937;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    transition-property: all;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-input:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px #3b82f6;
+}
+
+.table-container {
+    overflow-x: auto;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.organisations-table {
+    min-width: 100%;
+    background-color: #fff;
+    border-collapse: collapse;
+}
+
+.organisations-table th {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+    background-color: #e5e7eb;
+    text-align: center;
+}
+
+.organisations-table td {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: #1f2937;
+    white-space: nowrap;
+}
+
+.organisations-table tr:nth-child(odd) {
+    background-color: #f9fafb;
+}
+
+.organisations-table tr:hover {
+    background-color: #f3f4f6;
+    transition-property: background-color;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.empty-table-message {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.875rem;
+    color: #6b7280;
 }

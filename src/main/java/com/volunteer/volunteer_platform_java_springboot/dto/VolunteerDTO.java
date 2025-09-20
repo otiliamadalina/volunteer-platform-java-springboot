@@ -6,16 +6,28 @@ import jakarta.validation.constraints.Size;
 
 public class VolunteerDTO {
 
-    @NotBlank(message = "Full name is required")
+    private Long id;
+
+    @NotBlank(message = "Full name is required.")
+    @Size(min = 3, max = 100, message = "Full name must be between 3 and 100 characters.")
     private String fullName;
 
-    @Email(message = "Invalid email format")
-    @NotBlank(message = "Email is required")
+    @NotBlank(message = "Email address is required.")
+    @Email(message = "The email address is not valid.")
     private String email;
 
-    @NotBlank(message = "Password is required")
-    @Size(min = 6, message = "Password must be at least 6 characters long")
+    @NotBlank(message = "Password is required.")
+    @Size(min = 5, message = "Password must be at least 5 characters long.")
     private String password;
+
+    // Getters and setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getFullName() {
         return fullName;
@@ -40,5 +52,4 @@ public class VolunteerDTO {
     public void setPassword(String password) {
         this.password = password;
     }
-
 }

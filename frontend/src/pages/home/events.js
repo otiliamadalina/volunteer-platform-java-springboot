@@ -119,14 +119,16 @@ export default function EventsPublic() {
     if (loading) return <div className="events-loading"><p>Loading events…</p></div>;
     if (error) return <div className="events-error"><p>{error}</p></div>;
 
+    const filteredEvents = events.filter(ev => new Date(ev.endDate) >= new Date());
+
     return (
         <div className="events-container">
             <h1 className="events-title">Upcoming Events</h1>
-            {events.length === 0 ? (
+            {filteredEvents.length === 0 ? (
                 <p className="events-empty">No events yet.</p>
             ) : (
                 <div className="events-grid">
-                    {events.map((ev) => (
+                    {filteredEvents.map((ev) => (
                         <div key={ev.id} className="event-card">
                             {ev.imageUrl ? (
                                 <img src={`http://localhost:8080${ev.imageUrl}`} alt={ev.title}
@@ -178,7 +180,7 @@ export default function EventsPublic() {
                     <div className="custom-modal">
                         <h2>Event Details</h2>
                         <p style={{whiteSpace: "pre-line"}}>{modalText}</p>
-                        {role === "VOLUNTEER" && selectedEvent && (
+                        {selectedEvent && (
                             <div className="event-dates">
                                 <p><strong>Start Date:</strong> {new Date(selectedEvent.startDate).toLocaleString()}</p>
                                 <p><strong>End Date:</strong> {new Date(selectedEvent.endDate).toLocaleString()}</p>
