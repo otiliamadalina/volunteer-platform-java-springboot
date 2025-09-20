@@ -34,6 +34,7 @@ import {About} from "./pages/home/about";
 import {Contact} from "./pages/home/contact";
 import Organisations from "./pages/home/organisations";
 import SentMessages from "./pages/org/sentMessages";
+import Statistics from "./pages/home/statistics";
 
 function App() {
     return (
@@ -114,6 +115,8 @@ function App() {
 
                     {/* Public events page */}
                     <Route path="/events" element={<EventsPublic />} />
+                    {/* Public statistics page */}
+                    <Route path="/statistics" element={<Statistics />} />
                 </Routes>
 
                 <Footer/>
