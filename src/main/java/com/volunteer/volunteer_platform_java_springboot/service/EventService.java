@@ -45,6 +45,7 @@ public class EventService {
         if (event == null) {
             return null;
         }
+        refreshStatusIfExpired(event);
         EventDTO dto = new EventDTO();
         dto.setId(event.getId());
         dto.setTitle(event.getTitle());
@@ -65,6 +66,18 @@ public class EventService {
         }
 
         return dto;
+    }
+
+    
+    private void refreshStatusIfExpired(Event event) {
+        try {
+            if (event.getStatus() == EventStatus.PUBLISHED && event.getEndDate() != null) {
+                if (event.getEndDate().isBefore(LocalDateTime.now())) {
+                    event.setStatus(EventStatus.COMPLETED);
+                    eventRepository.save(event);
+                }
+            }
+        } catch (Exception ignored) {}
     }
 
     // C - CREATE
