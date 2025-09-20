@@ -13,10 +13,10 @@ export function Home() {
     const [error, setError] = useState("");
 
     const defaultImages = [
-        "/assets/motivational-1.png",
-        "/assets/motivational-3.jpg",
-        "/assets/motivational-2.jpg",
-        "/assets/motivational-4.png",
+        "/assets/1-carousel-community.jpg",
+        "/assets/2-carousel-grass.jpg",
+        "/assets/SL-091823-63290-30.jpg",
+        "/assets/volunteer-synonyms.png",
     ];
 
     const fetchLatestEvents = async () => {
