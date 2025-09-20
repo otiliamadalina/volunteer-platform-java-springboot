@@ -18,6 +18,7 @@ import com.volunteer.volunteer_platform_java_springboot.model.EventStatus;
 import com.volunteer.volunteer_platform_java_springboot.repository.VolunteerRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.EventVolunteerRepository;
 import com.volunteer.volunteer_platform_java_springboot.repository.EventRepository;
+import com.volunteer.volunteer_platform_java_springboot.repository.ContactRepository;
 import com.volunteer.volunteer_platform_java_springboot.dto.SimpleRegistrationDTO;
 import com.volunteer.volunteer_platform_java_springboot.dto.RecentJoinDTO;
 import com.volunteer.volunteer_platform_java_springboot.dto.EventDTO;
@@ -33,19 +34,22 @@ public class AdminController {
     private final EventVolunteerRepository eventVolunteerRepository;
     private final EventRepository eventRepository;
     private final EventService eventService;
+    private final ContactRepository contactRepository;
 
     public AdminController(VolunteerService volunteerService,
                            OrganisationRepository organisationRepository,
                            VolunteerRepository volunteerRepository,
                            EventVolunteerRepository eventVolunteerRepository,
                            EventRepository eventRepository,
-                           EventService eventService) {
+                           EventService eventService,
+                           ContactRepository contactRepository) {
         this.volunteerService = volunteerService;
         this.organisationRepository = organisationRepository;
         this.volunteerRepository = volunteerRepository;
         this.eventVolunteerRepository = eventVolunteerRepository;
         this.eventRepository = eventRepository;
         this.eventService = eventService;
+        this.contactRepository = contactRepository;
     }
 
     @GetMapping("/manageVolunteers")
@@ -140,6 +144,19 @@ public class AdminController {
     public ResponseEntity<?> deleteEventAdmin(@PathVariable Long id) {
         if (!eventRepository.existsById(id)) return ResponseEntity.notFound().build();
         eventRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // ADMIN: Feedbacks (Contacts)
+    @GetMapping("/feedbacks")
+    public ResponseEntity<java.util.List<com.volunteer.volunteer_platform_java_springboot.model.Contact>> listFeedbacks() {
+        return ResponseEntity.ok(contactRepository.findAll());
+    }
+
+    @DeleteMapping("/feedbacks/{id}")
+    public ResponseEntity<Void> deleteFeedback(@PathVariable Long id) {
+        if (!contactRepository.existsById(id)) return ResponseEntity.notFound().build();
+        contactRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }
